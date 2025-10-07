@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { textareaVariants } from '@/lib/design-system/textarea';
-import { cn } from '@/lib/utils';
+import { textareaVariants } from '@/shared/lib/design-system';
+import { cn } from '@/shared/lib/utils';
 import type { VariantProps } from 'class-variance-authority';
 
 function Textarea({

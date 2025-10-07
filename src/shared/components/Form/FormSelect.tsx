@@ -1,3 +1,7 @@
+import type { selectTriggerVariants } from '@/shared/lib/design-system';
+import type { BaseFieldProps } from '@/shared/types';
+import type { VariantProps } from 'class-variance-authority';
+import type { FieldValues } from 'react-hook-form';
 import {
   FormControl,
   FormDescription,
@@ -5,18 +9,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from '../ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import type { selectTriggerVariants } from '@/lib/design-system/select';
-import type { BaseFieldProps } from '@/types';
-import type { VariantProps } from 'class-variance-authority';
-import type { FieldValues } from 'react-hook-form';
+} from '../ui/select';
 
 export interface SelectOption {
   value: string;

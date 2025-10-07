@@ -1,3 +1,5 @@
+import type { BaseFieldProps } from '@/shared/types';
+import type { FieldValues } from 'react-hook-form';
 import {
   FormControl,
   FormDescription,
@@ -5,10 +7,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
-import type { BaseFieldProps } from '@/types';
-import type { FieldValues } from 'react-hook-form';
+} from '../ui/form';
+import { Textarea } from '../ui/textarea';
 
 interface FormTextareaProps<TFieldValues extends FieldValues = FieldValues>
   extends BaseFieldProps<TFieldValues> {

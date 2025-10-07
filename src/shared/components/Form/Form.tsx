@@ -1,4 +1,4 @@
-import { Form as ShadForm } from '@/components/ui/form';
+import { Form as ShadForm } from '@/shared/components/ui/form';
 import type { FieldValues, UseFormReturn } from 'react-hook-form';
 
 interface FormProps<TFieldValues extends FieldValues = FieldValues> {

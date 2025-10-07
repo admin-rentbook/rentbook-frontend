@@ -1,7 +1,7 @@
 import { RouterProvider } from '@tanstack/react-router';
 import { APIProvider } from '@vis.gl/react-google-maps';
-import router from './routes';
 import { env } from './config';
+import router from './core/router';
 
 function App() {
   return (

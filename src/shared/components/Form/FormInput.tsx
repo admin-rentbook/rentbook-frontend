@@ -1,4 +1,6 @@
-import { Input } from '@/components/ui';
+import type { BaseFieldProps } from '@/shared/types';
+import type { FieldValues } from 'react-hook-form';
+import { Input } from '../ui';
 import {
   FormControl,
   FormDescription,
@@ -6,9 +8,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import type { BaseFieldProps } from '@/types';
-import type { FieldValues } from 'react-hook-form';
+} from '../ui/form';
 
 interface FormInputProps<TFieldValues extends FieldValues = FieldValues>
   extends BaseFieldProps<TFieldValues> {

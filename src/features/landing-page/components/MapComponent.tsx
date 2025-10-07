@@ -7,10 +7,6 @@ import {
 } from '@vis.gl/react-google-maps';
 import { useEffect, useState } from 'react';
 export const MapComponent = () => {
-  const position = {
-    lat: 50.9,
-    lng: 10,
-  };
 
   const [open, setIsOpen] = useState(false);
 

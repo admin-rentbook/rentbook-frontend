@@ -1,9 +1,8 @@
 import * as React from 'react';
 
-import { inputVariants } from '@/lib/design-system/input';
-import { cn } from '@/lib/utils';
+import { inputVariants } from '@/shared/lib/design-system';
+import { cn } from '@/shared/lib/utils';
 import type { VariantProps } from 'class-variance-authority';
-
 
 function Input({
   className,

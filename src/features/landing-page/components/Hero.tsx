@@ -1,5 +1,11 @@
-import { Button } from '@/components/ui';
-import { Form, FormInput, FormSelect, FormTextarea } from '@/shared/components';
+import {
+  Form,
+  FormInput,
+  FormSelect,
+  FormTextarea,
+} from '@/shared/components/Form';
+import { Button, Checkbox, RadioGroup, RadioGroupItem } from '@/shared/components/ui';
+import { Label } from '@/shared/components/ui/label';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowMoveDownLeftIcon } from 'hugeicons-react';
 import { useForm } from 'react-hook-form';
@@ -7,7 +13,10 @@ import { z } from 'zod';
 const validationSchema = z.object({
   username: z.string().min(2, 'Username must be at least 2 characters'),
   email: z.string().email('Invalid email address'), // Fixed
-  description: z.string().min(10, 'Description must be at least 10 characters').max(100, 'Description must be at most 100 characters'),
+  description: z
+    .string()
+    .min(10, 'Description must be at least 10 characters')
+    .max(100, 'Description must be at most 100 characters'),
   role: z.string().min(1, 'Please select a role'), // Added validation
 });
 export const Hero = () => {
@@ -28,7 +37,7 @@ export const Hero = () => {
     <div className="flex flex-col gap-4">
       <div>
         <Form form={form} onSubmit={onSubmit}>
-          <div className="grid gap-4 pb-10 ">
+          <div className="grid gap-4 pb-10">
             <FormInput
               control={form.control}
               name="email"
@@ -52,12 +61,23 @@ export const Hero = () => {
               control={form.control}
               name="role"
               label="Role"
-              placeholder='select role'
+              placeholder="select role"
               options={[
                 { label: 'Admin', value: 'ADMIN' },
                 { label: 'Owner', value: 'OWNER' },
               ]}
             />
+            <Checkbox size="lg" />
+            <RadioGroup defaultValue="option-one">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="option-one" id="option-one" />
+                <Label htmlFor="option-one">Option One</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="option-two" id="option-two" />
+                <Label htmlFor="option-two">Option Two</Label>
+              </div>
+            </RadioGroup>
           </div>
           <Button type="submit">submit</Button>
         </Form>
