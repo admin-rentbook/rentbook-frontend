@@ -4,7 +4,12 @@ import {
   FormSelect,
   FormTextarea,
 } from '@/shared/components/Form';
-import { Button, Checkbox, RadioGroup, RadioGroupItem } from '@/shared/components/ui';
+import {
+  Button,
+  Checkbox,
+  RadioGroup,
+  RadioGroupItem,
+} from '@/shared/components/ui';
 import { Label } from '@/shared/components/ui/label';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowMoveDownLeftIcon } from 'hugeicons-react';
@@ -35,6 +40,7 @@ export const Hero = () => {
   }
   return (
     <div className="flex flex-col gap-4">
+      <h1 className="font-abeat text-black-500 text-4xl">rentbook</h1>
       <div>
         <Form form={form} onSubmit={onSubmit}>
           <div className="grid gap-4 pb-10">

@@ -48,6 +48,11 @@ export default tseslint.config([
         'warn',
         { vars: 'all', varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
       ],
+      'react/jsx-key':'error',
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
       'prettier/prettier': 'warn',
     },
   },

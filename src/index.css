@@ -45,8 +45,11 @@
   /* my colors */
   --color-neutral-200: var(--neutral-200);
   --color-custom-neutral-200: var(--custom-neutral-200);
+  --color-custom-neutral-100: var(--custom-neutral-100);
+  --color-gray-50: oklch(0.9491 0 0);
 
   --color-black-400: var(--black-400);
+  --color-black-500: var(--black-500);
 
   --color-neutral-600: var(--neutral-600);
   --color-primary-100: var(--primary-100);
@@ -65,9 +68,11 @@
 
   --shadow-sec: var(--shadow-sec);
   --shadow-pri: var(--shadow-pri);
+  --shadow-ter: var(--shadow-ter);
   --radius-10: 10px;
 
   --font-sans: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  --font-abeat: 'MyFont Variable', 'MyFont', system-ui, sans-serif;
 }
 
 :root {
@@ -107,12 +112,23 @@
   /* my colors */
 
   --custom-neutral-200: oklch(0.9189 0 0);
+  --custom-neutral-100: oklch(0.9067 0 0);
   --neutral-200: oklch(0.9255 0.0027 286.35);
   --neutral-600: oklch(22% 0.004 275);
   --black-400: oklch(0.4784 0 0);
+  --black-500: oklch(0.2237 0.0024 325.66);
+
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 
   --primary-50: oklch(97% 0.02 356.5);
-  --primary-100: oklch(92% 0.05 356.5);
+  --primary-100: oklch(0.5803 0.2252 359.96 / 5.1%);
   --primary-200: oklch(85% 0.1 356.5);
   --primary-300: oklch(75% 0.16 356.5);
   --primary-400: oklch(68% 0.21 356.5);
@@ -137,6 +153,9 @@
     0px 0px 0px 1px oklch(35% 0 260 / 8%),
     0px 1px 2px 0px oklch(30% 0 260 / 12%);
   --shadow-pri: 0px 0px 0px 4px oklch(0.5803 0.2252 359.96 / 5.1%);
+  --shadow-ter:
+    0px 2.77px 2.21px 0px oklch(0 0 0 / 0.05),
+    0px 6.65px 5.32px 0px oklch(0 0 0 / 0.07);
 }
 
 .dark {
@@ -186,23 +205,32 @@
   .text-heading-1 {
     @apply text-4xl font-bold font-sans leading-tight;
   }
-
   .text-heading-2 {
     @apply text-3xl font-semibold font-sans leading-snug;
   }
-
+  .text-heading-3 {
+    @apply text-2xl font-medium font-sans;
+  }
   .text-body-large {
     @apply text-lg font-normal leading-relaxed;
   }
-
+  .text-body-medium {
+    @apply text-base font-medium font-sans;
+  }
   .text-body-small {
-    @apply text-sm font-normal leading-normal;
+    @apply text-sm font-normal font-sans leading-normal;
   }
 
+  .text-body {
+    @apply text-sm font-medium font-sans;
+  }
   .text-caption {
-    @apply text-xs font-medium leading-tight;
+    @apply text-xs font-medium font-sans leading-tight;
   }
   .text-label {
     @apply text-sm font-medium font-sans leading-4 tracking-normal;
+  }
+  .logo-text {
+    @apply text-[1.375rem] font-abeat font-normal;
   }
 }
