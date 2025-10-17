@@ -2541,6 +2541,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/react-table@npm:^8.21.3":
+  version: 8.21.3
+  resolution: "@tanstack/react-table@npm:8.21.3"
+  dependencies:
+    "@tanstack/table-core": "npm:8.21.3"
+  peerDependencies:
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: 10c0/85d1d0fcb690ecc011f68a5a61c96f82142e31a0270dcf9cbc699a6f36715b1653fe6ff1518302a6d08b7093351fc4cabefd055a7db3cd8ac01e068956b0f944
+  languageName: node
+  linkType: hard
+
 "@tanstack/router-core@npm:1.131.48":
   version: 1.131.48
   resolution: "@tanstack/router-core@npm:1.131.48"
@@ -2651,6 +2663,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/table-core@npm:8.21.3":
+  version: 8.21.3
+  resolution: "@tanstack/table-core@npm:8.21.3"
+  checksum: 10c0/40e3560e6d55e07cc047024aa7f83bd47a9323d21920d4adabba8071fd2d21230c48460b26cedf392588f8265b9edc133abb1b0d6d0adf4dae0970032900a8c9
+  languageName: node
+  linkType: hard
+
 "@tanstack/virtual-file-routes@npm:1.131.2":
   version: 1.131.2
   resolution: "@tanstack/virtual-file-routes@npm:1.131.2"
@@ -2758,6 +2777,13 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: 10c0/6bf5337bc447b706bb5b4431d37686aa2ea6d07cfd6f79cc31de80170d6ff9b1c7384a9c0ccbc45b3f512bae9e9f75c2e12109806a15331dc94e8a8db6dbb4ac
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4":
+  version: 4.17.20
+  resolution: "@types/lodash@npm:4.17.20"
+  checksum: 10c0/98cdd0faae22cbb8079a01a3bb65aa8f8c41143367486c1cbf5adc83f16c9272a2a5d2c1f541f61d0d73da543c16ee1d21cf2ef86cb93cd0cc0ac3bced6dd88f
   languageName: node
   linkType: hard
 
@@ -6046,6 +6072,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash@npm:4.17.21"
+  checksum: 10c0/d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
+  languageName: node
+  linkType: hard
+
 "log-symbols@npm:^6.0.0":
   version: 6.0.0
   resolution: "log-symbols@npm:6.0.0"
@@ -7163,8 +7196,10 @@ __metadata:
     "@tailwindcss/vite": "npm:^4.1.13"
     "@tanstack/react-router": "npm:^1.131.49"
     "@tanstack/react-router-devtools": "npm:^1.131.49"
+    "@tanstack/react-table": "npm:^8.21.3"
     "@tanstack/router-plugin": "npm:^1.131.49"
     "@types/crypto-js": "npm:^4"
+    "@types/lodash": "npm:^4"
     "@types/node": "npm:^24.5.1"
     "@types/react": "npm:^19.1.10"
     "@types/react-dom": "npm:^19.1.7"
@@ -7184,6 +7219,7 @@ __metadata:
     globals: "npm:^16.3.0"
     hugeicons-react: "npm:^0.3.0"
     husky: "npm:^9.1.7"
+    lodash: "npm:^4.17.21"
     lucide-react: "npm:^0.545.0"
     prettier: "npm:^3.6.2"
     react: "npm:^19.1.1"

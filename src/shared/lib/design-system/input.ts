@@ -36,7 +36,7 @@ export const inputVariants = cva(
         lg: 'h-11 px-4 text-lg',
       },
       state: {
-        default: '',
+        default: 'h-11 md:h-8 px-3 text-sm',
         error:
           'border-red-500 focus:border-red-500 focus:ring-red-500/20 bg-red-50',
         success:

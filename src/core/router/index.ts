@@ -23,8 +23,8 @@ const routeTree = rootRoute.addChildren([
   paymentRoute,
   supportRoute,
   notificationRoute,
-  settingsRoute
-]);//this will be updated properly by putting them in their correct features
+  settingsRoute,
+]); //this will be updated properly by putting them in their correct features
 const router = createRouter({ routeTree });
 
 declare module '@tanstack/react-router' {

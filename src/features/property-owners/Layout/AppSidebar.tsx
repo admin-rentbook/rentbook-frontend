@@ -26,7 +26,7 @@ export const AppSidebar = () => {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <div className="flex h-[70px] items-center justify-between">
+            <div className="flex py-4 items-center justify-between">
               <div className="flex items-center gap-2">
                 {open ? (
                   <img src={logo} className="object-contain" alt="RentBook" />

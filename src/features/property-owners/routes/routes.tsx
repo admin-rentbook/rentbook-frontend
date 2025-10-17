@@ -1,5 +1,6 @@
 import { rootRoute } from '@/core/router/rootRoute';
 import { createRoute } from '@tanstack/react-router';
+import { Property } from '../components';
 import { Links } from '../constants';
 import { Layout } from '../Layout';
 import { Overview } from './overview';
@@ -10,6 +11,16 @@ export const propertyOverviewRoute = createRoute({
   component: () => (
     <Layout>
       <Overview />
+    </Layout>
+  ),
+});
+
+export const propertiesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: Links.PROPERTIES,
+  component: () => (
+    <Layout>
+      <Property />
     </Layout>
   ),
 });
@@ -30,12 +41,6 @@ export const messagesRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: Links.MESSAGES,
   component: () => <div>Messages Page - Coming Soon</div>,
-});
-
-export const propertiesRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: Links.PROPERTIES,
-  component: () => <div>Properties Page - Coming Soon</div>,
 });
 
 export const leasesRoute = createRoute({

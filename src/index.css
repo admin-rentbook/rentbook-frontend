@@ -46,6 +46,9 @@
   --color-neutral-200: var(--neutral-200);
   --color-custom-neutral-200: var(--custom-neutral-200);
   --color-custom-neutral-100: var(--custom-neutral-100);
+  --color-custom-neutral-500: var(--color-custom-neutral-500);
+  --color-custom-neutral-900: var(--color-custom-neutral-900);
+
   --color-gray-50: oklch(0.9491 0 0);
 
   --color-black-400: var(--black-400);
@@ -65,6 +68,9 @@
   --color-red-400: var(--red-400);
   --color-red-500: var(--red-500);
   --color-red-600: var(--red-600);
+
+  --color-success-100: var(--success-100);
+  --color-success-500: var(--success-500);
 
   --shadow-sec: var(--shadow-sec);
   --shadow-pri: var(--shadow-pri);
@@ -112,11 +118,16 @@
   /* my colors */
 
   --custom-neutral-200: oklch(0.9189 0 0);
-  --custom-neutral-100: oklch(0.9067 0 0);
+  --custom-neutral-100: oklch(0.9067 0 0); /*#f4f4f4*/
   --neutral-200: oklch(0.9255 0.0027 286.35);
-  --neutral-600: oklch(22% 0.004 275);
+  --custom-neutral-500: oklch(0.1543 0 0 / 80%);
+  --custom-neutral-900: oklch(0.1591 0 0); /*0d0d0d*/
+  --neutral-600: oklch(22% 0.004 275); /*#1a1b1d*/
   --black-400: oklch(0.4784 0 0);
   --black-500: oklch(0.2237 0.0024 325.66);
+
+  --success-100: oklch(0.9656 0.0363 165.85); /*#DEFCEE*/
+  --success-500: oklch(0.4282 0.0846 157.98); /*#1c5d3d*/
 
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -139,11 +150,11 @@
   --primary-900: oklch(28% 0.12 356.5);
 
   --red-50: oklch(97% 0.02 29); /* very light tint */
-  --red-100: oklch(90% 0.06 29);
+  --red-100: oklch(0.9538 0.0221 7.18);/*#FEEAED*/
   --red-200: oklch(75% 0.12 29);
   --red-300: oklch(63.74% 0.233 29.43); /* your base #FF3B30 */
   --red-400: oklch(55% 0.22 29);
-  --red-500: oklch(48% 0.2 29);
+  --red-500: oklch(0.589 0.2254 30.84);/*#e4240a*/
   --red-600: oklch(42% 0.18 29);
   --red-700: oklch(35% 0.16 29);
   --red-800: oklch(27% 0.13 29);
@@ -198,6 +209,10 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
   }
 }
 

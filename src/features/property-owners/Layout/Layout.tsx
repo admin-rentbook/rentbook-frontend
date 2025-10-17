@@ -21,16 +21,13 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        
-        <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4">
-          <SidebarTrigger variant="icon" className="lg:hidden" />
-        </header>
+      <SidebarInset className="flex flex-row relative">
+        <div className='absolute top-6 left-0 z-50 lg:hidden'>
+          <SidebarTrigger variant="icon" />
+        </div>
 
         {/* Main content */}
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
-          {children}
-        </main>
+        <main className="flex flex-1 flex-col">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );
