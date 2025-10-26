@@ -7,3 +7,8 @@ export type PropertyDTO = {
   totalUnits: number;
   status: PropertyStatusType;
 };
+
+export type PropertyInfoData = {
+  propertyName: string;
+  address: string;
+}

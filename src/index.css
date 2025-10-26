@@ -48,9 +48,12 @@
   --color-custom-neutral-100: var(--custom-neutral-100);
   --color-custom-neutral-500: var(--color-custom-neutral-500);
   --color-custom-neutral-900: var(--color-custom-neutral-900);
+  --color-custom-neutral-900-light: var(--color-custom-neutral-900-light);
 
   --color-gray-50: oklch(0.9491 0 0);
-
+  --color-custom-gray-100: var(--color-custom-gray-100);
+  --color-custom-gray-500: var(--color-custom-gray-500);
+  --color-custom-gray-900: var(--color-custom-neutral-900);
   --color-black-400: var(--black-400);
   --color-black-500: var(--black-500);
 
@@ -62,6 +65,7 @@
   --color-primary-500: var(--primary-500);
   --color-primary-600: var(--primary-600);
 
+  --color-red-50: var(--red-50);
   --color-red-100: var(--red-100);
   --color-red-200: var(--red-200);
   --color-red-300: var(--red-300);
@@ -69,12 +73,14 @@
   --color-red-500: var(--red-500);
   --color-red-600: var(--red-600);
 
+  --color-success-50: var(--success-50);
   --color-success-100: var(--success-100);
   --color-success-500: var(--success-500);
 
   --shadow-sec: var(--shadow-sec);
   --shadow-pri: var(--shadow-pri);
   --shadow-ter: var(--shadow-ter);
+  --shadow-custom-md: var(--shadow-custom-md);
   --radius-10: 10px;
 
   --font-sans: 'Inter Variable', 'Inter', system-ui, sans-serif;
@@ -90,7 +96,7 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.985 0 0); /*fafafa*/
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -121,11 +127,15 @@
   --custom-neutral-100: oklch(0.9067 0 0); /*#f4f4f4*/
   --neutral-200: oklch(0.9255 0.0027 286.35);
   --custom-neutral-500: oklch(0.1543 0 0 / 80%);
-  --custom-neutral-900: oklch(0.1591 0 0); /*0d0d0d*/
+  --custom-neutral-900: oklch(0.1591 0 0 / 40%); /*0d0d0d*/
+  --custom-neutral-900-light: oklch(0.2219 0.0042 264.48 / 50.2%); /*#1A1B1D80*/
   --neutral-600: oklch(22% 0.004 275); /*#1a1b1d*/
   --black-400: oklch(0.4784 0 0);
   --black-500: oklch(0.2237 0.0024 325.66);
-
+  --custom-gray-100: oklch(0.937 0 0); /*#eaeaea*/
+  --custom-gray-500: oklch(0.8452 0 0); /*#CCCCCC*/
+  --custom-gray-900: oklch(0.1822 0 0); /*121212*/
+  --success-50: oklch(0.9569 0.0271 145.36); /*#E6F6E6*/
   --success-100: oklch(0.9656 0.0363 165.85); /*#DEFCEE*/
   --success-500: oklch(0.4282 0.0846 157.98); /*#1c5d3d*/
 
@@ -149,17 +159,18 @@
   --primary-800: oklch(36% 0.16 356.5);
   --primary-900: oklch(28% 0.12 356.5);
 
-  --red-50: oklch(97% 0.02 29); /* very light tint */
-  --red-100: oklch(0.9538 0.0221 7.18);/*#FEEAED*/
+  --red-50: oklch(0.9487 0.0279 345.89); /* #fde7f2 */
+  --red-100: oklch(0.9538 0.0221 7.18); /*#FEEAED*/
   --red-200: oklch(75% 0.12 29);
   --red-300: oklch(63.74% 0.233 29.43); /* your base #FF3B30 */
-  --red-400: oklch(55% 0.22 29);
-  --red-500: oklch(0.589 0.2254 30.84);/*#e4240a*/
+  --red-400: oklch(0.5803 0.2252 359.96); /*#d91875*/
+  --red-500: oklch(0.589 0.2254 30.84); /*#e4240a*/
   --red-600: oklch(42% 0.18 29);
   --red-700: oklch(35% 0.16 29);
   --red-800: oklch(27% 0.13 29);
   --red-900: oklch(20% 0.1 29); /* deepest shade */
 
+  --shadow-custom-md: 8px 8px 32px 0px oklch(0 0 0 / 10.2%) /*#0000001A*/;
   --shadow-sec:
     0px 0px 0px 1px oklch(35% 0 260 / 8%),
     0px 1px 2px 0px oklch(30% 0 260 / 12%);
@@ -214,6 +225,29 @@
   [role='button']:not(:disabled) {
     cursor: pointer;
   }
+  ::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1); /* very faint */
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  /* For Firefox */
+  * {
+    scrollbar-width: 'thin';
+    scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+  }
 }
 
 @layer utilities {
@@ -226,16 +260,27 @@
   .text-heading-3 {
     @apply text-2xl font-medium font-sans;
   }
+  .text-heading-4 {
+    @apply text-xl font-medium font-sans;
+  }
+  .text-heading-xl {
+    @apply text-[2rem] font-semibold font-sans leading-none;
+  }
   .text-body-large {
     @apply text-lg font-normal leading-relaxed;
   }
   .text-body-medium {
     @apply text-base font-medium font-sans;
   }
+  .text-body-base {
+    @apply text-base font-normal font-sans leading-normal;
+  }
+  .text-body-xs {
+    @apply text-xs font-normal font-sans leading-tight;
+  }
   .text-body-small {
     @apply text-sm font-normal font-sans leading-normal;
   }
-
   .text-body {
     @apply text-sm font-medium font-sans;
   }

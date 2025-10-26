@@ -14,11 +14,12 @@ interface FormInputProps<TFieldValues extends FieldValues = FieldValues>
   extends BaseFieldProps<TFieldValues> {
   type?: 'text' | 'email' | 'password' | 'tel' | 'url';
   variant?: 'default' | 'filled' | 'outlined' | 'ghost';
+  size?: 'sm' | 'md' | 'lg' ;
 }
 export const FormInput = <TFieldValues extends FieldValues>(
   props: FormInputProps<TFieldValues>
 ) => {
-  const { variant = 'default' } = props;
+  const { variant = 'default', type = 'text', size = 'md' } = props;
   return (
     <FormField
       control={props.control}
@@ -28,10 +29,11 @@ export const FormInput = <TFieldValues extends FieldValues>(
           {props.label && <FormLabel>{props.label}</FormLabel>}
           <FormControl>
             <Input
-              type={props.type}
+              type={type}
               placeholder={props.placeholder}
               variant={variant}
               disabled={props.disabled}
+              size={size as any}
               {...field}
             />
           </FormControl>

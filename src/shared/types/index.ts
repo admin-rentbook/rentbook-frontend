@@ -12,3 +12,10 @@ export interface BaseFieldProps<
   disabled?: boolean;
   className?: string;
 }
+
+export interface LocationResult {
+  lat: number;
+  lng: number;
+  address: string;
+  placeId: string;
+}

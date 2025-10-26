@@ -20,8 +20,17 @@ export const Links = {
   PAYMENT: '/payment',
   SETTINGS: '/settings',
   SUPPORT: '/support',
+  CREATE_PROPERTY: '/properties/create',
 } as const;
 export type LinkType = (typeof Links)[keyof typeof Links];
+
+export const PROPERTY_STATUS = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  PENDING: 'PENDING',
+} as const;
+export type PropertyStatusType =
+  (typeof PROPERTY_STATUS)[keyof typeof PROPERTY_STATUS];
 
 export const sidebarItems = [
   {
@@ -70,11 +79,3 @@ export const sidebarItems = [
     link: Links.SUPPORT,
   },
 ] as const;
-
-export const PROPERTY_STATUS = {
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE',
-  PENDING: 'PENDING',
-} as const;
-export type PropertyStatusType =
-  (typeof PROPERTY_STATUS)[keyof typeof PROPERTY_STATUS];

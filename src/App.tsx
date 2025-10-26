@@ -5,7 +5,7 @@ import router from './core/router';
 
 function App() {
   return (
-    <APIProvider apiKey={env.GOOGLE_MAPS_API_KEY}>
+    <APIProvider apiKey={env.GOOGLE_MAPS_API_KEY} libraries={['places']}>
       <RouterProvider router={router} />
     </APIProvider>
   );

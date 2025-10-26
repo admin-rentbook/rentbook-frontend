@@ -4,6 +4,7 @@ import { Property } from '../components';
 import { Links } from '../constants';
 import { Layout } from '../Layout';
 import { Overview } from './overview';
+import { CreatePropertyView } from './create-property';
 
 export const propertyOverviewRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -25,6 +26,11 @@ export const propertiesRoute = createRoute({
   ),
 });
 
+export const createPropertyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: Links.CREATE_PROPERTY,
+  component: () => (<CreatePropertyView/>),
+})
 export const calendarRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: Links.CALENDAR,

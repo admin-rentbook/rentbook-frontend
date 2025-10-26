@@ -17,7 +17,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 const validationSchema = z.object({
   username: z.string().min(2, 'Username must be at least 2 characters'),
-  email: z.string().email('Invalid email address'), // Fixed
+  email: z.email('Invalid email address'), // Fixed
   description: z
     .string()
     .min(10, 'Description must be at least 10 characters')

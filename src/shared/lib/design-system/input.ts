@@ -31,12 +31,13 @@ export const inputVariants = cva(
         ],
       },
       size: {
+        default: 'h-11 md:h-8 px-3 text-sm',
         sm: 'h-8 px-3 text-sm',
         md: 'h-10 px-3 text-sm',
         lg: 'h-11 px-4 text-lg',
       },
       state: {
-        default: 'h-11 md:h-8 px-3 text-sm',
+        // default: 'h-11 md:h-8 px-3 text-sm',
         error:
           'border-red-500 focus:border-red-500 focus:ring-red-500/20 bg-red-50',
         success:
@@ -45,8 +46,8 @@ export const inputVariants = cva(
     },
     defaultVariants: {
       variant: 'default',
-      size: 'md',
-      state: 'default',
+      size: 'default',
+      // state: 'default',
     },
   }
 );

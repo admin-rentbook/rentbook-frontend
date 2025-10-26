@@ -1,2 +1,1 @@
 export * from './CreateProperty';
-export * from './Property';
