@@ -12,14 +12,25 @@ import {
 
 interface FormInputProps<TFieldValues extends FieldValues = FieldValues>
   extends BaseFieldProps<TFieldValues> {
-  type?: 'text' | 'email' | 'password' | 'tel' | 'url';
+  type?: 'text' | 'email' | 'password' | 'tel' | 'url' | 'hidden';
   variant?: 'default' | 'filled' | 'outlined' | 'ghost';
-  size?: 'sm' | 'md' | 'lg' ;
+  size?: 'sm' | 'md' | 'lg';
 }
 export const FormInput = <TFieldValues extends FieldValues>(
   props: FormInputProps<TFieldValues>
 ) => {
   const { variant = 'default', type = 'text', size = 'md' } = props;
+
+  if (type === 'hidden') {
+    return (
+      <FormField
+        control={props.control}
+        name={props.name}
+        render={({ field }) => <input type="hidden" {...field} />}
+      />
+    );
+  }
+
   return (
     <FormField
       control={props.control}

@@ -125,7 +125,7 @@
 
   --custom-neutral-200: oklch(0.9189 0 0);
   --custom-neutral-100: oklch(0.9067 0 0); /*#f4f4f4*/
-  --neutral-200: oklch(0.9255 0.0027 286.35);
+  --neutral-200: oklch(0.9255 0.0027 286.35);/*#e6e6e8*/
   --custom-neutral-500: oklch(0.1543 0 0 / 80%);
   --custom-neutral-900: oklch(0.1591 0 0 / 40%); /*0d0d0d*/
   --custom-neutral-900-light: oklch(0.2219 0.0042 264.48 / 50.2%); /*#1A1B1D80*/

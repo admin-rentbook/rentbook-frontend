@@ -12,7 +12,7 @@ import type { ReactNode } from 'react';
 import { Button } from '../ui';
 
 interface DialogComponentProps {
-  trigger: ReactNode;
+  trigger?: ReactNode;
   title?: string;
   description?: string;
   children: ReactNode;
@@ -26,11 +26,11 @@ interface DialogComponentProps {
 export const DialogComponent = (props: DialogComponentProps) => {
   return (
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>
-      <DialogTrigger asChild>{props.trigger}</DialogTrigger>
+      {props.trigger && <DialogTrigger asChild>{props.trigger}</DialogTrigger>}
 
       <DialogContent className={props.className}>
         {(props.title || props.description) && (
-          <DialogHeader className='hidden'>
+          <DialogHeader className="hidden">
             <DialogTitle className="hidden" aria-describedby={props.title}>
               {props.title}
             </DialogTitle>

@@ -9,7 +9,9 @@ interface UseCurrentLocationReturn {
   location: LocationResult | null;
   handleGetAddress: () => Promise<void>;
   handleCurrentLocation: () => Promise<void>;
+  handleGetCurrentLocation: () => Promise<void>;
   showAddressOption: boolean;
+  selectedLocation: LocationResult | null;
 }
 
 type UseCurrentLocationProps = {
@@ -124,9 +126,77 @@ export function useCurrentLocation({
     []
   );
 
+  const getCurrentDeviceLocation =
+    useCallback(async (): Promise<LocationResult> => {
+      return new Promise((resolve, reject) => {
+        if (!navigator.geolocation) {
+          const errorMsg = 'Geolocation is not supported by your browser';
+          setError(errorMsg);
+          reject(new Error(errorMsg));
+          return;
+        }
+
+        setLoading(true);
+        setError(null);
+
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            try {
+              // Get address for current location
+              const locationData = await getAddressForLocation(lat, lng);
+              setLoading(false);
+              resolve(locationData);
+            } catch (error) {
+              setLoading(false);
+              reject(error);
+            }
+          },
+          (error) => {
+            setLoading(false);
+            let errorMsg = 'Failed to get your location';
+
+            switch (error.code) {
+              case error.PERMISSION_DENIED:
+                errorMsg =
+                  'Location permission denied. Please enable location access.';
+                break;
+              case error.POSITION_UNAVAILABLE:
+                errorMsg = 'Location information unavailable.';
+                break;
+              case error.TIMEOUT:
+                errorMsg = 'Location request timed out.';
+                break;
+            }
+
+            setError(errorMsg);
+            reject(new Error(errorMsg));
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0,
+          }
+        );
+      });
+    }, [getAddressForLocation]);
+
   const [selectedLocation, setSelectedLocation] =
     useState<LocationResult | null>(null);
   const [showAddressOption, setShowAddressOption] = useState(false);
+
+  const handleGetCurrentLocation = async () => {
+    try {
+      const currentLocation = await getCurrentDeviceLocation();
+      setSelectedLocation(currentLocation);
+      setShowAddressOption(false);
+      setIsOpenPopover?.(false);
+    } catch (error) {
+      console.error('Failed to get current location:', error);
+    }
+  };
 
   const handleCurrentLocation = async () => {
     try {
@@ -164,6 +234,8 @@ export function useCurrentLocation({
     location,
     handleGetAddress,
     handleCurrentLocation,
+    handleGetCurrentLocation,
     showAddressOption,
+    selectedLocation,
   };
 }

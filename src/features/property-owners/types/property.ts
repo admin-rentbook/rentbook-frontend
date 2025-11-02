@@ -1,4 +1,10 @@
-import type { PropertyStatusType } from '../constants';
+import type z from 'zod';
+import {
+  createPropertySchema,
+  type listingTypeSchema,
+  type propertyInfoSchema,
+  type PropertyStatusType,
+} from '../constants';
 
 export type PropertyDTO = {
   name: string;
@@ -8,7 +14,6 @@ export type PropertyDTO = {
   status: PropertyStatusType;
 };
 
-export type PropertyInfoData = {
-  propertyName: string;
-  address: string;
-}
+export type PropertyInfoData = z.infer<typeof propertyInfoSchema>;
+export type ListingTypeData = z.infer<typeof listingTypeSchema>;
+export type CreatePropertyData = z.infer<typeof createPropertySchema>;

@@ -7,6 +7,7 @@ interface UseGooglePlacesAutocompleteProps {
   debounceMs?: number;
   minSearchLength?: number;
   setIsOpenPopover?: React.Dispatch<React.SetStateAction<boolean>>;
+  onLocationResult?: (location: LocationResult) => void;
 }
 
 const EMPTY_PREDICTIONS: google.maps.places.AutocompletePrediction[] = [];
@@ -15,7 +16,8 @@ export function useGooglePlacesAutocomplete({
   componentRestrictions,
   debounceMs = 300,
   minSearchLength = 3,
-  setIsOpenPopover
+  setIsOpenPopover,
+  onLocationResult
 }: UseGooglePlacesAutocompleteProps = {}) {
   const [input, setInput] = useState('');
   const [predictions, setPredictions] =
@@ -166,6 +168,7 @@ export function useGooglePlacesAutocomplete({
       const location = await getPlaceDetails(prediction);
       setSelectedLocation(location);
       setInput(location.address);
+      onLocationResult?.(location)
       clearPredictions();
       setIsOpenPopover?.(false);
     } catch (error) {

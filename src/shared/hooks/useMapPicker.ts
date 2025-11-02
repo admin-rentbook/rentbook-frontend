@@ -13,12 +13,12 @@ interface UseMapPickerProps {
     lat: number;
     lng: number;
   };
-  onLocationSelect?: (location: LocationResult) => void;
+  setIsOpenPopover?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function useMapPicker({
   initialLocation,
-  onLocationSelect,
+  setIsOpenPopover,
 }: UseMapPickerProps = {}) {
   const DEFAULT_LOCATION = { lat: -22.5609, lng: 17.0658 }; // Windhoek, Namibia
 
@@ -205,7 +205,7 @@ export function useMapPicker({
                 placeId: results?.[0]?.place_id || '',
               };
 
-              onLocationSelect?.(locationResult);
+              setFullAddress(locationResult);
               resolve(locationResult);
             });
           });
@@ -218,7 +218,6 @@ export function useMapPicker({
             placeId: '',
           };
 
-          onLocationSelect?.(locationResult);
           setFullAddress(locationResult);
           return locationResult;
         }
@@ -230,10 +229,9 @@ export function useMapPicker({
           placeId: '',
         };
 
-        onLocationSelect?.(locationResult);
         return locationResult;
       }
-    }, [selectedPosition, address, onLocationSelect]);
+    }, [selectedPosition, address]);
 
   const handleMarkerDrag = (e: google.maps.MapMouseEvent) => {
     if (e.latLng) {
@@ -248,6 +246,13 @@ export function useMapPicker({
     }
   };
 
+  const handleConfirm = async () => {
+    const location = await confirmLocation();
+    if (location) {
+      setFullAddress(location);
+      setIsOpenPopover?.(false);
+    }
+  };
   // Reset state
   const reset = useCallback(() => {
     setSelectedPosition(initialLocation || DEFAULT_LOCATION);
@@ -267,8 +272,8 @@ export function useMapPicker({
     // Actions
     handlePositionChange,
     handleMapClick,
-    confirmLocation,
     handleMarkerDrag,
+    handleConfirm,
     reset,
   };
 }

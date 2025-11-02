@@ -7,6 +7,7 @@ export * from './drawer';
 export * from './form';
 export * from './input';
 export * from './input-group';
+export * from './label';
 export * from './radio-group';
 export * from './select';
 export * from './separator';

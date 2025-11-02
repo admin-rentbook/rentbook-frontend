@@ -32,6 +32,12 @@ export const PROPERTY_STATUS = {
 export type PropertyStatusType =
   (typeof PROPERTY_STATUS)[keyof typeof PROPERTY_STATUS];
 
+export const LISTING_TYPE = {
+  OWNER: 'OWNER',
+  AGENT: 'AGENT',
+};
+export type ListingTypes = (typeof LISTING_TYPE)[keyof typeof LISTING_TYPE];
+
 export const sidebarItems = [
   {
     icon: Home01Icon,

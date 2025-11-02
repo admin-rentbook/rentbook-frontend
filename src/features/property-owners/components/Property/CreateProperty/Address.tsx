@@ -1,3 +1,4 @@
+import type { PropertyInfoData } from '@/features/property-owners/types/property';
 import {
   Button,
   Input,
@@ -9,38 +10,64 @@ import {
   useGooglePlacesAutocomplete,
 } from '@/shared/hooks';
 import { useMapPicker } from '@/shared/hooks/useMapPicker';
+import type { LocationResult } from '@/shared/types';
 import { GlobalSearchIcon, Location05Icon } from 'hugeicons-react';
 import { Loader2, MapPin } from 'lucide-react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import type { UseFormReturn } from 'react-hook-form';
 import { AddressPredictionsList } from './AddressPredictionList';
+import { useCreatePropertyStore } from '@/features/property-owners/store';
 
-export const Address = () => {
+type AddressProps = {
+  form: UseFormReturn<PropertyInfoData>;
+};
+export const Address = ({ form }: AddressProps) => {
   const [isOpenPopover, setIsOpenPopover] = useState(false);
   const [isOpenMap, setIsOpenMap] = useState(false);
-  const { input, setInput, predictions, loading, handleSelectPrediction } =
-    useGooglePlacesAutocomplete({
-      componentRestrictions: { country: 'na' },
-      setIsOpenPopover,
-    });
 
-  const { loading: locationLoading, handleCurrentLocation } =
-    useCurrentLocation({ setIsOpenPopover });
+  const handleFinalAddress = useCallback(
+    (location: LocationResult) => {
+      form.setValue('address', location.address, { shouldValidate: true });
+      form.setValue('lat', location.lat, { shouldValidate: true });
+      form.setValue('lng', location.lng, { shouldValidate: true });
+      form.setValue('placeId', location?.placeId ?? '', {
+        shouldValidate: true,
+      });
+    },
+    [form]
+  );
+
+  const {
+    input,
+    setInput,
+    predictions,
+    loading,
+    handleSelectPrediction,
+    selectedLocation: autoCompleteLocation,
+  } = useGooglePlacesAutocomplete({
+    componentRestrictions: { country: 'na' },
+    setIsOpenPopover,
+    onLocationResult: handleFinalAddress,
+  });
+
+  const {
+    loading: locationLoading,
+    handleGetCurrentLocation,
+    selectedLocation,
+  } = useCurrentLocation({ setIsOpenPopover });
 
   const {
     selectedPosition,
     handleMapClick,
-    confirmLocation,
     handleMarkerDrag,
     address: mapAddress,
+    fullAddress,
     loading: mapLoading,
-  } = useMapPicker();
+    handleConfirm,
+  } = useMapPicker({ setIsOpenPopover });
 
-  const handleConfirm = async () => {
-    const location = await confirmLocation();
-    if (location) {
-      setIsOpenMap(false);
-    }
-  };
+  const finalLocation = autoCompleteLocation || fullAddress || selectedLocation;
+  const propertyInfo = useCreatePropertyStore((s) => s.propertyInfo);
 
   return (
     <div className="flex flex-col gap-2 pb-10">
@@ -59,7 +86,12 @@ export const Address = () => {
             onClick={() => setIsOpenPopover(true)}
             className="w-full justify-start rounded-10 py-0 text-body text-black-400"
           >
-            <GlobalSearchIcon className="size-6" />
+            <div className="flex gap-3 items-center">
+              <GlobalSearchIcon className="size-6" />
+                <p className="text-body text-black-400">
+                  {finalLocation?.address ?? propertyInfo.address}
+                </p>
+            </div>
           </Button>
         }
         children={
@@ -84,7 +116,7 @@ export const Address = () => {
 
             <button
               className="flex gap-3 items-center transition-colors disabled:opacity-50"
-              onClick={handleCurrentLocation}
+              onClick={handleGetCurrentLocation}
               disabled={locationLoading}
             >
               <div className="flex items-center justify-center size-[50px] bg-success-50 rounded-xl">
