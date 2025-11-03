@@ -1,4 +1,5 @@
-import type { PropertyInfoData } from '@/features/property-owners/types/property';
+import { useCreatePropertyStore } from '@/features/property-owners/store';
+import type { CreatePropertyData } from '@/features/property-owners/types/property';
 import {
   Button,
   Input,
@@ -16,10 +17,9 @@ import { Loader2, MapPin } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 import { AddressPredictionsList } from './AddressPredictionList';
-import { useCreatePropertyStore } from '@/features/property-owners/store';
 
 type AddressProps = {
-  form: UseFormReturn<PropertyInfoData>;
+  form: UseFormReturn<CreatePropertyData>;
 };
 export const Address = ({ form }: AddressProps) => {
   const [isOpenPopover, setIsOpenPopover] = useState(false);
@@ -67,7 +67,7 @@ export const Address = ({ form }: AddressProps) => {
   } = useMapPicker({ setIsOpenPopover });
 
   const finalLocation = autoCompleteLocation || fullAddress || selectedLocation;
-  const propertyInfo = useCreatePropertyStore((s) => s.propertyInfo);
+  const propertyData = useCreatePropertyStore((s) => s.propertyData);
 
   return (
     <div className="flex flex-col gap-2 pb-10">
@@ -88,9 +88,9 @@ export const Address = ({ form }: AddressProps) => {
           >
             <div className="flex gap-3 items-center">
               <GlobalSearchIcon className="size-6" />
-                <p className="text-body text-black-400">
-                  {finalLocation?.address ?? propertyInfo.address}
-                </p>
+              <p className="text-body text-black-400">
+                {finalLocation?.address ?? propertyData.address}
+              </p>
             </div>
           </Button>
         }

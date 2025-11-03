@@ -17,3 +17,10 @@ export type PropertyDTO = {
 export type PropertyInfoData = z.infer<typeof propertyInfoSchema>;
 export type ListingTypeData = z.infer<typeof listingTypeSchema>;
 export type CreatePropertyData = z.infer<typeof createPropertySchema>;
+export type PropertyDataDTO = PropertyInfoData & {
+  listingType: string;
+  ownerName?: string;
+  ownerEmail?: string;
+  ownerPhone?: string;
+  agentCommission?: number;
+};

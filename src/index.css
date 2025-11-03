@@ -125,7 +125,7 @@
 
   --custom-neutral-200: oklch(0.9189 0 0);
   --custom-neutral-100: oklch(0.9067 0 0); /*#f4f4f4*/
-  --neutral-200: oklch(0.9255 0.0027 286.35);/*#e6e6e8*/
+  --neutral-200: oklch(0.9255 0.0027 286.35); /*#e6e6e8*/
   --custom-neutral-500: oklch(0.1543 0 0 / 80%);
   --custom-neutral-900: oklch(0.1591 0 0 / 40%); /*0d0d0d*/
   --custom-neutral-900-light: oklch(0.2219 0.0042 264.48 / 50.2%); /*#1A1B1D80*/
@@ -225,28 +225,30 @@
   [role='button']:not(:disabled) {
     cursor: pointer;
   }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.gray.300') transparent;
+  }
+
+  /* Scrollbar - Webkit */
   ::-webkit-scrollbar {
-    width: 2px;
-    height: 2px;
+    @apply w-0.5 h-2;
   }
 
   ::-webkit-scrollbar-track {
-    background: transparent;
+    @apply bg-transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.1); /* very faint */
-    border-radius: 5px;
+    @apply bg-gray-300 rounded;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(0, 0, 0, 0.2);
+    @apply bg-gray-900;
   }
 
-  /* For Firefox */
-  * {
-    scrollbar-width: 'thin';
-    scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+  ::-webkit-scrollbar-corner {
+    @apply bg-transparent;
   }
 }
 
