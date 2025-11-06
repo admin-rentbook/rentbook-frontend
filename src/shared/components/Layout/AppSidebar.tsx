@@ -14,11 +14,16 @@ import {
   useSidebar,
 } from '@/shared/components/ui/sidebar';
 import { UserMenu } from '@/shared/components/UserMenu';
+import type { SidebarItem } from '@/shared/types';
 import { Link } from '@tanstack/react-router';
 import { SidebarLeftIcon } from 'hugeicons-react';
-import { sidebarItems } from '../constants';
+import { SpecialCompRender } from './SearchbarRender';
 
-export const AppSidebar = () => {
+type AppSidebarProps = {
+  sidebarItems: SidebarItem[];
+};
+
+export const AppSidebar = (props: AppSidebarProps) => {
   const { toggleSidebar, open } = useSidebar();
 
   return (
@@ -55,23 +60,28 @@ export const AppSidebar = () => {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className="gap-2">
-              {sidebarItems.slice(0, 4).map((item) => (
-                <SidebarMenuItem key={item.name}>
-                  <SidebarMenuButton asChild tooltip={item.name}>
-                    <Link
-                      key={item.name}
-                      to={item.link}
-                      className="flex py-1 items-center gap-[10px] px-[6px] rounded-lg transition-colors text-black-400 hover:text-black-500 hover:bg-muted"
-                      activeProps={{
-                        className: 'bg-muted text-black-500 font-medium',
-                      }}
-                    >
-                      <item.icon className="size-4" />
-                      <p className="text-body">{item.name}</p>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {props.sidebarItems.slice(0, 4).map((item) => {
+                if (item.name?.toLowerCase() === 'search') {
+                  return <SpecialCompRender item={item} open={open} />;
+                }
+                return (
+                  <SidebarMenuItem key={item.name}>
+                    <SidebarMenuButton asChild tooltip={item.name}>
+                      <Link
+                        key={item.name}
+                        to={item.link}
+                        className="flex py-1 items-center gap-[10px] px-[6px] rounded-lg transition-colors text-black-400 hover:text-black-500 hover:bg-muted"
+                        activeProps={{
+                          className: 'bg-muted text-black-500 font-medium',
+                        }}
+                      >
+                        <item.icon className="size-4" />
+                        <p className="text-body">{item.name}</p>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -79,7 +89,7 @@ export const AppSidebar = () => {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className="gap-2">
-              {sidebarItems.slice(4, 7).map((item) => (
+              {props.sidebarItems.slice(4, 7).map((item) => (
                 <SidebarMenuItem key={item.name}>
                   <SidebarMenuButton asChild tooltip={item.name}>
                     <Link
@@ -104,7 +114,7 @@ export const AppSidebar = () => {
       <SidebarFooter>
         <SidebarGroup>
           <SidebarMenu className="gap-2">
-            {sidebarItems.slice(7).map((item) => (
+            {props.sidebarItems.slice(7).map((item) => (
               <SidebarMenuItem key={item.name}>
                 <SidebarMenuButton asChild tooltip={item.name}>
                   <Link

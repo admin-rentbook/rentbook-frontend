@@ -1,3 +1,4 @@
+import { cn } from '@/shared/lib/utils';
 import { Search01Icon } from 'hugeicons-react';
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
@@ -13,6 +14,9 @@ type SearchBoxProps = {
   setInputValue: (value: string) => void;
   name: string;
   debounceValue?: number;
+  addon?: React.ReactNode;
+  className?: string;
+  containerClassName?: string;
 };
 export const SearchBox = (props: SearchBoxProps) => {
   const { debounceValue = 500 } = props;
@@ -35,17 +39,29 @@ export const SearchBox = (props: SearchBoxProps) => {
     setLocalValue(props.inputValue);
   }, [props.inputValue]);
   return (
-    <InputGroup className="bg-primary-foreground border-none rounded-xl ">
+    <InputGroup
+      className={cn(
+        'bg-primary-foreground border-none rounded-xl',
+        props.containerClassName
+      )}
+    >
       <InputGroupInput
         placeholder={props.placeholder}
         value={localValue}
         name={props.name}
         onChange={(e) => handleChange(e)}
-        className='placeholder:text-black-400 bg-primary-foreground rounded-xl'
+        className={cn(
+          'placeholder:text-black-400 bg-primary-foreground rounded-xl',
+          props.className
+        )}
       />
-      <InputGroupAddon>
-        <Search01Icon className="size-4 text-black-400" />
-      </InputGroupAddon>
+      {props.addon ? (
+        props.addon
+      ) : (
+        <InputGroupAddon>
+          <Search01Icon className="size-4 text-black-400" />
+        </InputGroupAddon>
+      )}
     </InputGroup>
   );
 };

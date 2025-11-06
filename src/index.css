@@ -44,6 +44,7 @@
 
   /* my colors */
   --color-neutral-200: var(--neutral-200);
+  --color-custom-neutral-50: var(--custom-neutral-50);
   --color-custom-neutral-200: var(--custom-neutral-200);
   --color-custom-neutral-100: var(--custom-neutral-100);
   --color-custom-neutral-500: var(--color-custom-neutral-500);
@@ -123,6 +124,7 @@
 
   /* my colors */
 
+  --custom-neutral-50: oklch(0.9551 0 0); /*#f0f0f0*/
   --custom-neutral-200: oklch(0.9189 0 0);
   --custom-neutral-100: oklch(0.9067 0 0); /*#f4f4f4*/
   --neutral-200: oklch(0.9255 0.0027 286.35); /*#e6e6e8*/
@@ -143,7 +145,7 @@
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent: oklch(0.97 0 0); /*#f8f8f8*/
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
@@ -265,8 +267,14 @@
   .text-heading-4 {
     @apply text-xl font-medium font-sans;
   }
+  .text-heading-xl-semi {
+    @apply text-xl font-semibold font-sans;
+  }
   .text-heading-xl {
-    @apply text-[2rem] font-semibold font-sans leading-none;
+    @apply text-2xl lg:text-[2rem]  font-semibold font-sans leading-tight;
+  }
+  .text-heading-xl-medium {
+    @apply text-xl font-semibold font-sans;
   }
   .text-body-large {
     @apply text-lg font-normal leading-relaxed;
@@ -279,6 +287,9 @@
   }
   .text-body-xs {
     @apply text-xs font-normal font-sans leading-tight;
+  }
+  .text-body-sm-semi {
+    @apply text-sm font-semibold font-sans leading-normal;
   }
   .text-body-small {
     @apply text-sm font-normal font-sans leading-normal;

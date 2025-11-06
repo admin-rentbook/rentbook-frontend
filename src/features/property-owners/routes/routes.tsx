@@ -2,15 +2,16 @@ import { rootRoute } from '@/core/router/rootRoute';
 import { createRoute } from '@tanstack/react-router';
 import { Property } from '../components';
 import { Links } from '../constants';
-import { Layout } from '../Layout';
 import { Overview } from './overview';
 import { CreatePropertyView } from './create-property';
+import { Layout } from '@/shared/components/Layout';
+import {sidebarItems} from '../constants'
 
 export const propertyOverviewRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: Links.OVERVIEW,
   component: () => (
-    <Layout>
+    <Layout sidebarItems={sidebarItems}>
       <Overview />
     </Layout>
   ),
@@ -20,7 +21,7 @@ export const propertiesRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: Links.PROPERTIES,
   component: () => (
-    <Layout>
+    <Layout sidebarItems={sidebarItems}>
       <Property />
     </Layout>
   ),

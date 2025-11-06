@@ -137,7 +137,7 @@ function InputGroupInput({
         'flex-1 text-body-small rounded-none bg-transparent',
         'border-0 shadow-none',
         'outline-none ring-0',
-        'h-11 md:h-8 px-3 text-sm',
+        'px-3 text-sm',
         'focus:outline-none focus:ring-0 focus:border-0 focus:shadow-none',
         'focus-visible:outline-none focus-visible:ring-0 focus-visible:border-0 focus-visible:shadow-none',
         'dark:bg-transparent',

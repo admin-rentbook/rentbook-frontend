@@ -1,9 +1,11 @@
-import { Hero } from './Hero';
+import { Header } from './Header';
+import { Listings } from './Listings';
 
 export const LandingPage = () => {
   return (
-    <div className="h-screen px-5 flex flex-col items-center py-5 gap-3">
-      <Hero />
+    <div className="h-screen px-8 flex flex-col py-5 gap-6">
+      <Header />
+      <Listings/>
     </div>
   );
 };

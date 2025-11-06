@@ -1,3 +1,4 @@
+import type { HugeiconsProps } from 'hugeicons-react';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 
 export interface BaseFieldProps<
@@ -18,4 +19,25 @@ export interface LocationResult {
   lng: number;
   address: string;
   placeId: string;
+}
+export type SidebarItem = {
+  icon: React.FC<
+    Omit<HugeiconsProps, 'ref'> & React.RefAttributes<SVGSVGElement>
+  >;
+  name?: string;
+  link?: string;
+};
+
+type Amenity = {
+  icon: React.ComponentType<{ className?: string }>;
+  count: number;
+  label: string;
+};
+
+export type PropertyDTO = {
+  images: string[];
+  propertyName: string;
+  location: string;
+  amenities: Amenity[];
+  amount: number;
 }

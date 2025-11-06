@@ -84,4 +84,4 @@ export const sidebarItems = [
     name: 'Help',
     link: Links.SUPPORT,
   },
-] as const;
+] 

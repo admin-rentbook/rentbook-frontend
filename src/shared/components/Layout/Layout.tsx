@@ -1,10 +1,27 @@
-import { Navbar } from './Navbar';
+import type { SidebarItem } from '@/shared/types';
+import { AppSidebar } from './AppSidebar';
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from '@/shared/components/ui/sidebar';
 
-export const Layout = ({ children }: { children: React.ReactNode }) => {
+type LayoutProps = {
+  children: React.ReactNode;
+  sidebarItems: SidebarItem[]
+}
+
+export const Layout = (props: LayoutProps) => {
   return (
-    <div className='flex flex-col gap-4'>
-      <Navbar />
-      <main className='px-4' >{children}</main>
-    </div>
+    <SidebarProvider>
+      <AppSidebar sidebarItems={props.sidebarItems} />
+      <SidebarInset className="flex flex-row relative">
+        <div className="absolute top-6 left-0 z-50 lg:hidden">
+          <SidebarTrigger variant="icon" />
+        </div>
+
+        <main className="flex flex-1 flex-col">{props.children}</main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 };
