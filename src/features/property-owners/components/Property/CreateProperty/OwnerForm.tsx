@@ -16,18 +16,21 @@ export const OwnerForm = ({ form }: OwnerFormProps) => {
         name="ownerName"
         label="Name of property owner"
         size="md"
+        showErrorMessage
       />
       <FormInput
         control={form.control}
         name="ownerEmail"
         label="Email address"
         size="md"
+        showErrorMessage
       />
       <FormInput
         control={form.control}
         name="ownerPhone"
         label="Phone number"
         size="md"
+        showErrorMessage
       />
       <p className="text-body-small text-black-400">
         An email will be sent to the property owner to confirm this listing

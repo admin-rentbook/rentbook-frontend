@@ -19,7 +19,12 @@ interface FormInputProps<TFieldValues extends FieldValues = FieldValues>
 export const FormInput = <TFieldValues extends FieldValues>(
   props: FormInputProps<TFieldValues>
 ) => {
-  const { variant = 'default', type = 'text', size = 'md' } = props;
+  const {
+    variant = 'default',
+    type = 'text',
+    size = 'md',
+    ...inputProps
+  } = props;
 
   if (type === 'hidden') {
     return (
@@ -46,12 +51,13 @@ export const FormInput = <TFieldValues extends FieldValues>(
               disabled={props.disabled}
               size={size as any}
               {...field}
+              {...inputProps}
             />
           </FormControl>
           {props.description && (
             <FormDescription>{props.description}</FormDescription>
           )}
-          <FormMessage />
+          {props.showErrorMessage && <FormMessage />}
         </FormItem>
       )}
     />

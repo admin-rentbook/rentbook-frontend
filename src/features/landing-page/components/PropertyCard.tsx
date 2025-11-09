@@ -6,11 +6,10 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-  type CarouselApi,
 } from '@/shared/components';
+import { useCarouselHook } from '@/shared/hooks';
 import type { PropertyDTO } from '@/shared/types';
 import { formatNamibianDollar } from '@/shared/utils';
-import { useEffect, useState } from 'react';
 
 type PropertyCardProps = {
   property: PropertyDTO;
@@ -18,19 +17,10 @@ type PropertyCardProps = {
 };
 
 export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
+  const { currentIndex, isHovered, setApi, api, setIsHovered } =
+    useCarouselHook();
+
   const { symbol, amount } = formatNamibianDollar(property.amount);
-
-  const [api, setApi] = useState<CarouselApi>();
-
-  useEffect(() => {
-    if (!api) return;
-
-    api.on('select', () => {
-      setCurrentIndex(api.selectedScrollSnap());
-    });
-  }, [api]);
 
   return (
     <Card

@@ -1,9 +1,11 @@
 import type { HugeiconsProps } from 'hugeicons-react';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 
-export interface BaseFieldProps<
-  TFieldValues extends FieldValues = FieldValues,
-> {
+export interface BaseFieldProps<TFieldValues extends FieldValues = FieldValues>
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    'name' | 'defaultValue' | 'defaultChecked' | 'size'
+  > {
   name: FieldPath<TFieldValues>;
   control: Control<TFieldValues>;
   label?: string;
@@ -12,6 +14,7 @@ export interface BaseFieldProps<
   required?: boolean;
   disabled?: boolean;
   className?: string;
+  showErrorMessage?: boolean;
 }
 
 export interface LocationResult {
@@ -40,4 +43,4 @@ export type PropertyDTO = {
   location: string;
   amenities: Amenity[];
   amount: number;
-}
+};

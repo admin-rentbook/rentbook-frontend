@@ -26,6 +26,7 @@ export const PropertyCreateInfo = ({ form }: PropertyCreateInfoProps) => {
                 name="propertyName"
                 label="Property name"
                 size="lg"
+                showErrorMessage
               />
             </div>
           </div>

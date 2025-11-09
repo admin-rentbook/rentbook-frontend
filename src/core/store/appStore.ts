@@ -4,7 +4,9 @@ import { create } from 'zustand';
 
 type AppStore = {
   userType: UserType | null;
-  setUserType: (userType: UserType) => void
+  setUserType: (userType: UserType) => void;
+  isOpenAuth: boolean;
+  onOpenAuth: (open: boolean) => void;
 };
 
 export const useAppStore = create<AppStore>((set) => ({
@@ -14,4 +16,6 @@ export const useAppStore = create<AppStore>((set) => ({
       userType: userType,
     });
   },
+  isOpenAuth: false,
+  onOpenAuth: (open) => set({ isOpenAuth: open }),
 }));

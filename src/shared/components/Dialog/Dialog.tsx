@@ -28,7 +28,10 @@ export const DialogComponent = (props: DialogComponentProps) => {
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>
       {props.trigger && <DialogTrigger asChild>{props.trigger}</DialogTrigger>}
 
-      <DialogContent className={props.className}>
+      <DialogContent
+        className={props.className}
+        showCloseButton={props.showCloseButton}
+      >
         {(props.title || props.description) && (
           <DialogHeader className="hidden">
             <DialogTitle className="hidden" aria-describedby={props.title}>
@@ -42,7 +45,7 @@ export const DialogComponent = (props: DialogComponentProps) => {
 
         {props.children}
 
-        {(props.footer || props.showCloseButton) && (
+        {props.footer && (
           <DialogFooter>
             {props.footer || (
               <DialogClose asChild>

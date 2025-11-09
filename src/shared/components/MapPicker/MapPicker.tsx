@@ -24,6 +24,7 @@ export const MapPicker = (props: MapPickerProps) => {
       title="open-map"
       open={props.open}
       onOpenChange={props.onOpenChange}
+      showCloseButton
       trigger={
         <div className="flex gap-3 items-center hover:cursor-pointer">
           <div

@@ -12,7 +12,7 @@ export const buttonVariants = cva(
         'primary-ghost':
           'text-primary-500 hover:bg-primary-50 active:bg-primary-100',
         'primary-soft':
-          'bg-primary-100 text-primary-700 hover:bg-primary-200 active:bg-primary-300',
+          'bg-primary-100 text-primary-500 hover:bg-primary-100 active:bg-primary-300',
         secondary:
           'bg-white text-neutral-600 shadow-sec hover:bg-secondary-600 active:bg-secondary-700',
         'secondary-outline':
@@ -56,10 +56,10 @@ export const buttonVariants = cva(
       },
       size: {
         xs: 'h-7 px-2 text-xs',
-        sm: 'h-11 md:h-8 px-3 text-sm',
-        md: 'h-11 md:h-9 px-3 text-sm',
-        default: 'h-11 md:h-8 text-sm px-3 py-4',
-        lg: 'h-11 px-3 py-6',
+        sm: 'h-10 md:h-8 px-3 text-sm',
+        md: 'h-10 md:h-9 px-3 text-sm',
+        default: 'h-10 md:h-8 text-sm px-3 py-4',
+        lg: 'h-10 px-3 py-6',
         xl: 'h-12 px-10 text-base',
       },
     },
