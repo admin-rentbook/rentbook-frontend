@@ -1,3 +1,4 @@
+import { useAppStore } from '@/core/store';
 import {
   Button,
   DropdownMenu,
@@ -11,6 +12,7 @@ import { Menu01Icon } from 'hugeicons-react';
 import { menuItems } from '../constants';
 
 export const Menu = () => {
+  const onOpenAuth = useAppStore((s) => s.onOpenAuth);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,7 +31,9 @@ export const Menu = () => {
               <h5 className="text-body-sm-semi text-black-500">
                 Unlock access and rewards
               </h5>
-              <Button className="w-full">Log in or Sign up</Button>
+              <Button className="w-full" onClick={() => onOpenAuth(true)}>
+                Log in or Sign up
+              </Button>
             </div>
           </DropdownMenuItem>
         </DropdownMenuGroup>

@@ -2,6 +2,7 @@ import { landingPageRoute } from '@/features/landing-page';
 import {
   calendarRoute,
   createPropertyRoute,
+  getStartedRoute,
   leasesRoute,
   messagesRoute,
   notificationRoute,
@@ -26,6 +27,7 @@ const routeTree = rootRoute.addChildren([
   notificationRoute,
   settingsRoute,
   createPropertyRoute,
+  getStartedRoute,
 ]); //this will be updated properly by putting them in their correct features
 const router = createRouter({ routeTree });
 

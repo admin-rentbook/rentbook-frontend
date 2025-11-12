@@ -1,11 +1,17 @@
 import { rootRoute } from '@/core/router/rootRoute';
+import { Layout } from '@/shared/components/Layout';
 import { createRoute } from '@tanstack/react-router';
 import { Property } from '../components';
-import { Links } from '../constants';
-import { Overview } from './overview';
+import { Links, sidebarItems } from '../constants';
 import { CreatePropertyView } from './create-property';
-import { Layout } from '@/shared/components/Layout';
-import {sidebarItems} from '../constants'
+import { GetStartedView } from './get-started';
+import { Overview } from './overview';
+
+export const getStartedRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: Links.LISTING_GET_STARTED,
+  component: () => <GetStartedView />,
+});
 
 export const propertyOverviewRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -30,8 +36,8 @@ export const propertiesRoute = createRoute({
 export const createPropertyRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: Links.CREATE_PROPERTY,
-  component: () => (<CreatePropertyView/>),
-})
+  component: () => <CreatePropertyView />,
+});
 export const calendarRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: Links.CALENDAR,
