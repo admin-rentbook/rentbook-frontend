@@ -18,11 +18,6 @@ export const Header = () => {
             </p>
           </div>
           <Menu />
-          {/* <Avatar className="size-[50px] bg-black">
-            <AvatarFallback className="bg-black">
-              <p className="text-heading-xl-medium text-white">R</p>
-            </AvatarFallback>
-          </Avatar> */}
         </div>
       </div>
 

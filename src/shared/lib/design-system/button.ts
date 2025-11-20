@@ -12,7 +12,7 @@ export const buttonVariants = cva(
         'primary-ghost':
           'text-primary-500 hover:bg-primary-50 active:bg-primary-100',
         'primary-soft':
-          'bg-primary-100 text-primary-500 hover:bg-primary-100 active:bg-primary-300',
+          'bg-primary-100 text-primary-500 hover:bg-primary-100',
         secondary:
           'bg-white text-neutral-600 shadow-sec hover:bg-secondary-600 active:bg-secondary-700',
         'secondary-outline':
@@ -45,7 +45,7 @@ export const buttonVariants = cva(
           'text-danger-600 hover:bg-danger-50 active:bg-danger-100',
 
         // Utility variants
-        default: 'bg-background hover:bg-accent hover:text-accent-foreground',
+        default: 'bg-background hover:bg-accent text-neutral-600',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline:
@@ -58,7 +58,7 @@ export const buttonVariants = cva(
         xs: 'h-7 px-2 text-xs',
         sm: 'h-10 md:h-8 px-3 text-sm',
         md: 'h-10 md:h-9 px-3 text-sm',
-        default: 'h-10 md:h-8 text-sm px-3 py-4',
+        default: 'h-11  text-sm px-3 py-4',
         lg: 'h-10 px-3 py-6',
         xl: 'h-12 px-10 text-base',
       },

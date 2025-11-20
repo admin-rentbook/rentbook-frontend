@@ -1,11 +1,13 @@
 import { Auth } from '@/features/auth';
 import { AuthStoreProvider } from '@/features/auth/providers';
+import { GetStartedModal } from './GetStartedModal';
 import { Header } from './Header';
 import { Listings } from './Listings';
 
 export const LandingPage = () => {
   return (
     <>
+      <GetStartedModal />
       <AuthStoreProvider>
         <Auth />
       </AuthStoreProvider>

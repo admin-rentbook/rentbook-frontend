@@ -2,7 +2,12 @@
 
 const storagePrefix = 'rentbook_web_app__';
 
-export type KeyType = 'token' | 'userType' | 'CREATE_PROPERTY' | 'verify-timer';
+export type KeyType =
+  | 'auth_user'
+  | 'userType'
+  | 'CREATE_PROPERTY'
+  | 'verify-timer'
+  | 'email';
 
 const DEFAULT_EXPIRY_DURATION = 12 * 30 * 24 * 60 * 60 * 1000; //1 year
 

@@ -3,7 +3,8 @@ import { Form, FormInput } from '@/shared/components/Form';
 import { useVerifyEmail } from '../hooks';
 
 export const VerifyEmail = () => {
-  const { form, isButtonDisabled, onSubmit, timeLeft } = useVerifyEmail();
+  const { form, isButtonDisabled, onSubmit, timeLeft, isLoading } =
+    useVerifyEmail();
   const email = 'name@gmail.com';
   return (
     <>
@@ -19,14 +20,13 @@ export const VerifyEmail = () => {
           <div className="pt-3 flex flex-col gap-2">
             <FormInput
               control={form.control}
-              name="verificationCode"
+              name="otp"
               label="Verification code"
-              size="sm"
               showErrorMessage
             />
             <p className="text-body-small text-custom-neutral-900-light">{`Resend: ${timeLeft}`}</p>
           </div>
-          <Button disabled={isButtonDisabled} size="lg">
+          <Button disabled={isButtonDisabled} size="lg" isLoading={isLoading}>
             Continue
           </Button>
         </div>

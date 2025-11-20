@@ -22,7 +22,7 @@ export const FormInput = <TFieldValues extends FieldValues>(
   const {
     variant = 'default',
     type = 'text',
-    size = 'md',
+    size = 'default',
     ...inputProps
   } = props;
 

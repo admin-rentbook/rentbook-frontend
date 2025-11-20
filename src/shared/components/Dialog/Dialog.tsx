@@ -22,6 +22,7 @@ interface DialogComponentProps {
   className?: string;
   showCloseButton?: boolean;
   closeButtonText?: string;
+  style?: React.CSSProperties | undefined
 }
 export const DialogComponent = (props: DialogComponentProps) => {
   return (
@@ -31,6 +32,7 @@ export const DialogComponent = (props: DialogComponentProps) => {
       <DialogContent
         className={props.className}
         showCloseButton={props.showCloseButton}
+        style={props.style}
       >
         {(props.title || props.description) && (
           <DialogHeader className="hidden">

@@ -35,7 +35,7 @@ export const landingPageSidebarItems = [
 export const propertyCards: PropertyDTO[] = [
   {
     propertyName: 'The Palm Residence',
-    location: 'Lekki Phase 1, Lagos',
+    location: 'Windhoek, Khomas Region',
     images: [propertyImage, propertyImage, propertyImage],
     amenities: [
       { icon: BedSingle02Icon, count: 3, label: 'Bedrooms' },
@@ -46,7 +46,7 @@ export const propertyCards: PropertyDTO[] = [
   },
   {
     propertyName: 'Skyline Apartments',
-    location: 'Victoria Island, Lagos',
+    location: 'Swakopmund, Erongo Region',
     images: [propertyImage, propertyImage, propertyImage],
     amenities: [
       { icon: BedSingle02Icon, count: 3, label: 'Bedrooms' },
@@ -57,7 +57,7 @@ export const propertyCards: PropertyDTO[] = [
   },
   {
     propertyName: 'Greenview Estate',
-    location: 'Abuja, Nigeria',
+    location: 'Walvis Bay, Erongo Region',
     images: [propertyImage, propertyImage, propertyImage],
     amenities: [
       { icon: BedSingle02Icon, count: 3, label: 'Bedrooms' },
@@ -68,7 +68,7 @@ export const propertyCards: PropertyDTO[] = [
   },
   {
     propertyName: 'The Residence',
-    location: 'Lekki Phase 1, Lagos',
+    location: 'Windhoek, Khomas Region',
     images: [propertyImage, propertyImage, propertyImage],
     amenities: [
       { icon: BedSingle02Icon, count: 3, label: 'Bedrooms' },
@@ -78,8 +78,8 @@ export const propertyCards: PropertyDTO[] = [
     amount: 20000,
   },
   {
-    propertyName: 'Peach brach Apartments',
-    location: 'Victoria Island, Lagos',
+    propertyName: 'Peach Beach Apartments',
+    location: 'Swakopmund, Erongo Region',
     images: [propertyImage, propertyImage, propertyImage],
     amenities: [
       { icon: BedSingle02Icon, count: 3, label: 'Bedrooms' },
@@ -89,8 +89,30 @@ export const propertyCards: PropertyDTO[] = [
     amount: 24000,
   },
   {
-    propertyName: 'Skye view Estate',
-    location: 'Abuja, Nigeria',
+    propertyName: 'Hilltop View Estate',
+    location: 'Otjiwarongo, Otjozondjupa Region',
+    images: [propertyImage, propertyImage, propertyImage],
+    amenities: [
+      { icon: BedSingle02Icon, count: 3, label: 'Bedrooms' },
+      { icon: Bathtub01Icon, count: 2, label: 'Bathrooms' },
+      { icon: DashedLine02Icon, count: 1, label: 'Garage' },
+    ],
+    amount: 10000,
+  },
+  {
+    propertyName: 'Skye View Estate',
+    location: 'Rundu, Kavango East',
+    images: [propertyImage, propertyImage, propertyImage],
+    amenities: [
+      { icon: BedSingle02Icon, count: 3, label: 'Bedrooms' },
+      { icon: Bathtub01Icon, count: 2, label: 'Bathrooms' },
+      { icon: DashedLine02Icon, count: 1, label: 'Garage' },
+    ],
+    amount: 10000,
+  },
+  {
+    propertyName: 'Skye View Estate',
+    location: 'Keetmanshoop, ǁKaras Region',
     images: [propertyImage, propertyImage, propertyImage],
     amenities: [
       { icon: BedSingle02Icon, count: 3, label: 'Bedrooms' },

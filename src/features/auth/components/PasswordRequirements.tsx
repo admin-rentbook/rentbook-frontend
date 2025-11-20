@@ -35,6 +35,11 @@ export const PasswordRequirements: React.FC<PasswordRequirementsProps> = ({
       test: (pwd) => pwd.length >= 8,
       met: password.length >= 8,
     },
+    {
+      label: '1 special character',
+      test: (pwd) => /[^a-zA-Z0-9]/.test(pwd),
+      met: /[^a-zA-Z0-9]/.test(password),
+    },
   ];
 
   if (!isVisible) {

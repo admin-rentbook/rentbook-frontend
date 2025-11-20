@@ -31,7 +31,7 @@ export const inputVariants = cva(
         ],
       },
       size: {
-        default: 'h-11 md:h-8 px-3 text-sm',
+        default: 'h-11  px-3 text-sm',
         sm: 'h-8 px-3 text-sm',
         md: 'h-10 px-3 text-sm',
         lg: 'h-11 px-4 text-lg',

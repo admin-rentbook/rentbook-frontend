@@ -12,6 +12,7 @@ export const SignupForm = () => {
     handlePasswordBlur,
     handlePasswordFocus,
     isPasswordFocused,
+    isLoading
   } = useSignup();
   return (
     <div className="flex flex-col gap-10">
@@ -21,15 +22,19 @@ export const SignupForm = () => {
             control={form.control}
             name="email"
             label="Email"
-            size="sm"
             showErrorMessage
             description={`We'll send you a link to verify your email`}
           />
           <FormInput
             control={form.control}
-            name="fullName"
-            label="Full name"
-            size="sm"
+            name="firstName"
+            label="First name"
+            showErrorMessage
+          />
+          <FormInput
+            control={form.control}
+            name="lastName"
+            label="Last name"
             showErrorMessage
           />
           <div className="flex flex-col gap-4">
@@ -37,9 +42,9 @@ export const SignupForm = () => {
               control={form.control}
               name="password"
               label="Password"
-              size="sm"
               onFocus={handlePasswordFocus}
               onBlur={handlePasswordBlur}
+              type="password"
             />
             <PasswordRequirements
               password={form.watch('password')}
@@ -51,6 +56,7 @@ export const SignupForm = () => {
             size="lg"
             onClick={form.handleSubmit(onSubmit)}
             disabled={isButtonDisabled}
+            isLoading={isLoading}
           >
             Create account
           </Button>

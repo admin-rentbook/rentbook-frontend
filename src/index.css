@@ -53,6 +53,7 @@
   --color-custom-neutral-900: var(--custom-neutral-900);
   --color-custom-neutral-900-light: var(--custom-neutral-900-light);
 
+  --color-custom-gray: var(--custom-gray);
   --color-gray-50: oklch(0.9491 0 0);
   --color-custom-gray-100: var(--custom-gray-100);
   --color-custom-gray-400: var(--custom-gray-400);
@@ -89,7 +90,7 @@
   --color-warning-500: var(--warning-500);
   --color-warning-600: var(--warning-600);
 
-  --color-custom-blue-400:var(--custom-blue-400);
+  --color-custom-blue-400: var(--custom-blue-400);
 
   --color-icons-black: var(--icons-black);
 
@@ -152,6 +153,7 @@
   --black-400: oklch(0.4784 0 0);
   --black-500: oklch(0.2237 0.0024 325.66);
 
+  --custom-gray: oklch(0.9613 0.007 88.64); /*#F4F2ED*/
   --custom-gray-100: oklch(0.937 0 0); /*#eaeaea*/
   --custom-gray-400: oklch(0.8141 0 0); /*#c2c2c2*/
   --custom-gray-300: oklch(0.8853 0 0); /*d9d9d9*/
@@ -295,8 +297,11 @@
   .text-heading-3 {
     @apply text-2xl font-medium font-sans;
   }
+  .text-heading-3-semibold {
+    @apply text-2xl font-semibold font-sans;
+  }
   .text-heading-4 {
-    @apply text-xl font-medium font-sans;
+    @apply text-xl font-medium font-sans; /*20px*/
   }
   .text-heading {
     @apply text-[2rem] font-semibold font-sans;
@@ -307,7 +312,7 @@
   .text-heading-xl {
     @apply text-2xl xl:text-[2rem]  font-semibold font-sans leading-tight;
   }
-  .text-heading-xl-medium {
+  .text-heading-xl-semibold {
     @apply text-xl font-semibold font-sans;
   }
   .text-body-large {
