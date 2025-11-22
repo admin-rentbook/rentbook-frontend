@@ -35,7 +35,7 @@ export const LoginForm = () => {
               variant="primary-soft"
               type="button"
               className="font-normal"
-              onClick={() => handleForgotPassword()}
+              onClick={handleForgotPassword}
             >
               Forgot password?
             </Button>
@@ -54,7 +54,7 @@ export const LoginForm = () => {
           variant="tertiary"
           size="lg"
           onClick={() => (window.location.href = googleAuthUrl)}
-          type='button'
+          type="button"
           isLoading={isGoogleAuthLoading}
         >
           <GoogleIcon className="size-5" />

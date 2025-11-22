@@ -1,4 +1,3 @@
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider } from '@tanstack/react-router';
@@ -25,17 +24,15 @@ function App() {
   const handleQueryClient = queryClient;
   return (
     <APIProvider apiKey={env.GOOGLE_MAPS_API_KEY} libraries={['places']}>
-      <GoogleOAuthProvider clientId={env.GOOGLE_AUTH_API_KEY}>
-        <QueryClientProvider client={handleQueryClient}>
-          <ReactQueryDevtools initialIsOpen={false} />
-          {showDevtools && (
-            <Suspense fallback={null}>
-              <ReactQueryDevtoolsProduction />
-            </Suspense>
-          )}
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </GoogleOAuthProvider>
+      <QueryClientProvider client={handleQueryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        {showDevtools && (
+          <Suspense fallback={null}>
+            <ReactQueryDevtoolsProduction />
+          </Suspense>
+        )}
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </APIProvider>
   );
 }

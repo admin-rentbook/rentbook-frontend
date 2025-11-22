@@ -22,7 +22,7 @@ export const useResetPassword = () => {
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
   const handlePasswordFocus = () => {
-    setIsPasswordFocused(true);
+  setIsPasswordFocused(true);
   };
 
   const handlePasswordBlur = () => {

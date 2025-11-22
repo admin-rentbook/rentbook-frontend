@@ -25,7 +25,7 @@ export const Menu = () => {
           <Avatar className="size-[50px] bg-black cursor-pointer">
             <AvatarFallback className="bg-black">
               <p className="text-heading-xl-medium text-white">
-                {authUser.user.first_name.substring(0, 1)}
+                {authUser.user.first_name.substring(0, 1).toUpperCase()}
               </p>
             </AvatarFallback>
           </Avatar>
