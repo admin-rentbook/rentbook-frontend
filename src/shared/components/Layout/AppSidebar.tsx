@@ -21,6 +21,7 @@ import { SpecialCompRender } from './SearchbarRender';
 
 type AppSidebarProps = {
   sidebarItems: SidebarItem[];
+  showUserMenu?: boolean;
 };
 
 export const AppSidebar = (props: AppSidebarProps) => {
@@ -62,7 +63,13 @@ export const AppSidebar = (props: AppSidebarProps) => {
             <SidebarMenu className="gap-2">
               {props.sidebarItems.slice(0, 4).map((item) => {
                 if (item.name?.toLowerCase() === 'search') {
-                  return <SpecialCompRender item={item} open={open} />;
+                  return (
+                    <SpecialCompRender
+                      key={item.name}
+                      item={item}
+                      open={open}
+                    />
+                  );
                 }
                 return (
                   <SidebarMenuItem key={item.name}>
@@ -133,9 +140,11 @@ export const AppSidebar = (props: AppSidebarProps) => {
             ))}
           </SidebarMenu>
         </SidebarGroup>
-        <SidebarGroup>
-          <UserMenu />
-        </SidebarGroup>
+        {props.showUserMenu && (
+          <SidebarGroup>
+            <UserMenu />
+          </SidebarGroup>
+        )}
       </SidebarFooter>
     </Sidebar>
   );

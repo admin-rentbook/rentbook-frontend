@@ -23,16 +23,13 @@ export const useLogin = () => {
     },
   });
 
-  const nonce = crypto.randomUUID();
-
   const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?${new URLSearchParams(
     {
       client_id: env.GOOGLE_AUTH_API_KEY,
-      redirect_uri: `${env.REDIRECT_URL}`,
+      redirect_uri: env.REDIRECT_URL,
       response_type: 'id_token',
       scope: 'email profile openid',
-      access_type: 'offline',
-      nonce,
+      nonce: crypto.randomUUID(), 
       prompt: 'select_account',
     }
   )}`;
@@ -50,27 +47,31 @@ export const useLogin = () => {
   };
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    const error = urlParams.get('error');
+    //get the id_token from the hash
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
+    const idToken = params.get('id_token');
+    const error = params.get('error');
 
     if (error) {
       toast.error('Google sign-in failed. Please try again.', {
         id: 'google-auth-error',
       });
-
+      window.location.hash = '';
       navigate({ to: '/', replace: true });
       return;
     }
 
-    if (code) {
-      console.log('Got authorization code:', code);
-
-      googleAuthMutation.mutate(code as string);
+    if (idToken) {
+      googleAuthMutation.mutate(idToken);
+      //Clean up the URL
+      window.location.hash = '';
+      navigate({ to: '/', replace: true });
     }
-  }, []);
+  }, [navigate, googleAuthMutation]);
 
   const isButtonDisabled = !form.formState.isValid || loginMutation.isPending;
+
   return {
     form,
     onSubmit,

@@ -12,7 +12,7 @@ export const ResetPasswordForm = () => {
     handlePasswordBlur,
     handlePasswordFocus,
     isPasswordFocused,
-    isLoading
+    isLoading,
   } = useResetPassword();
 
   return (
@@ -31,7 +31,7 @@ export const ResetPasswordForm = () => {
             label="Password"
             onFocus={handlePasswordFocus}
             onBlur={handlePasswordBlur}
-            type='password'
+            type="password"
           />
           <PasswordRequirements
             password={form.watch('password')}
@@ -43,7 +43,7 @@ export const ResetPasswordForm = () => {
           name="confirmPassword"
           label="Confirm Password"
           showErrorMessage
-          type='password'
+          type="password"
         />
         <div className="flex gap-5">
           <Button

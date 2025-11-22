@@ -22,7 +22,7 @@ interface DialogComponentProps {
   className?: string;
   showCloseButton?: boolean;
   closeButtonText?: string;
-  style?: React.CSSProperties | undefined
+  style?: React.CSSProperties | undefined;
 }
 export const DialogComponent = (props: DialogComponentProps) => {
   return (
@@ -34,16 +34,13 @@ export const DialogComponent = (props: DialogComponentProps) => {
         showCloseButton={props.showCloseButton}
         style={props.style}
       >
-        {(props.title || props.description) && (
-          <DialogHeader className="hidden">
-            <DialogTitle className="hidden" aria-describedby={props.title}>
-              {props.title}
-            </DialogTitle>
-            {props.description && (
-              <DialogDescription>{props.description}</DialogDescription>
-            )}
-          </DialogHeader>
-        )}
+        <DialogHeader className="sr-only">
+          <DialogTitle className="sr-only">{props.title}</DialogTitle>
+
+          <DialogDescription className="sr-only">
+            {props.description}
+          </DialogDescription>
+        </DialogHeader>
 
         {props.children}
 

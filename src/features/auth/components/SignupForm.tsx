@@ -12,7 +12,9 @@ export const SignupForm = () => {
     handlePasswordBlur,
     handlePasswordFocus,
     isPasswordFocused,
-    isLoading
+    isLoading,
+    isGoogleAuthLoading,
+    googleAuthUrl,
   } = useSignup();
   return (
     <div className="flex flex-col gap-10">
@@ -61,7 +63,13 @@ export const SignupForm = () => {
             Create account
           </Button>
           <Separator className="border border-custom-neutral-200" />
-          <Button variant="tertiary" size="lg">
+          <Button
+            variant="tertiary"
+            size="lg"
+            onClick={() => (window.location.href = googleAuthUrl)}
+            type="button"
+            isLoading={isGoogleAuthLoading}
+          >
             <GoogleIcon className="size-5" />
             Continue with Google
           </Button>

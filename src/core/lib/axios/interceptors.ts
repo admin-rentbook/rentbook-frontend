@@ -6,7 +6,7 @@ export const rejectErrorInterceptor = (error: any) => {
 };
 
 export const authRequestInterceptor = (config: InternalAxiosRequestConfig) => {
-  const authUser = useAppStore((s) => s.authUser);
+  const authUser = useAppStore.getState().authUser;
 
   if (authUser?.tokens.access) {
     config.headers.authorization = `Bearer ${authUser.tokens.access}`;

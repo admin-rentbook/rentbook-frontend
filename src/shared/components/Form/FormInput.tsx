@@ -15,6 +15,7 @@ interface FormInputProps<TFieldValues extends FieldValues = FieldValues>
   type?: 'text' | 'email' | 'password' | 'tel' | 'url' | 'hidden';
   variant?: 'default' | 'filled' | 'outlined' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
+  showErrorMessage?: boolean;
 }
 export const FormInput = <TFieldValues extends FieldValues>(
   props: FormInputProps<TFieldValues>
@@ -23,6 +24,7 @@ export const FormInput = <TFieldValues extends FieldValues>(
     variant = 'default',
     type = 'text',
     size = 'default',
+    showErrorMessage = false,
     ...inputProps
   } = props;
 

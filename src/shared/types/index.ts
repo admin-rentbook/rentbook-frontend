@@ -14,7 +14,6 @@ export interface BaseFieldProps<TFieldValues extends FieldValues = FieldValues>
   required?: boolean;
   disabled?: boolean;
   className?: string;
-  showErrorMessage?: boolean;
 }
 
 export interface GenericResponse {
