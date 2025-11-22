@@ -12,13 +12,30 @@ import {
 
 interface FormInputProps<TFieldValues extends FieldValues = FieldValues>
   extends BaseFieldProps<TFieldValues> {
-  type?: 'text' | 'email' | 'password' | 'tel' | 'url';
+  type?: 'text' | 'email' | 'password' | 'tel' | 'url' | 'hidden';
   variant?: 'default' | 'filled' | 'outlined' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
 }
 export const FormInput = <TFieldValues extends FieldValues>(
   props: FormInputProps<TFieldValues>
 ) => {
-  const { variant = 'default' } = props;
+  const {
+    variant = 'default',
+    type = 'text',
+    size = 'default',
+    ...inputProps
+  } = props;
+
+  if (type === 'hidden') {
+    return (
+      <FormField
+        control={props.control}
+        name={props.name}
+        render={({ field }) => <input type="hidden" {...field} />}
+      />
+    );
+  }
+
   return (
     <FormField
       control={props.control}
@@ -28,17 +45,19 @@ export const FormInput = <TFieldValues extends FieldValues>(
           {props.label && <FormLabel>{props.label}</FormLabel>}
           <FormControl>
             <Input
-              type={props.type}
+              type={type}
               placeholder={props.placeholder}
               variant={variant}
               disabled={props.disabled}
+              size={size as any}
               {...field}
+              {...inputProps}
             />
           </FormControl>
           {props.description && (
             <FormDescription>{props.description}</FormDescription>
           )}
-          <FormMessage />
+          {props.showErrorMessage && <FormMessage />}
         </FormItem>
       )}
     />

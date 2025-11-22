@@ -44,11 +44,26 @@
 
   /* my colors */
   --color-neutral-200: var(--neutral-200);
+  --color-custom-neutral-50: var(--custom-neutral-50);
   --color-custom-neutral-200: var(--custom-neutral-200);
+  --color-custom-neutral-100: var(--custom-neutral-100);
+  --color-custom-neutral-150: var(--custom-neutral-150);
+  --color-custom-neutral-500: var(--custom-neutral-500);
+  --color-neutral-600: var(--neutral-600);
+  --color-custom-neutral-900: var(--custom-neutral-900);
+  --color-custom-neutral-900-light: var(--custom-neutral-900-light);
+
+  --color-custom-gray: var(--custom-gray);
+  --color-gray-50: oklch(0.9491 0 0);
+  --color-custom-gray-100: var(--custom-gray-100);
+  --color-custom-gray-400: var(--custom-gray-400);
+  --color-custom-gray-300: var(--custom-gray-300);
+  --color-custom-gray-500: var(--custom-gray-500);
+  --color-custom-gray-900: var(--custom-gray-900);
 
   --color-black-400: var(--black-400);
+  --color-black-500: var(--black-500);
 
-  --color-neutral-600: var(--neutral-600);
   --color-primary-100: var(--primary-100);
   --color-primary-200: var(--primary-200);
   --color-primary-300: var(--primary-300);
@@ -56,6 +71,9 @@
   --color-primary-500: var(--primary-500);
   --color-primary-600: var(--primary-600);
 
+  --color-medium-contrast: var(--medium-contrast);
+
+  --color-red-50: var(--red-50);
   --color-red-100: var(--red-100);
   --color-red-200: var(--red-200);
   --color-red-300: var(--red-300);
@@ -63,11 +81,27 @@
   --color-red-500: var(--red-500);
   --color-red-600: var(--red-600);
 
+  --color-success-50: var(--success-50);
+  --color-success-100: var(--success-100);
+  --color-success-300: var(--success-300);
+  --color-success-400: var(--success-400);
+  --color-success-500: var(--success-500);
+
+  --color-warning-500: var(--warning-500);
+  --color-warning-600: var(--warning-600);
+
+  --color-custom-blue-400: var(--custom-blue-400);
+
+  --color-icons-black: var(--icons-black);
+
   --shadow-sec: var(--shadow-sec);
   --shadow-pri: var(--shadow-pri);
+  --shadow-ter: var(--shadow-ter);
+  --shadow-custom-md: var(--shadow-custom-md);
   --radius-10: 10px;
 
   --font-sans: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  --font-abeat: 'MyFont Variable', 'MyFont', system-ui, sans-serif;
 }
 
 :root {
@@ -79,7 +113,7 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.985 0 0); /*fafafa*/
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -106,13 +140,45 @@
 
   /* my colors */
 
-  --custom-neutral-200: oklch(0.9189 0 0);
-  --neutral-200: oklch(0.9255 0.0027 286.35);
-  --neutral-600: oklch(22% 0.004 275);
+  --custom-neutral-50: oklch(0.9551 0 0); /*#f0f0f0*/
+  --custom-neutral-200: oklch(0.9189 0 0); /*#e4e4e4*/
+  --custom-neutral-100: oklch(0.9067 0 0); /*#f4f4f4*/
+  --custom-neutral-150: oklch(0.9642 0 0); /*f3f3f3*/
+  --neutral-200: oklch(0.9255 0.0027 286.35); /*#e6e6e8*/
+  --custom-neutral-500: oklch(0.1543 0 0 / 80%);
+  --custom-neutral-900: oklch(0.1591 0 0); /*0d0d0d*/
+  --custom-neutral-900-light: oklch(0.2219 0.0042 264.48 / 50.2%); /*#1A1B1D80*/
+  --neutral-600: oklch(22% 0.004 275); /*#1a1b1d*/
+
   --black-400: oklch(0.4784 0 0);
+  --black-500: oklch(0.2237 0.0024 325.66);
+
+  --custom-gray: oklch(0.9613 0.007 88.64); /*#F4F2ED*/
+  --custom-gray-100: oklch(0.937 0 0); /*#eaeaea*/
+  --custom-gray-400: oklch(0.8141 0 0); /*#c2c2c2*/
+  --custom-gray-300: oklch(0.8853 0 0); /*d9d9d9*/
+  --custom-gray-500: oklch(0.8452 0 0); /*#CCCCCC*/
+  --custom-gray-900: oklch(0.1822 0 0); /*121212*/
+
+  --medium-contrast: oklch(0.5243 0 0); /*#6A6A6A*/
+
+  --success-50: oklch(0.9569 0.0271 145.36); /*#E6F6E6*/
+  --success-100: oklch(0.9656 0.0363 165.85); /*#DEFCEE*/
+  --success-300: oklch(0.6859 0.1667 154.86); /*#12b76a*/
+  --success-400: oklch(0.7303 0.1944 147.44); /*#34c759*/
+  --success-500: oklch(0.282 0.0846 157.98); /*#1c5d3d*/
+
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0); /*#f8f8f8*/
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 
   --primary-50: oklch(97% 0.02 356.5);
-  --primary-100: oklch(92% 0.05 356.5);
+  --primary-100: oklch(0.5803 0.2252 359.96 / 5.1%);
   --primary-200: oklch(85% 0.1 356.5);
   --primary-300: oklch(75% 0.16 356.5);
   --primary-400: oklch(68% 0.21 356.5);
@@ -122,21 +188,31 @@
   --primary-800: oklch(36% 0.16 356.5);
   --primary-900: oklch(28% 0.12 356.5);
 
-  --red-50: oklch(97% 0.02 29); /* very light tint */
-  --red-100: oklch(90% 0.06 29);
+  --red-50: oklch(0.9487 0.0279 345.89); /* #fde7f2 */
+  --red-100: oklch(0.9538 0.0221 7.18); /*#FEEAED*/
   --red-200: oklch(75% 0.12 29);
   --red-300: oklch(63.74% 0.233 29.43); /* your base #FF3B30 */
-  --red-400: oklch(55% 0.22 29);
-  --red-500: oklch(48% 0.2 29);
-  --red-600: oklch(42% 0.18 29);
+  --red-400: oklch(0.5803 0.2252 359.96); /*#d91875*/
+  --red-500: oklch(0.589 0.2254 30.84); /*#e4240a*/
+  --red-600: oklch(0.5758 0.2088 29.48); /*#d92d20*/
   --red-700: oklch(35% 0.16 29);
   --red-800: oklch(27% 0.13 29);
   --red-900: oklch(20% 0.1 29); /* deepest shade */
 
+  --warning-500: oklch(0.7474 0.1801 57.36); /*#ff8a00*/
+  --warning-600: oklch(0.7269 0.1617 65.48); /*#ea8e04*/
+  --icons-black: oklch(0.2237 0.0024 325.66); /*1c1b1c*/
+
+  --custom-blue-400: oklch(0.5726 0.233752 265.2836); /*#3366FF*/
+
+  --shadow-custom-md: 8px 8px 32px 0px oklch(0 0 0 / 10.2%) /*#0000001A*/;
   --shadow-sec:
     0px 0px 0px 1px oklch(35% 0 260 / 8%),
     0px 1px 2px 0px oklch(30% 0 260 / 12%);
   --shadow-pri: 0px 0px 0px 4px oklch(0.5803 0.2252 359.96 / 5.1%);
+  --shadow-ter:
+    0px 2.77px 2.21px 0px oklch(0 0 0 / 0.05),
+    0px 6.65px 5.32px 0px oklch(0 0 0 / 0.07);
 }
 
 .dark {
@@ -180,29 +256,96 @@
   body {
     @apply bg-background text-foreground;
   }
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.gray.300') transparent;
+  }
+
+  /* Scrollbar - Webkit */
+  ::-webkit-scrollbar {
+    @apply w-0.5 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-900;
+  }
+
+  ::-webkit-scrollbar-corner {
+    @apply bg-transparent;
+  }
 }
 
 @layer utilities {
   .text-heading-1 {
-    @apply text-4xl font-bold font-sans leading-tight;
+    @apply text-[4rem] font-semibold font-sans leading-none;
   }
-
   .text-heading-2 {
     @apply text-3xl font-semibold font-sans leading-snug;
   }
-
+  .text-heading-3 {
+    @apply text-2xl font-medium font-sans;
+  }
+  .text-heading-3-semibold {
+    @apply text-2xl font-semibold font-sans;
+  }
+  .text-heading-4 {
+    @apply text-xl font-medium font-sans; /*20px*/
+  }
+  .text-heading {
+    @apply text-[2rem] font-semibold font-sans;
+  }
+  .text-heading-xl-semi {
+    @apply text-xl font-semibold font-sans;
+  }
+  .text-heading-xl {
+    @apply text-2xl xl:text-[2rem]  font-semibold font-sans leading-tight;
+  }
+  .text-heading-xl-semibold {
+    @apply text-xl font-semibold font-sans;
+  }
   .text-body-large {
     @apply text-lg font-normal leading-relaxed;
   }
-
-  .text-body-small {
-    @apply text-sm font-normal leading-normal;
+  .text-body-medium {
+    @apply text-base font-medium font-sans;
   }
-
+  .text-body-base {
+    @apply text-sm xl:text-base font-normal font-sans leading-normal;
+  }
+  .text-body-xs {
+    @apply text-xs font-normal font-sans leading-tight;
+  }
+  .text-body-sm-semi {
+    @apply text-sm font-semibold font-sans leading-normal;
+  }
+  .text-body-small {
+    @apply text-sm font-normal font-sans leading-normal;
+  }
+  .text-body {
+    @apply text-sm font-medium font-sans;
+  }
+  .text-body-xl {
+    @apply text-xl font-medium font-sans;
+  }
   .text-caption {
-    @apply text-xs font-medium leading-tight;
+    @apply text-xs font-medium font-sans leading-tight;
   }
   .text-label {
     @apply text-sm font-medium font-sans leading-4 tracking-normal;
+  }
+  .logo-text {
+    @apply text-[1.375rem] font-abeat font-normal;
   }
 }

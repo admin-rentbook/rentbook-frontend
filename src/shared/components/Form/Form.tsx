@@ -13,7 +13,10 @@ export const Form = <TFieldValues extends FieldValues = FieldValues>(
 ) => {
   return (
     <ShadForm {...props.form}>
-      <form onSubmit={props.form.handleSubmit(props.onSubmit)}>
+      <form
+        onSubmit={props.form.handleSubmit(props.onSubmit)}
+        className="w-full"
+      >
         {props.children}
       </form>
     </ShadForm>

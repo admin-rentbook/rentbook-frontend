@@ -1,20 +1,20 @@
 import { cva } from 'class-variance-authority';
 
 export const buttonVariants = cva(
-  "inline-flex hover:cursor-pointer shadow-sec items-center justify-center gap-2 whitespace-nowrap rounded-10  font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "inline-flex hover:cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-10  font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
         primary:
-          'bg-primary-500 text-white hover:bg-primary-600 active:bg-primary-600',
+          'bg-primary-500 text-white shadow-sec hover:bg-primary-600 active:bg-primary-600',
         'primary-outline':
           'border border-primary-500 text-primary-500 bg-transparent hover:bg-primary-50 active:bg-primary-100',
         'primary-ghost':
           'text-primary-500 hover:bg-primary-50 active:bg-primary-100',
         'primary-soft':
-          'bg-primary-100 text-primary-700 hover:bg-primary-200 active:bg-primary-300',
+          'bg-primary-100 text-primary-500 hover:bg-primary-100',
         secondary:
-          'bg-white text-neutral-600  hover:bg-secondary-600 active:bg-secondary-700',
+          'bg-white text-neutral-600 shadow-sec hover:bg-secondary-600 active:bg-secondary-700',
         'secondary-outline':
           'border border-secondary-300 text-secondary-700 bg-transparent hover:bg-secondary-50 active:bg-secondary-100',
         'secondary-ghost':
@@ -45,22 +45,22 @@ export const buttonVariants = cva(
           'text-danger-600 hover:bg-danger-50 active:bg-danger-100',
 
         // Utility variants
-        default: 'bg-background hover:bg-accent hover:text-accent-foreground',
+        default: 'bg-background hover:bg-accent text-neutral-600',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline:
-          'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+          'border border-neutral-200 bg-background hover:bg-accent hover:text-accent-foreground',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
+        icon: 'p-0 m-0 bg-transparent border-none shadow-none hover:bg-transparent focus-visible:ring-0',
       },
       size: {
         xs: 'h-7 px-2 text-xs',
-        sm: 'h-11 md:h-8 px-3 text-sm',
-        md: 'h-11 md:h-9 px-3 text-sm',
-        default: 'h-11 md:h-8 text-sm px-3 py-4',
-        lg: 'h-11 px-3 py-6',
+        sm: 'h-10 md:h-8 px-3 text-sm',
+        md: 'h-10 md:h-9 px-3 text-sm',
+        default: 'h-11  text-sm px-3 py-4',
+        lg: 'h-10 px-3 py-6',
         xl: 'h-12 px-10 text-base',
-        icon: 'h-11 md:h-10 w-11 md:w-10',
       },
     },
     defaultVariants: {
