@@ -2,5 +2,8 @@ export * from './DataTable';
 export * from './Dialog';
 export * from './MapPicker';
 export * from './Popover';
+export * from './PropertyImage';
 export * from './SearchBox';
+export * from './Sheet';
+export * from './Stepper';
 export * from './ui';

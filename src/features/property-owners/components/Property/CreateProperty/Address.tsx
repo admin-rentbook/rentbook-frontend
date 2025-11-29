@@ -49,7 +49,7 @@ export const Address = ({ form }: AddressProps) => {
     setIsOpenPopover,
     onLocationResult: handleFinalAddress,
   });
-
+console.log(autoCompleteLocation)
   const {
     loading: locationLoading,
     handleGetCurrentLocation,

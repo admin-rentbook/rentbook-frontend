@@ -81,7 +81,7 @@ export function useGooglePlacesAutocomplete({
     service.getPlacePredictions(
       {
         input: debouncedInput,
-        types: ['address'],
+        // types: ['address'],
         componentRestrictions,
         sessionToken: sessionTokenRef.current,
       },

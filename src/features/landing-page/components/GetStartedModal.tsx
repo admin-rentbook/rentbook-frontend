@@ -1,5 +1,6 @@
 import createPropertyImage from '@/assets/images/create-property-image.png';
 import { useAppStore } from '@/core/store';
+import { Links } from '@/features/property-owners/constants';
 import { Button, DialogComponent } from '@/shared/components';
 import { useNavigate } from '@tanstack/react-router';
 import { Cancel01Icon } from 'hugeicons-react';
@@ -11,7 +12,7 @@ export const GetStartedModal = () => {
 
   const handleGetStarted = () => {
     onOpenGetStarted(false)
-    navigate({ to: '/get-started' })
+    navigate({ to:Links.PROPERTY_GET_STARTED })
   }
   return (
     <DialogComponent

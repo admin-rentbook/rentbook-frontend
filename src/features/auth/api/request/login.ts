@@ -28,7 +28,7 @@ export const useLoginMutation = ({ config }: UseLoginOptions = {}) => {
     },
     onSuccess: (res) => {
       toast.success(res.message ?? 'Login successful!', {
-        id: 'login-success',
+        id: 'login-success', 
       });
       setAuthUser(res.data);
       onOpenAuth(false);

@@ -59,7 +59,7 @@ export const selectTriggerVariants = cva(
 // Select Content Variants (for the dropdown)
 export const selectContentVariants = cva(
   [
-    'relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-10 border bg-white text-gray-900 shadow-md',
+    'relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-10 border-0 bg-white text-gray-900 shadow-ter',
     'data-[state=open]:animate-in data-[state=closed]:animate-out',
     'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
     'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',

@@ -46,6 +46,7 @@
   --color-neutral-200: var(--neutral-200);
   --color-custom-neutral-50: var(--custom-neutral-50);
   --color-custom-neutral-200: var(--custom-neutral-200);
+  --color-custom-neutral-300: var(--custom-neutral-300);
   --color-custom-neutral-100: var(--custom-neutral-100);
   --color-custom-neutral-150: var(--custom-neutral-150);
   --color-custom-neutral-500: var(--custom-neutral-500);
@@ -142,6 +143,7 @@
 
   --custom-neutral-50: oklch(0.9551 0 0); /*#f0f0f0*/
   --custom-neutral-200: oklch(0.9189 0 0); /*#e4e4e4*/
+  --custom-neutral-300: oklch(0.9084 0.0067 340.4); /*#e4dfe2*/
   --custom-neutral-100: oklch(0.9067 0 0); /*#f4f4f4*/
   --custom-neutral-150: oklch(0.9642 0 0); /*f3f3f3*/
   --neutral-200: oklch(0.9255 0.0027 286.35); /*#e6e6e8*/
@@ -303,6 +305,10 @@
   .text-heading-4 {
     @apply text-xl font-medium font-sans; /*20px*/
   }
+  .text-heading-5 {
+    @apply text-[1.75rem] font-semibold font-sans leading-none;
+  }
+
   .text-heading {
     @apply text-[2rem] font-semibold font-sans;
   }
@@ -320,6 +326,9 @@
   }
   .text-body-medium {
     @apply text-base font-medium font-sans;
+  }
+  .text-body-base-normal {
+    @apply text-base font-normal font-sans;
   }
   .text-body-base {
     @apply text-sm xl:text-base font-normal font-sans leading-normal;

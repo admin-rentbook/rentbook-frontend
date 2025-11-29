@@ -81,3 +81,22 @@ export type PropertyDTO = {
   amenities: Amenity[];
   amount: number;
 };
+
+export type SubStepType = {
+  id: number;
+  title: string;
+  component: React.ComponentType<{ onNext?: () => void }>;
+};
+
+export type Step = {
+  id: number;
+  title: string;
+  subSteps: SubStepType[];
+  component?: React.ComponentType<{ onNext: () => void }>;
+};
+
+export type StepProgress = {
+  currentMainStep: number;
+  currentSubStep: number;
+  completedSteps: Record<string, boolean>;
+};

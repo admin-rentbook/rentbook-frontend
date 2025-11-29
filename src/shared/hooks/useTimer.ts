@@ -8,23 +8,23 @@ import {
 export const useTimer = (time: number) => {
   const [timeLeft, setTimeLeft] = useState(time || 60);
   const [canResend, setCanResend] = useState(false);
+  const [timerKey, setTimerKey] = useState(0);
 
   useEffect(() => {
     const timerStart = getDataFromSessStorage('verify-timer') as string;
-
     if (!timerStart) {
       setCanResend(true);
       setTimeLeft(0);
       return;
     }
-
+    
     const startTime = parseInt(timerStart, 10);
     const elapsed = Math.floor((Date.now() - startTime) / 1000);
-    const remaining = Math.max(60 - elapsed, 0);
-
+    const remaining = Math.max(time - elapsed, 0);
+    
     setTimeLeft(remaining);
     setCanResend(remaining === 0);
-
+    
     if (remaining > 0) {
       const interval = setInterval(() => {
         setTimeLeft((prev) => {
@@ -37,15 +37,14 @@ export const useTimer = (time: number) => {
           return newTime;
         });
       }, 1000);
-
+      
       return () => clearInterval(interval);
     }
-  }, []);
+  }, [time, timerKey]);
 
   const resendCode = () => {
     saveDataToSessStorage('verify-timer', Date.now().toString());
-    setTimeLeft(time);
-    setCanResend(false);
+    setTimerKey(prev => prev + 1);
   };
 
   return {

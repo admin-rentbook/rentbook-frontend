@@ -1,4 +1,5 @@
 import { landingPageRoute } from '@/features/landing-page';
+import { listingGetStartedRoute, listingsRoute } from '@/features/listings';
 import {
   calendarRoute,
   createPropertyRoute,
@@ -28,6 +29,8 @@ const routeTree = rootRoute.addChildren([
   settingsRoute,
   createPropertyRoute,
   getStartedRoute,
+  listingGetStartedRoute,
+  listingsRoute,
 ]); //this will be updated properly by putting them in their correct features
 const router = createRouter({ routeTree });
 

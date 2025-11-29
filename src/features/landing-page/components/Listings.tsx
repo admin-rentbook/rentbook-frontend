@@ -14,7 +14,7 @@ export const Listings = () => {
         </h3>
         <ArrowRight01Icon className="size-5 text-black-400" />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 pb-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 pb-10">
         {propertyCards.map((card) => (
           <PropertyCard
             property={card}
