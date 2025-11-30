@@ -1,14 +1,15 @@
 import { useTimer } from '@/shared/hooks';
-import { getDataFromSessStorage } from '@/shared/utils/helpers';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useSearch } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import type z from 'zod';
-import { useVerifyEmailMutation } from '../api/request';
+import { useSendOtp, useVerifyEmailMutation } from '../api/request';
 import { verifyEmailSchema } from '../constants';
 import type { VerifyEmailDTO } from '../types';
 
 export const useVerifyEmail = () => {
   const verifyEmailMutation = useVerifyEmailMutation();
+  const sendOtpMutation = useSendOtp();
 
   const form = useForm<VerifyEmailDTO>({
     resolver: zodResolver(verifyEmailSchema),
@@ -20,14 +21,24 @@ export const useVerifyEmail = () => {
 
   const { timeLeft, canResend, resendCode } = useTimer(60 * 5);
 
+  const search = useSearch({ from: '/' });
+  const email = search?.email;
+
   function onSubmit(data: z.infer<typeof verifyEmailSchema>) {
-    const email = getDataFromSessStorage('email') as string;
     const payload = {
       otp: Number(data.otp),
-      email: email,
+      email: email ?? '',
     };
     verifyEmailMutation.mutate(payload);
   }
+
+  const handleSendOtp = () => {
+    sendOtpMutation.mutate(email ?? '', {
+      onSuccess: () => {
+        resendCode();
+      },
+    });
+  };
 
   const isButtonDisabled = !form.formState.isValid;
   return {
@@ -36,7 +47,8 @@ export const useVerifyEmail = () => {
     isButtonDisabled,
     timeLeft,
     canResend,
-    resendCode,
+    handleSendOtp,
     isLoading: verifyEmailMutation.isPending,
+    isOtpLoading:sendOtpMutation.isPending,
   };
 };

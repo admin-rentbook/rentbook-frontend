@@ -36,17 +36,15 @@ export const useSignupMutation = ({ config }: UseSignUpOptions = {}) => {
     onError: (err: any) => {
       toast.error(err.description, { id: 'signup-success' });
     },
-    onSuccess: (res) => {
-      toast.success(res.message, { id: 'signup-error' });
+    onSuccess: (res, variable) => {
       saveDataToSessStorage('verify-timer', Date.now().toString());
       sendOtpMutation.mutate(res.data.email, {
         onSuccess: () => {
           navigate({
             to: '/',
-            search: { step: 2 },
+            search: { step: 2, email: variable.email },
             replace: true,
           });
-          saveDataToSessStorage('email', res.data.email)
         },
       });
     },

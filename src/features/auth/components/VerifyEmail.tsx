@@ -1,11 +1,20 @@
 import { Button } from '@/shared/components';
 import { Form, FormInput } from '@/shared/components/Form';
+import { useSearch } from '@tanstack/react-router';
 import { useVerifyEmail } from '../hooks';
 
 export const VerifyEmail = () => {
-  const { form, isButtonDisabled, onSubmit, timeLeft, isLoading } =
-    useVerifyEmail();
-  const email = 'name@gmail.com';
+  const {
+    form,
+    isButtonDisabled,
+    onSubmit,
+    timeLeft,
+    isLoading,
+    isOtpLoading,
+    handleSendOtp,
+  } = useVerifyEmail();
+  const search = useSearch({ from: '/' });
+  const email = search?.email;
   return (
     <>
       <Form form={form} onSubmit={onSubmit}>
@@ -24,7 +33,22 @@ export const VerifyEmail = () => {
               label="Verification code"
               showErrorMessage
             />
-            <p className="text-body-small text-custom-neutral-900-light">{`Resend: ${timeLeft}`}</p>
+            <p className="text-body-small text-custom-neutral-900-light">{`Time left: ${timeLeft}`}</p>
+            <div className="flex items-center">
+              <p className="text-body-small text-neutral-600">
+                Didn't receive any OTP?{' '}
+              </p>
+              <Button
+                variant="link"
+                isLoading={isOtpLoading}
+                onClick={handleSendOtp}
+                size="sm"
+                type="button"
+                disabled={isOtpLoading}
+              >
+                Resend OTP
+              </Button>
+            </div>
           </div>
           <Button disabled={isButtonDisabled} size="lg" isLoading={isLoading}>
             Continue

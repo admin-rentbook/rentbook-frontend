@@ -1,3 +1,15 @@
+import property2Img from '@/assets/images/property-2.jpg';
+import property3Img from '@/assets/images/property-3.jpg';
+import property4Img from '@/assets/images/property-4.jpg';
+import property5Img from '@/assets/images/property-5.jpg';
+import property6Img from '@/assets/images/property-6.jpg';
+import propertyImg from '@/assets/images/property-image.jpg';
+
+import type {
+  BlockDTO,
+  ListingDescriptionDTO,
+} from '@/features/listings/types';
+import { transformDataToOptions } from '@/shared/utils/helpers';
 import {
   Calendar04Icon,
   ChartIncreaseIcon,
@@ -22,7 +34,7 @@ export const Links = {
   PAYMENT: '/payment',
   SETTINGS: '/settings',
   SUPPORT: '/support',
-  LISTING_GET_STARTED: '/get-started',
+  PROPERTY_GET_STARTED: '/properties/get-started',
   CREATE_PROPERTY: '/properties/create',
 } as const;
 export type LinkType = (typeof Links)[keyof typeof Links];
@@ -118,3 +130,54 @@ export const getStartedItems = [
     color: 'text-red-600',
   },
 ];
+
+export const blockItems: BlockDTO[] = [
+  {
+    blockName: 'Sample block',
+    listings: [
+      {
+        listingTitle: 'Sample Listing',
+        images: [propertyImg, propertyImg, propertyImg, propertyImg],
+      },
+      {
+        listingTitle: 'Sample Listing 2',
+        images: [property2Img],
+      },
+      {
+        listingTitle: 'Sample Listing 3',
+        images: [property3Img],
+      },
+      {
+        listingTitle: 'Sample Listing 4',
+        images: [property2Img],
+      },
+    ] as ListingDescriptionDTO[],
+  },
+  {
+    blockName: 'Sample block 2',
+    listings: [
+      {
+        listingTitle: 'Sample Listing',
+        images: [propertyImg, propertyImg, propertyImg, propertyImg],
+      },
+      {
+        listingTitle: 'Sample Listing 2',
+        images: [property5Img],
+      },
+      {
+        listingTitle: 'Sample Listing 3',
+        images: [property4Img],
+      },
+      {
+        listingTitle: 'Sample Listing 4',
+        images: [property6Img],
+      },
+    ] as ListingDescriptionDTO[],
+  },
+];
+
+export const blockOptions = transformDataToOptions(
+  blockItems,
+  (item) => item.blockName,
+  (item) => item.blockName
+);

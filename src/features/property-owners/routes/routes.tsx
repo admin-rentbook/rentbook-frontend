@@ -9,7 +9,7 @@ import { Overview } from './overview';
 
 export const getStartedRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: Links.LISTING_GET_STARTED,
+  path: Links.PROPERTY_GET_STARTED,
   component: () => <GetStartedView />,
 });
 

@@ -25,7 +25,7 @@ export const SignupForm = () => {
             name="email"
             label="Email"
             showErrorMessage
-            description={`We'll send you a link to verify your email`}
+            description={`We'll send you an OTP to verify your email`}
           />
           <FormInput
             control={form.control}

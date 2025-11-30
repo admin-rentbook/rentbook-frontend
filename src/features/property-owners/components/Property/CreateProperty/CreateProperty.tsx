@@ -1,5 +1,6 @@
 import SuccessIcon from '@/assets/icons/success-icon.svg?react';
 import createPropertyImage from '@/assets/images/create-property-image.png';
+import { ListingLinks } from '@/features/listings/constants';
 import { Links } from '@/features/property-owners/constants';
 import { useCreateProperty } from '@/features/property-owners/hooks';
 import { Button, Separator } from '@/shared/components';
@@ -21,10 +22,17 @@ export const CreateProperty = () => {
         title="Property created!"
         description="You have successfully created a new property. You can create multiple listings under this property"
         icon={SuccessIcon}
+        className="w-1/3"
         actions={
           <div className="flex gap-2 w-full justify-end px-4">
             <Button variant="tertiary">Go to dashboard</Button>
-            <Button>Next: Create listing</Button>
+            <Button
+              onClick={() =>
+                navigate({ to: ListingLinks.LISTINGS_GET_STARTED })
+              }
+            >
+              Next: Create listing
+            </Button>
           </div>
         }
       />

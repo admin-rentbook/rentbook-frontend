@@ -7,7 +7,9 @@ export type KeyType =
   | 'userType'
   | 'CREATE_PROPERTY'
   | 'verify-timer'
-  | 'email';
+  | 'email'
+  | 'LISTING_DESCRIPTION'
+  | 'LISTING_PROGRESS'
 
 const DEFAULT_EXPIRY_DURATION = 12 * 30 * 24 * 60 * 60 * 1000; //1 year
 
