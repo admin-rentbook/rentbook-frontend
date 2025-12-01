@@ -14,11 +14,13 @@ interface UseMapPickerProps {
     lng: number;
   };
   setIsOpenPopover?: React.Dispatch<React.SetStateAction<boolean>>;
+   onLocationResult?: (location: LocationResult) => void;
 }
 
 export function useMapPicker({
   initialLocation,
   setIsOpenPopover,
+  onLocationResult
 }: UseMapPickerProps = {}) {
   const DEFAULT_LOCATION = { lat: -22.5609, lng: 17.0658 }; // Windhoek, Namibia
 
@@ -251,6 +253,7 @@ export function useMapPicker({
     if (location) {
       setFullAddress(location);
       setIsOpenPopover?.(false);
+      onLocationResult?.(location)
     }
   };
   // Reset state

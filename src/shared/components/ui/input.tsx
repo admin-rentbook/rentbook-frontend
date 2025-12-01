@@ -7,18 +7,19 @@ import type { VariantProps } from 'class-variance-authority';
 function Input({
   className,
   type,
-  size,
+  size: customSize,
   variant,
   ...props
-}: React.ComponentProps<'input'> &
+}:  Omit<React.ComponentProps<'input'>, 'size'> &
   VariantProps<typeof inputVariants> & {
     asChild?: boolean;
+    size?: 'sm' | 'md' | 'lg' | 'default';
   }) {
   return (
     <input
       type={type}
       data-slot="input"
-      className={cn(inputVariants({ variant, size, className }))}
+      className={cn(inputVariants({ variant, size: customSize, className }))}
       {...props}
     />
   );

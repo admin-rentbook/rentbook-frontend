@@ -24,3 +24,9 @@ export type PropertyDataDTO = PropertyInfoData & {
   ownerPhone?: string;
   agentCommission?: number;
 };
+
+export type PropertyFilters = {
+  status: PropertyStatusType | null;
+  unitType: string | null;
+  minUnits: string | null;
+};

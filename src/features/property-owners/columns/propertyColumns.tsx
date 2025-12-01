@@ -41,7 +41,7 @@ export const propertyColumns: ColumnDef<PropertyDTO, any>[] = [
       const { bgColor, textColor, fillColor } = returnStatus(info.getValue());
       return (
         <Badge className={`${bgColor} ${textColor}`}>
-          <CircleIcon className={cn(`size-[7px] ${fillColor}`)} />
+          <CircleIcon className={cn(`!size-[5px] ${fillColor}`)} />
           {<span>{convertUnderscoreToSpace(info.getValue())}</span>}
         </Badge>
       );

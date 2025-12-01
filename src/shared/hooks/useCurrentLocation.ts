@@ -16,9 +16,11 @@ interface UseCurrentLocationReturn {
 
 type UseCurrentLocationProps = {
   setIsOpenPopover?: React.Dispatch<React.SetStateAction<boolean>>;
+  onLocationResult?: (location: LocationResult) => void;
 };
 export function useCurrentLocation({
   setIsOpenPopover,
+  onLocationResult
 }: UseCurrentLocationProps = {}): UseCurrentLocationReturn {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -193,6 +195,7 @@ export function useCurrentLocation({
       setSelectedLocation(currentLocation);
       setShowAddressOption(false);
       setIsOpenPopover?.(false);
+      onLocationResult?.(currentLocation)
     } catch (error) {
       console.error('Failed to get current location:', error);
     }

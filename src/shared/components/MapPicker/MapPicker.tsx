@@ -41,7 +41,7 @@ export const MapPicker = (props: MapPickerProps) => {
         </div>
       }
       children={
-        <div className="relative h-[500px] w-full rounded-2xl overflow-hidden">
+        <div className="relative h-[500px] w-[500px] rounded-2xl overflow-hidden">
           <Map
             defaultCenter={props.selectedPosition}
             defaultZoom={15}

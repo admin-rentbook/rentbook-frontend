@@ -51,7 +51,7 @@ export const FormInput = <TFieldValues extends FieldValues>(
               placeholder={props.placeholder}
               variant={variant}
               disabled={props.disabled}
-              size={size as any}
+              size={size}
               {...field}
               {...inputProps}
             />

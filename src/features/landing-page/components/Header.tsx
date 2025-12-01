@@ -1,15 +1,21 @@
+import { Links } from '@/features/property-owners/constants';
 import { InputGroupAddon, SearchBox } from '@/shared/components';
+import { useNavigate } from '@tanstack/react-router';
 import { ArrowReloadHorizontalIcon, Search01Icon } from 'hugeicons-react';
 import { useState } from 'react';
 import { Menu } from './Menu';
 
 export const Header = () => {
   const [input, setInput] = useState('');
+  const navigate = useNavigate();
   return (
     <div className="w-full flex flex-col gap-2">
       <div className="flex justify-end">
         <div className="flex gap-[20px]">
-          <div className="flex items-center hover:cursor-pointer gap-2 bg-sidebar-accent rounded-full pl-2 py-2 pr-3">
+          <div
+            onClick={() => navigate({ to: Links.CREATE_PROPERTY })}
+            className="flex items-center hover:cursor-pointer gap-2 bg-sidebar-accent rounded-full pl-2 py-2 pr-3"
+          >
             <div className="size-[32px] rounded-full flex items-center justify-center bg-white">
               <ArrowReloadHorizontalIcon className="size-[17px]" />
             </div>
