@@ -59,6 +59,11 @@ export interface LocationResult {
   lng: number;
   address: string;
   placeId: string;
+  street: string;
+  city: string;
+  state: string;
+  country:string;
+  postalCode:string
 }
 export type SidebarItem = {
   icon: React.FC<

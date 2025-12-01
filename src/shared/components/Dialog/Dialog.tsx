@@ -26,6 +26,7 @@ interface DialogComponentProps {
 }
 export const DialogComponent = (props: DialogComponentProps) => {
   return (
+    <>
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>
       {props.trigger && <DialogTrigger asChild>{props.trigger}</DialogTrigger>}
 
@@ -57,5 +58,6 @@ export const DialogComponent = (props: DialogComponentProps) => {
         )}
       </DialogContent>
     </Dialog>
+    </>
   );
 };

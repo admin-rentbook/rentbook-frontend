@@ -1,12 +1,6 @@
 // src/shared/hooks/useMapPicker.ts
 import { useCallback, useState } from 'react';
-
-interface LocationResult {
-  lat: number;
-  lng: number;
-  address: string;
-  placeId: string;
-}
+import type { LocationResult } from '../types';
 
 interface UseMapPickerProps {
   initialLocation?: {
@@ -14,13 +8,13 @@ interface UseMapPickerProps {
     lng: number;
   };
   setIsOpenPopover?: React.Dispatch<React.SetStateAction<boolean>>;
-   onLocationResult?: (location: LocationResult) => void;
+  onLocationResult?: (location: LocationResult) => void;
 }
 
 export function useMapPicker({
   initialLocation,
   setIsOpenPopover,
-  onLocationResult
+  onLocationResult,
 }: UseMapPickerProps = {}) {
   const DEFAULT_LOCATION = { lat: -22.5609, lng: 17.0658 }; // Windhoek, Namibia
 
@@ -33,6 +27,53 @@ export function useMapPicker({
   //   const [gettingCurrentLocation, setGettingCurrentLocation] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const extractAddressFromResult = (
+    result: google.maps.GeocoderResult,
+    lat: number,
+    lng: number
+  ): LocationResult => {
+    const getComponent = (type: string) => {
+      return (
+        result.address_components?.find((c) => c.types.includes(type))
+          ?.long_name || ''
+      );
+    };
+
+    const streetNumber = getComponent('street_number');
+    const route = getComponent('route');
+
+    return {
+      lat,
+      lng,
+      address: result.formatted_address,
+      placeId: result.place_id || '',
+      street: `${streetNumber} ${route}`.trim() || '',
+      city:
+        getComponent('locality') ||
+        getComponent('administrative_area_level_2') ||
+        '',
+      state: getComponent('administrative_area_level_1') || '',
+      country: getComponent('country') || '',
+      postalCode: getComponent('postal_code') || '',
+    };
+  };
+
+  // Fallback location result
+  const createFallbackLocation = (
+    lat: number,
+    lng: number,
+    address?: string
+  ): LocationResult => ({
+    lat,
+    lng,
+    address: address || `${lat.toFixed(6)}, ${lng.toFixed(6)}`,
+    placeId: '',
+    street: '',
+    city: '',
+    state: '',
+    country: '',
+    postalCode: '',
+  });
   // Reverse geocode to get address
   const reverseGeocode = useCallback(async (lat: number, lng: number) => {
     setCoordinates(`${lat.toFixed(6)}, ${lng.toFixed(6)}`);
@@ -74,167 +115,52 @@ export function useMapPicker({
     [reverseGeocode]
   );
 
-  // Search for location by address
-  //   const searchLocation = useCallback(async (query: string, mapInstance?: google.maps.Map) => {
-  //     if (!query.trim() || !window.google?.maps) return;
-
-  //     setLoading(true);
-  //     setError(null);
-
-  //     try {
-  //       const geocoder = new window.google.maps.Geocoder();
-
-  //       return new Promise<boolean>((resolve) => {
-  //         geocoder.geocode(
-  //           {
-  //             address: query,
-  //             componentRestrictions: { country: 'ng' }
-  //           },
-  //           (results, status) => {
-  //             setLoading(false);
-  //             if (status === 'OK' && results && results.length > 0) {
-  //               const location = results[0].geometry.location;
-  //               const lat = location.lat();
-  //               const lng = location.lng();
-
-  //               setSelectedPosition({ lat, lng });
-  //               setAddress(results[0].formatted_address);
-
-  //               // Pan map to location
-  //               if (mapInstance) {
-  //                 mapInstance.panTo({ lat, lng });
-  //                 mapInstance.setZoom(16);
-  //               }
-
-  //               resolve(true);
-  //             } else {
-  //               setError('Location not found. Try a different search.');
-  //               resolve(false);
-  //             }
-  //           }
-  //         );
-  //       });
-  //     } catch (err) {
-  //       setLoading(false);
-  //       setError('Search failed. Please try again.');
-  //       return false;
-  //     }
-  //   }, []);
-
-  // Get current device location
-  //   const getCurrentLocation = useCallback(async (mapInstance?: google.maps.Map) => {
-  //     if (!navigator.geolocation) {
-  //       setError('Geolocation is not supported by your browser');
-  //       return false;
-  //     }
-
-  //     setGettingCurrentLocation(true);
-  //     setError(null);
-
-  //     return new Promise<boolean>((resolve) => {
-  //       navigator.geolocation.getCurrentPosition(
-  //         async (position) => {
-  //           const lat = position.coords.latitude;
-  //           const lng = position.coords.longitude;
-
-  //           setSelectedPosition({ lat, lng });
-  //           await reverseGeocode(lat, lng);
-
-  //           // Pan map to current location
-  //           if (mapInstance) {
-  //             mapInstance.panTo({ lat, lng });
-  //             mapInstance.setZoom(16);
-  //           }
-
-  //           setGettingCurrentLocation(false);
-  //           resolve(true);
-  //         },
-  //         (err) => {
-  //           setGettingCurrentLocation(false);
-
-  //           let errorMsg = 'Failed to get your location';
-  //           switch (err.code) {
-  //             case err.PERMISSION_DENIED:
-  //               errorMsg = 'Location permission denied';
-  //               break;
-  //             case err.POSITION_UNAVAILABLE:
-  //               errorMsg = 'Location unavailable';
-  //               break;
-  //             case err.TIMEOUT:
-  //               errorMsg = 'Location request timed out';
-  //               break;
-  //           }
-
-  //           setError(errorMsg);
-  //           resolve(false);
-  //         },
-  //         {
-  //           enableHighAccuracy: true,
-  //           timeout: 10000,
-  //           maximumAge: 0,
-  //         }
-  //       );
-  //     });
-  //   }, [reverseGeocode]);
-
   // Confirm and return selected location
   const confirmLocation =
     useCallback(async (): Promise<LocationResult | null> => {
       if (!selectedPosition) return null;
 
-      // If we don't have an address, try to get it
-      if (!address || !address.includes(',')) {
-        setLoading(true);
+      setLoading(true);
 
-        try {
-          const geocoder = new window.google.maps.Geocoder();
-          const latLng = new window.google.maps.LatLng(
-            selectedPosition.lat,
-            selectedPosition.lng
-          );
+      try {
+        const geocoder = new window.google.maps.Geocoder();
+        const latLng = new window.google.maps.LatLng(
+          selectedPosition.lat,
+          selectedPosition.lng
+        );
 
-          return new Promise((resolve) => {
-            geocoder.geocode({ location: latLng }, (results, status) => {
-              setLoading(false);
+        return new Promise((resolve) => {
+          geocoder.geocode({ location: latLng }, (results, status) => {
+            setLoading(false);
 
-              const locationResult: LocationResult = {
-                lat: selectedPosition.lat,
-                lng: selectedPosition.lng,
-                address:
-                  status === 'OK' && results?.[0]
-                    ? results[0].formatted_address
-                    : `${selectedPosition.lat.toFixed(6)}, ${selectedPosition.lng.toFixed(6)}`,
-                placeId: results?.[0]?.place_id || '',
-              };
+            const locationResult =
+              status === 'OK' && results?.[0]
+                ? extractAddressFromResult(
+                    results[0],
+                    selectedPosition.lat,
+                    selectedPosition.lng
+                  )
+                : createFallbackLocation(
+                    selectedPosition.lat,
+                    selectedPosition.lng,
+                    address
+                  );
 
-              setFullAddress(locationResult);
-              resolve(locationResult);
-            });
+            setFullAddress(locationResult);
+            resolve(locationResult);
           });
-        } catch (err) {
-          setLoading(false);
-          const locationResult: LocationResult = {
-            lat: selectedPosition.lat,
-            lng: selectedPosition.lng,
-            address: `${selectedPosition.lat.toFixed(6)}, ${selectedPosition.lng.toFixed(6)}`,
-            placeId: '',
-          };
-
-          setFullAddress(locationResult);
-          return locationResult;
-        }
-      } else {
-        const locationResult: LocationResult = {
-          lat: selectedPosition.lat,
-          lng: selectedPosition.lng,
-          address,
-          placeId: '',
-        };
-
+        });
+      } catch (err) {
+        setLoading(false);
+        const locationResult = createFallbackLocation(
+          selectedPosition.lat,
+          selectedPosition.lng,
+          address
+        );
+        setFullAddress(locationResult);
         return locationResult;
       }
     }, [selectedPosition, address]);
-
   const handleMarkerDrag = (e: google.maps.MapMouseEvent) => {
     if (e.latLng) {
       handlePositionChange(e.latLng.lat(), e.latLng.lng());
@@ -253,7 +179,7 @@ export function useMapPicker({
     if (location) {
       setFullAddress(location);
       setIsOpenPopover?.(false);
-      onLocationResult?.(location)
+      onLocationResult?.(location);
     }
   };
   // Reset state
