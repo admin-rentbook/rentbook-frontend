@@ -7,6 +7,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   type PaginationState,
+  type Row,
   useReactTable,
 } from '@tanstack/react-table';
 
@@ -18,6 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/shared/components/ui/table';
+import { DataCard } from './DataCard';
 import { DataTablePagination } from './DataTablePagination';
 
 interface DataTableProps<TData, TValue> {
@@ -28,6 +30,7 @@ interface DataTableProps<TData, TValue> {
   pageCount?: number;
   totalItems?: number;
   isServerSide?: boolean;
+  mobileCardRender?: (row: Row<TData>) => React.ReactNode;
 }
 
 export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
@@ -50,7 +53,7 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
 
   return (
     <div>
-      <div className="overflow-hidden rounded-md">
+      <div className="hidden md:block overflow-hidden rounded-md">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -99,6 +102,23 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
             )}
           </TableBody>
         </Table>
+      </div>
+      <div className="md:hidden space-y-4">
+        {table.getRowModel().rows?.length ? (
+          table
+            .getRowModel()
+            .rows.map((row) => (
+              <div key={row.id}>
+                {props.mobileCardRender ? (
+                  props.mobileCardRender(row)
+                ) : (
+                  <DataCard row={row} columns={props.columns} />
+                )}
+              </div>
+            ))
+        ) : (
+          <div className="text-center py-12 text-gray-500">No results.</div>
+        )}
       </div>
       <DataTablePagination
         table={table}

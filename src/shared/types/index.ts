@@ -59,6 +59,11 @@ export interface LocationResult {
   lng: number;
   address: string;
   placeId: string;
+  street: string;
+  city: string;
+  state: string;
+  country:string;
+  postalCode:string
 }
 export type SidebarItem = {
   icon: React.FC<
@@ -100,3 +105,23 @@ export type StepProgress = {
   currentSubStep: number;
   completedSteps: Record<string, boolean>;
 };
+
+export type BaseFilter = {
+  id: string;
+  label: string;
+};
+
+export type ListFilter = BaseFilter & {
+  type: 'list';
+  items: { value: string; label: string }[];
+};
+
+export type CustomFilter = BaseFilter & {
+  type: 'custom';
+  renderCustom: (params: {
+    selectedValue: any;
+    onChange: (value: any) => void;
+  }) => React.ReactNode;
+};
+
+export type FilterConfig = ListFilter | CustomFilter;

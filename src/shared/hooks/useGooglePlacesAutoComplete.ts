@@ -17,7 +17,7 @@ export function useGooglePlacesAutocomplete({
   debounceMs = 300,
   minSearchLength = 3,
   setIsOpenPopover,
-  onLocationResult
+  onLocationResult,
 }: UseGooglePlacesAutocompleteProps = {}) {
   const [input, setInput] = useState('');
   const [predictions, setPredictions] =
@@ -81,7 +81,7 @@ export function useGooglePlacesAutocomplete({
     service.getPlacePredictions(
       {
         input: debouncedInput,
-        // types: ['address'],
+        types: ['address'],
         componentRestrictions,
         sessionToken: sessionTokenRef.current,
       },
@@ -121,7 +121,12 @@ export function useGooglePlacesAutocomplete({
         placeService.getDetails(
           {
             placeId: prediction.place_id,
-            fields: ['geometry', 'formatted_address', 'place_id'],
+            fields: [
+              'geometry',
+              'formatted_address',
+              'place_id',
+              'address_components',
+            ],
             sessionToken: sessionTokenRef.current ?? undefined,
           },
           (place, status) => {
@@ -132,11 +137,29 @@ export function useGooglePlacesAutocomplete({
               status === window.google.maps.places.PlacesServiceStatus.OK &&
               place?.geometry?.location
             ) {
+              const getComponent = (type: string) => {
+                return (
+                  place.address_components?.find((c) => c.types.includes(type))
+                    ?.long_name || ''
+                );
+              };
+
+              const streetNumber = getComponent('street_number');
+              const route = getComponent('route');
+
               resolve({
                 lat: place.geometry.location.lat(),
                 lng: place.geometry.location.lng(),
                 address: place.formatted_address ?? prediction.description,
                 placeId: place.place_id ?? prediction.place_id,
+                street: `${streetNumber} ${route}`.trim() || '',
+                city:
+                  getComponent('locality') ||
+                  getComponent('administrative_area_level_2') ||
+                  '',
+                state: getComponent('administrative_area_level_1') || '',
+                country: getComponent('country') || '',
+                postalCode: getComponent('postal_code') || '',
               });
             } else {
               resolve({
@@ -144,6 +167,11 @@ export function useGooglePlacesAutocomplete({
                 lng: NaN,
                 address: prediction.description,
                 placeId: prediction.place_id,
+                street: '',
+                city: '',
+                state: '',
+                country: '',
+                postalCode: '',
               });
             }
           }
@@ -168,7 +196,7 @@ export function useGooglePlacesAutocomplete({
       const location = await getPlaceDetails(prediction);
       setSelectedLocation(location);
       setInput(location.address);
-      onLocationResult?.(location)
+      onLocationResult?.(location);
       clearPredictions();
       setIsOpenPopover?.(false);
     } catch (error) {

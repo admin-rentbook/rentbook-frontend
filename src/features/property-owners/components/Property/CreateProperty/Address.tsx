@@ -24,6 +24,7 @@ type AddressProps = {
 export const Address = ({ form }: AddressProps) => {
   const [isOpenPopover, setIsOpenPopover] = useState(false);
   const [isOpenMap, setIsOpenMap] = useState(false);
+  const [finalAddress, setFinalAddress] = useState('');
 
   const handleFinalAddress = useCallback(
     (location: LocationResult) => {
@@ -43,30 +44,44 @@ export const Address = ({ form }: AddressProps) => {
     predictions,
     loading,
     handleSelectPrediction,
-    selectedLocation: autoCompleteLocation,
   } = useGooglePlacesAutocomplete({
     componentRestrictions: { country: 'na' },
     setIsOpenPopover,
-    onLocationResult: handleFinalAddress,
+    onLocationResult: (location) => {
+      console.log('place', location)
+      handleFinalAddress(location);
+      setFinalAddress(location.address);
+    },
   });
-console.log(autoCompleteLocation)
   const {
     loading: locationLoading,
     handleGetCurrentLocation,
-    selectedLocation,
-  } = useCurrentLocation({ setIsOpenPopover });
+  } = useCurrentLocation({
+    setIsOpenPopover,
+    onLocationResult: (location) => {
+      console.log('curre', location)
+      handleFinalAddress(location);
+      setFinalAddress(location.address);
+    },
+  });
 
   const {
     selectedPosition,
     handleMapClick,
     handleMarkerDrag,
     address: mapAddress,
-    fullAddress,
     loading: mapLoading,
     handleConfirm,
-  } = useMapPicker({ setIsOpenPopover });
+  } = useMapPicker({
+    setIsOpenPopover: setIsOpenMap,
+    onLocationResult: (location) => {
+      console.log('map', location)
+      handleFinalAddress(location);
+      setFinalAddress(location.address);
+    },
+  });
+  console.log(finalAddress)
 
-  const finalLocation = autoCompleteLocation || fullAddress || selectedLocation;
   const propertyData = useCreatePropertyStore((s) => s.propertyData);
 
   return (
@@ -89,7 +104,7 @@ console.log(autoCompleteLocation)
             <div className="flex gap-3 items-center">
               <GlobalSearchIcon className="size-6" />
               <p className="text-body text-black-400">
-                {finalLocation?.address ?? propertyData.address}
+                {finalAddress ?? propertyData.address}
               </p>
             </div>
           </Button>

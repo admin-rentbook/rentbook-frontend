@@ -62,6 +62,7 @@
   --color-custom-gray-500: var(--custom-gray-500);
   --color-custom-gray-900: var(--custom-gray-900);
 
+  --color-black-300: var(--black-300);
   --color-black-400: var(--black-400);
   --color-black-500: var(--black-500);
 
@@ -152,6 +153,7 @@
   --custom-neutral-900-light: oklch(0.2219 0.0042 264.48 / 50.2%); /*#1A1B1D80*/
   --neutral-600: oklch(22% 0.004 275); /*#1a1b1d*/
 
+  --black-300: oklch(0.4784 0 0); /*5d5d5d*/
   --black-400: oklch(0.4784 0 0);
   --black-500: oklch(0.2237 0.0024 325.66);
 
@@ -316,7 +318,7 @@
     @apply text-xl font-semibold font-sans;
   }
   .text-heading-xl {
-    @apply text-2xl xl:text-[2rem]  font-semibold font-sans leading-tight;
+    @apply text-xl lg:text-[1.75rem] xl:text-[2rem]  font-semibold font-sans leading-tight;
   }
   .text-heading-xl-semibold {
     @apply text-xl font-semibold font-sans;

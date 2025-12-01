@@ -1,6 +1,7 @@
 import type z from 'zod';
 import {
   createPropertySchema,
+  type ListingTypes,
   type listingTypeSchema,
   type propertyInfoSchema,
   type PropertyStatusType,
@@ -23,4 +24,29 @@ export type PropertyDataDTO = PropertyInfoData & {
   ownerEmail?: string;
   ownerPhone?: string;
   agentCommission?: number;
+};
+
+export type PropertyFilters = {
+  status: PropertyStatusType | null;
+  unitType: string | null;
+  minUnits: string | null;
+};
+
+export type PropertyCreate = {
+  propertyName: string;
+  address: {
+    lat: number;
+    lng: number;
+    address: string;
+    placeId: string;
+    street?: string;
+    city?: string;
+    state?: string;
+    country?: string;
+    postalCode?: string;
+  };
+  listedBy: {
+    type: ListingTypes;//OWNER | AGENT
+    email?: string;
+  };
 };

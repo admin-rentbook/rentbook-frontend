@@ -9,6 +9,7 @@ import type {
   BlockDTO,
   ListingDescriptionDTO,
 } from '@/features/listings/types';
+import { convertUnderscoreToSpace } from '@/shared/utils';
 import { transformDataToOptions } from '@/shared/utils/helpers';
 import {
   Calendar04Icon,
@@ -46,7 +47,24 @@ export const PROPERTY_STATUS = {
 } as const;
 export type PropertyStatusType =
   (typeof PROPERTY_STATUS)[keyof typeof PROPERTY_STATUS];
-
+export const propertyStatusOptions = Object.values(PROPERTY_STATUS).map(
+  (status) => ({
+    label: convertUnderscoreToSpace(status),
+    value: status,
+  })
+);
+export const UNIT_FILTER = {
+  IS_EQUAL_TO: 'IS_EQUAL_TO',
+  IS_LESS_THAN: 'IS_LESS_THAN',
+  IS_GREATER_THAN: 'IS_GREATER_THAN',
+  PARTIALLY_LISTED: 'PARTIALLY_LISTED',
+  FULLY_LISTED: 'FULLY_LISTED',};
+export const unitFilterOptions = Object.values(UNIT_FILTER).map(
+  (unitFilter) => ({
+    label: convertUnderscoreToSpace(unitFilter),
+    value: unitFilter,
+  })
+);
 export const LISTING_TYPE = {
   OWNER: 'OWNER',
   AGENT: 'AGENT',

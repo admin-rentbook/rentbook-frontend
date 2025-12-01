@@ -16,9 +16,11 @@ interface UseCurrentLocationReturn {
 
 type UseCurrentLocationProps = {
   setIsOpenPopover?: React.Dispatch<React.SetStateAction<boolean>>;
+  onLocationResult?: (location: LocationResult) => void;
 };
 export function useCurrentLocation({
   setIsOpenPopover,
+  onLocationResult,
 }: UseCurrentLocationProps = {}): UseCurrentLocationReturn {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,8 +48,13 @@ export function useCurrentLocation({
           const locationData: LocationResult = {
             lat,
             lng,
-            address: '', // Empty - will be filled when user requests
+            address: '',
             placeId: '',
+            street: '',
+            city: '',
+            state: '',
+            country: '',
+            postalCode: '',
           };
 
           setLocation(locationData);
@@ -105,11 +112,32 @@ export function useCurrentLocation({
 
           if (status === 'OK' && results && results.length > 0) {
             const result = results[0];
+
+            const getComponent = (type: string) => {
+              return (
+                result.address_components?.find((c) => c.types.includes(type))
+                  ?.long_name || ''
+              );
+            };
+
+            const streetNumber = getComponent('street_number');
+            const route = getComponent('route');
+
             const locationData: LocationResult = {
               lat,
               lng,
               address: result.formatted_address,
               placeId: result.place_id,
+
+              // Extracted address components
+              street: `${streetNumber} ${route}`.trim() || '',
+              city:
+                getComponent('locality') ||
+                getComponent('administrative_area_level_2') ||
+                '',
+              state: getComponent('administrative_area_level_1') || '',
+              country: getComponent('country') || '',
+              postalCode: getComponent('postal_code') || '',
             };
 
             setLocation(locationData);
@@ -193,6 +221,7 @@ export function useCurrentLocation({
       setSelectedLocation(currentLocation);
       setShowAddressOption(false);
       setIsOpenPopover?.(false);
+      onLocationResult?.(currentLocation);
     } catch (error) {
       console.error('Failed to get current location:', error);
     }
