@@ -51,7 +51,7 @@ export const SearchBox = (props: SearchBoxProps) => {
         name={props.name}
         onChange={(e) => handleChange(e)}
         className={cn(
-          'placeholder:text-black-400 bg-primary-foreground rounded-xl',
+          'placeholder:text-black-400 bg-primary-foreground rounded-xl h-6',
           props.className
         )}
       />

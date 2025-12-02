@@ -24,6 +24,7 @@ export const NotificationModal = (props: NotificationModalProps) => {
         <Sheet
           open={props.modalOptions.open}
           onOpenChange={props.modalOptions.onOpenChange}
+          className='pt-10'
           children={
             <CommonElement
               actions={props.actions}
@@ -37,7 +38,7 @@ export const NotificationModal = (props: NotificationModalProps) => {
         <DialogComponent
           open={props.modalOptions.open}
           onOpenChange={props.modalOptions.onOpenChange}
-          className={cn(`${props.className} hidden lg:block`)}
+          className={cn(`${props.className}`)}
           children={
             <CommonElement
               actions={props.actions}

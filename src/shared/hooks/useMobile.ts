@@ -4,8 +4,8 @@ export const useMobile = (breakpoint: number = 1024) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < breakpoint); // 1024px = lg breakpoint
+    const checkMobile = () => {// 1024px = lg breakpoint
+      setIsMobile(window.innerWidth < breakpoint); 
     };
 
     checkMobile();
