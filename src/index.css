@@ -293,7 +293,7 @@
 
 @layer utilities {
   .text-heading-1 {
-    @apply text-[4rem] font-semibold font-sans leading-none;
+    @apply text-xl md:text-2xl lg:text-[4rem] font-semibold font-sans leading-none;
   }
   .text-heading-2 {
     @apply text-3xl font-semibold font-sans leading-snug;

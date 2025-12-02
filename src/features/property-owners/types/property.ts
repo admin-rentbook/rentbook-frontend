@@ -28,8 +28,6 @@ export type PropertyDataDTO = PropertyInfoData & {
 
 export type PropertyFilters = {
   status: PropertyStatusType | null;
-  unitType: string | null;
-  minUnits: string | null;
 };
 
 export type PropertyCreate = {

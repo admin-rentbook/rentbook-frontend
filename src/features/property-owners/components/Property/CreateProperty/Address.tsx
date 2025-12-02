@@ -48,7 +48,6 @@ export const Address = ({ form }: AddressProps) => {
     componentRestrictions: { country: 'na' },
     setIsOpenPopover,
     onLocationResult: (location) => {
-      console.log('place', location)
       handleFinalAddress(location);
       setFinalAddress(location.address);
     },
@@ -59,7 +58,6 @@ export const Address = ({ form }: AddressProps) => {
   } = useCurrentLocation({
     setIsOpenPopover,
     onLocationResult: (location) => {
-      console.log('curre', location)
       handleFinalAddress(location);
       setFinalAddress(location.address);
     },
@@ -75,12 +73,10 @@ export const Address = ({ form }: AddressProps) => {
   } = useMapPicker({
     setIsOpenPopover: setIsOpenMap,
     onLocationResult: (location) => {
-      console.log('map', location)
       handleFinalAddress(location);
       setFinalAddress(location.address);
     },
   });
-  console.log(finalAddress)
 
   const propertyData = useCreatePropertyStore((s) => s.propertyData);
 

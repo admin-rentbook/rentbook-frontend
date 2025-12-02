@@ -2,7 +2,7 @@ import { DataTable, SearchBox } from '@/shared/components';
 import { useState } from 'react';
 import { propertyColumns } from '../../columns';
 import { usePropertyStore } from '../../store/usePropertyStore';
-import type { PropertyFilters, PropertyDTO } from '../../types/property';
+import type { PropertyDTO, PropertyFilters } from '../../types/property';
 import { PropertyListMobile } from './Mobile';
 import { PropertyFilter } from './PropertyFilter';
 
@@ -12,16 +12,14 @@ export const PropertyList = () => {
   const pagination = usePropertyStore((s) => s.pagination);
   const setPagination = usePropertyStore((s) => s.setPagination);
 
- const [filters, setFilters] = useState<PropertyFilters>({
+  const [filters, setFilters] = useState<PropertyFilters>({
     status: null,
-    unitType: null,
-    minUnits: null,
   });
 
   return (
-    <div className="p-5 flex flex-col gap-5">
+    <div className="p-6 flex flex-col gap-5">
       <div className="flex items-center justify-between">
-        <div className="w-1/4 lg:w-1/5">
+        <div className="w-2/3 lg:w-1/5">
           <SearchBox
             placeholder="Filter by property name"
             inputValue={searchTerm}
@@ -56,7 +54,7 @@ const propertyList: PropertyDTO[] = [
     address: '456 Ocean Dr, Miami, FL',
     unit: 8,
     totalUnits: 30,
-    status: 'PENDING',
+    status: 'INACTIVE',
   },
   {
     name: 'Mountain Retreat',
@@ -77,7 +75,7 @@ const propertyList: PropertyDTO[] = [
     address: '456 Ocean Dr, Miami, FL',
     unit: 8,
     totalUnits: 30,
-    status: 'PENDING',
+    status: 'INACTIVE',
   },
   {
     name: 'Mountain Retreat',
@@ -86,12 +84,12 @@ const propertyList: PropertyDTO[] = [
     totalUnits: 20,
     status: 'INACTIVE',
   },
-    {
+  {
     name: 'Oceanview Apartments',
     address: '456 Ocean Dr, Miami, FL',
     unit: 8,
     totalUnits: 30,
-    status: 'PENDING',
+    status: 'INACTIVE',
   },
   {
     name: 'Mountain Retreat',
@@ -112,7 +110,7 @@ const propertyList: PropertyDTO[] = [
     address: '456 Ocean Dr, Miami, FL',
     unit: 8,
     totalUnits: 30,
-    status: 'PENDING',
+    status: 'INACTIVE',
   },
   {
     name: 'Mountain Retreat',
@@ -126,7 +124,7 @@ const propertyList: PropertyDTO[] = [
     address: '456 Ocean Dr, Miami, FL',
     unit: 8,
     totalUnits: 30,
-    status: 'PENDING',
+    status: 'INACTIVE',
   },
   {
     name: 'Mountain Retreat',
@@ -134,5 +132,5 @@ const propertyList: PropertyDTO[] = [
     unit: 5,
     totalUnits: 20,
     status: 'INACTIVE',
-  },  
+  },
 ];

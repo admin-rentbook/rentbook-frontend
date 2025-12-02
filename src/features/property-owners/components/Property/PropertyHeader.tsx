@@ -6,8 +6,8 @@ import { Links } from '../../constants';
 export const PropertyHeader = () => {
   const navigate = useNavigate();
   return (
-    <div className="border-b-gray-50 border-b">
-      <div className="flex items-center justify-between p-5">
+    <div className="border-b-gray-50 border-0 lg:border-b">
+      <div className="flex items-center justify-between p-6">
         <h3 className="text-heading-3 text-neutral.600">Property</h3>
         <Button onClick={() => navigate({ to: Links.CREATE_PROPERTY })}>
           <Add01Icon className="size-4" />

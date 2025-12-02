@@ -21,8 +21,8 @@ export const PropertyListingType = ({ form }: PropertyListingTypeProps) => {
   const listingType = form.watch('listingType');
   return (
     <div>
-      <div className="flex items-center justify-center">
-        <div className="flex flex-col gap-10">
+      <div className="flex items-center lg:justify-center">
+        <div className="flex flex-col gap-10 md:w-full lg:w-auto">
           <div className="flex flex-col">
             <h2 className="text-heading-xl text-neutral-600">
               Who is listing this property on Rentbook?

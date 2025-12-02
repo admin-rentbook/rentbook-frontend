@@ -53,7 +53,7 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
 
   return (
     <div>
-      <div className="hidden md:block overflow-hidden rounded-md">
+      <div className="hidden lg:block overflow-hidden rounded-md">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -103,7 +103,7 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
           </TableBody>
         </Table>
       </div>
-      <div className="md:hidden space-y-4">
+      <div className="lg:hidden space-y-4">
         {table.getRowModel().rows?.length ? (
           table
             .getRowModel()

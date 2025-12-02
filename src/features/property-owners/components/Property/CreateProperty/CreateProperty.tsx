@@ -24,9 +24,10 @@ export const CreateProperty = () => {
         icon={SuccessIcon}
         className="w-full md:w-1/2 xl:w-1/3"
         actions={
-          <div className="flex gap-2 w-full justify-end px-4">
+          <div className="flex gap-2 w-full justify-center lg:justify-end px-4">
             <Button
               variant="tertiary"
+              className="w-1/2 lg:w-auto h-11 lg:h-8"
               onClick={() => navigate({ to: Links.PROPERTIES })}
             >
               Go to dashboard
@@ -35,6 +36,7 @@ export const CreateProperty = () => {
               onClick={() =>
                 navigate({ to: ListingLinks.LISTINGS_GET_STARTED })
               }
+              className="w-1/2 lg:w-auto h-11 lg:h-8"
             >
               Next: Create listing
             </Button>
@@ -42,8 +44,8 @@ export const CreateProperty = () => {
         }
       />
       <div className="h-screen flex flex-col relative">
-        <div className=" top-0 left-0 right-0 border-b-gray-50 z-1 bg-white border-b">
-          <div className="flex items-center h-[68px] p-0 lg:p-5 text-heading-4 text-black-400 gap-4">
+        <div className=" top-0 left-0 right-0 border-b-gray-50 z-1 bg-white border-b-0 lg:border-b">
+          <div className="flex items-center h-[68px] p-1 lg:p-5 text-heading-4 text-black-400 gap-4">
             <Button
               variant="icon"
               onClick={() => navigate({ to: Links.PROPERTIES })}
@@ -54,7 +56,7 @@ export const CreateProperty = () => {
             <h5 className="text-black-400">Create property</h5>
           </div>
         </div>
-        <div className="pt-2 lg:pt-20 h-full px-3 lg:px-10">
+        <div className="pt-6 lg:pt-20 h-full px-4 md:px-10">
           <div className="h-full grid grid-cols-3 gap-4">
             <div className="col-span-3 lg:col-span-2 order-1">
               <Form form={form} onSubmit={onSubmit}>
@@ -85,19 +87,26 @@ export const CreateProperty = () => {
             </div>
 
             <div className="col-span-3 order-4 lg:order-3">
-              <div className="flex pb-5 gap-4 h-full align-baseline items-end justify-end">
-                <Button
-                  variant="tertiary"
-                  onClick={() => navigate({ to: Links.PROPERTIES })}
-                >
-                  Back
-                </Button>
-                <Button
-                  disabled={isButtonDisabled}
-                  onClick={form.handleSubmit(onSubmit)}
-                >
-                  Create property
-                </Button>
+              <div className="flex flex-col lg:flex-row  pb-5 gap-4 h-full align-baseline lg:items-end lg:justify-end">
+                <div className="hidden lg:block">
+                  <Button
+                    variant="tertiary"
+                    onClick={() => navigate({ to: Links.PROPERTIES })}
+                    size="lg"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    disabled={isButtonDisabled}
+                    onClick={form.handleSubmit(onSubmit)}
+                    size="lg"
+                    className='w-full lg:w-auto'
+                  >
+                    Create property
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

@@ -43,7 +43,6 @@ export type LinkType = (typeof Links)[keyof typeof Links];
 export const PROPERTY_STATUS = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE',
-  PENDING: 'PENDING',
 } as const;
 export type PropertyStatusType =
   (typeof PROPERTY_STATUS)[keyof typeof PROPERTY_STATUS];
