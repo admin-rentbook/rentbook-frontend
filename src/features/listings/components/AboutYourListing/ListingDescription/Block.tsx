@@ -1,5 +1,5 @@
 import { GuestHouseIcon } from 'hugeicons-react';
-import type { BlockDTO } from '../../types';
+import type { BlockDTO } from '../../../types';
 
 type BlockProps = {
   block: BlockDTO;

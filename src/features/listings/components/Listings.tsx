@@ -10,15 +10,24 @@ export const Listings = () => {
   const currentStep = steps[stepper.currentMainStep];
   const navigate = useNavigate();
 
-  const getCurrentComponent = () => {
-    if (currentStep.subSteps?.length > 0) {
-      const Component = currentStep.subSteps[stepper.currentSubStep].component;
-      return <Component onNext={stepper.nextSubStep} />;
-    } else {
-      const Component = currentStep.component;
-      return Component ? <Component onNext={stepper.nextMainStep} /> : null;
-    }
-  };
+ const getCurrentComponent = () => {
+  if (currentStep.subSteps?.length > 0) {
+    const currentSubStepIndex = stepper.getCurrentSubStep(
+      stepper.currentMainStep
+    );
+    const Component = currentStep.subSteps[currentSubStepIndex].component;
+
+    return (
+      <Component onNext={stepper.goForward} onPrev={stepper.goBack} />
+    );
+  } else {
+    const Component = currentStep.component;
+    return Component ? (
+      <Component onNext={stepper.goForward} onPrev={stepper.goBack} />
+    ) : null;
+  }
+};
+
 
   return (
     <div className="grid grid-rows-[auto_1fr] h-screen">

@@ -1,5 +1,6 @@
 import type { Step } from '@/shared/types';
-import { ListingDescription } from './AboutYourListing';
+import { AddImages, Amenities, ListingDescription } from './AboutYourListing';
+import { CostAndFees } from './CostAndFees';
 
 export const steps: Step[] = [
   {
@@ -9,26 +10,20 @@ export const steps: Step[] = [
       {
         id: 0,
         title: 'Listing description',
-        component: ({ onNext }) => (
-          <ListingDescription onNext={onNext} />
-        ),
+        component: ({ onNext }) => <ListingDescription onNext={onNext} />,
       },
       {
         id: 1,
         title: 'Amenities',
-        component: ({ onNext }) => (
-          <div>
-            Amenities <button onClick={onNext}>Next</button>
-          </div>
+        component: ({ onNext, onPrev }) => (
+          <Amenities onNext={onNext} onPrev={onPrev} />
         ),
       },
       {
         id: 2,
         title: 'Add media',
-        component: ({ onNext }) => (
-          <div>
-            Add Media <button onClick={onNext}>Next</button>
-          </div>
+        component: ({ onNext, onPrev }) => (
+          <AddImages onNext={onNext} onPrev={onPrev} />
         ),
       },
     ],
@@ -40,10 +35,8 @@ export const steps: Step[] = [
       {
         id: 0,
         title: 'Set your price',
-        component: ({ onNext }) => (
-          <div>
-            Payment Details <button onClick={onNext}>Next</button>
-          </div>
+        component: ({ onNext, onPrev }) => (
+         <CostAndFees onNext={onNext} onPrev={onPrev} />
         ),
       },
     ],

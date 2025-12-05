@@ -18,13 +18,15 @@ interface SheetProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   className?: string;
+  side?: 'bottom' | 'top' | 'right' | 'left' | undefined;
 }
 export const Sheet = (props: SheetProps) => {
+  const { side = 'bottom' } = props;
   return (
     <ShadCnSheet open={props.open} onOpenChange={props.onOpenChange}>
       {props.trigger && <SheetTrigger asChild>{props.trigger}</SheetTrigger>}
       <SheetContent
-        side="bottom"
+        side={side}
         className={cn(
           'h-screen w-screen p-0 flex border-0 max-sm:w-full max-sm:h-full',
           props.className

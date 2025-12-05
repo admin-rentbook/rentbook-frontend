@@ -1,4 +1,6 @@
+import { cn } from '@/shared/lib/utils';
 import type { BaseFieldProps } from '@/shared/types';
+import React from 'react';
 import type { FieldValues } from 'react-hook-form';
 import { Input } from '../ui';
 import {
@@ -12,10 +14,25 @@ import {
 
 interface FormInputProps<TFieldValues extends FieldValues = FieldValues>
   extends BaseFieldProps<TFieldValues> {
-  type?: 'text' | 'email' | 'password' | 'tel' | 'url' | 'hidden';
+  type?:
+    | 'text'
+    | 'email'
+    | 'password'
+    | 'tel'
+    | 'url'
+    | 'hidden'
+    | 'number'
+    | 'date';
   variant?: 'default' | 'filled' | 'outlined' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   showErrorMessage?: boolean;
+  customInput?: React.ReactNode;
+  // New props for add-ons
+  leadingAddOn?: React.ReactNode;
+  trailingAddOn?: React.ReactNode;
+  min?: number;
+  max?: number;
+  step?: number;
 }
 export const FormInput = <TFieldValues extends FieldValues>(
   props: FormInputProps<TFieldValues>
@@ -25,6 +42,12 @@ export const FormInput = <TFieldValues extends FieldValues>(
     type = 'text',
     size = 'default',
     showErrorMessage = false,
+    customInput,
+    leadingAddOn,
+    trailingAddOn,
+    min,
+    max,
+    step,
     ...inputProps
   } = props;
 
@@ -38,6 +61,30 @@ export const FormInput = <TFieldValues extends FieldValues>(
     );
   }
 
+  const handleNumberChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    onChange: (...event: any[]) => void
+  ) => {
+    if (type === 'number') {
+      const value = e.target.value;
+      if (value === '') {
+        onChange('');
+        return;
+      }
+      const numValue = parseInt(value, 10);
+      if (!isNaN(numValue)) {
+        // Apply min/max constraints
+        let constrainedValue = numValue;
+        if (min !== undefined && numValue < min) constrainedValue = min;
+        if (max !== undefined && numValue > max) constrainedValue = max;
+        onChange(constrainedValue);
+      }
+    } else {
+      onChange(e);
+    }
+  };
+
+  const hasAddOns = leadingAddOn || trailingAddOn;
   return (
     <FormField
       control={props.control}
@@ -46,15 +93,72 @@ export const FormInput = <TFieldValues extends FieldValues>(
         <FormItem>
           {props.label && <FormLabel>{props.label}</FormLabel>}
           <FormControl>
-            <Input
-              type={type}
-              placeholder={props.placeholder}
-              variant={variant}
-              disabled={props.disabled}
-              size={size}
-              {...field}
-              {...inputProps}
-            />
+            {customInput ? (
+              React.cloneElement(customInput as React.ReactElement, {
+                ...field,
+                ...inputProps,
+              })
+            ) : hasAddOns ? (
+              <div className="relative flex items-center">
+                {leadingAddOn && (
+                  <div
+                    className={cn(
+                      'absolute left-0 flex items-center justify-center px-3 pointer-events-none',
+                      'text-sm text-muted-foreground',
+                      size === 'sm' && 'text-xs px-2',
+                      size === 'lg' && 'text-base px-4'
+                    )}
+                  >
+                    {leadingAddOn}
+                  </div>
+                )}
+                <Input
+                  type={type}
+                  placeholder={props.placeholder}
+                  variant={variant}
+                  disabled={props.disabled}
+                  size={size}
+                  min={min}
+                  max={max}
+                  step={step}
+                  className={cn(
+                    leadingAddOn && 'pl-12',
+                    trailingAddOn && 'pr-20',
+                    size === 'sm' && leadingAddOn && 'pl-10',
+                    size === 'sm' && trailingAddOn && 'pr-16'
+                  )}
+                  {...field}
+                  onChange={(e) => handleNumberChange(e, field.onChange)}
+                  value={field.value ?? ''}
+                />
+                {trailingAddOn && (
+                  <div
+                    className={cn(
+                      'absolute right-0 flex items-center justify-center px-3 pointer-events-none',
+                      'text-sm text-muted-foreground',
+                      size === 'sm' && 'text-xs px-2',
+                      size === 'lg' && 'text-base px-4'
+                    )}
+                  >
+                    {trailingAddOn}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Input
+                type={type}
+                placeholder={props.placeholder}
+                variant={variant}
+                disabled={props.disabled}
+                size={size}
+                min={min}
+                max={max}
+                step={step}
+                {...field}
+                onChange={(e) => handleNumberChange(e, field.onChange)}
+                value={field.value ?? ''}
+              />
+            )}
           </FormControl>
           {props.description && (
             <FormDescription>{props.description}</FormDescription>

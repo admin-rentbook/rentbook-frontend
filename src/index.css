@@ -60,6 +60,7 @@
   --color-custom-gray-400: var(--custom-gray-400);
   --color-custom-gray-300: var(--custom-gray-300);
   --color-custom-gray-500: var(--custom-gray-500);
+  --color-custom-gray-600: var(--custom-gray-600);
   --color-custom-gray-900: var(--custom-gray-900);
 
   --color-black-300: var(--black-300);
@@ -95,6 +96,9 @@
   --color-custom-blue-400: var(--custom-blue-400);
 
   --color-icons-black: var(--icons-black);
+
+  --color-orange-500: var(--orange-500);
+  --color-orange-100: var(--orange-100);
 
   --shadow-sec: var(--shadow-sec);
   --shadow-pri: var(--shadow-pri);
@@ -137,7 +141,7 @@
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-border: oklch(0.922 0 0);/*#e5e5e5*/
   --sidebar-ring: oklch(0.708 0 0);
 
   /* my colors */
@@ -162,6 +166,7 @@
   --custom-gray-400: oklch(0.8141 0 0); /*#c2c2c2*/
   --custom-gray-300: oklch(0.8853 0 0); /*d9d9d9*/
   --custom-gray-500: oklch(0.8452 0 0); /*#CCCCCC*/
+  --custom-gray-600:oklch(0.839 0 0);/*#cacaca*/
   --custom-gray-900: oklch(0.1822 0 0); /*121212*/
 
   --medium-contrast: oklch(0.5243 0 0); /*#6A6A6A*/
@@ -172,7 +177,7 @@
   --success-400: oklch(0.7303 0.1944 147.44); /*#34c759*/
   --success-500: oklch(0.282 0.0846 157.98); /*#1c5d3d*/
 
-  --sidebar: oklch(0.985 0 0);
+  --sidebar: oklch(0.985 0 0);/*f9f9f9*/
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
@@ -182,7 +187,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   --primary-50: oklch(97% 0.02 356.5);
-  --primary-100: oklch(0.5803 0.2252 359.96 / 5.1%);
+  --primary-100: oklch(0.9689 0.0185 347.42);
   --primary-200: oklch(85% 0.1 356.5);
   --primary-300: oklch(75% 0.16 356.5);
   --primary-400: oklch(68% 0.21 356.5);
@@ -206,6 +211,9 @@
   --warning-500: oklch(0.7474 0.1801 57.36); /*#ff8a00*/
   --warning-600: oklch(0.7269 0.1617 65.48); /*#ea8e04*/
   --icons-black: oklch(0.2237 0.0024 325.66); /*1c1b1c*/
+
+  --orange-500: oklch(0.6483 0.1937 42.52); /*#EA5A00*/
+  --orange-100: oklch(0.981 0.010882 54.5012); /*#fff7f2*/
 
   --custom-blue-400: oklch(0.5726 0.233752 265.2836); /*#3366FF*/
 
@@ -292,6 +300,9 @@
 }
 
 @layer utilities {
+  .text-54px {
+    @apply text-[3.375rem] font-semibold font-sans
+  }
   .text-heading-1 {
     @apply text-xl md:text-2xl lg:text-[4rem] font-semibold font-sans leading-none;
   }
@@ -349,6 +360,9 @@
   }
   .text-body-xl {
     @apply text-xl font-medium font-sans;
+  }
+  .text-body-lg {
+    @apply text-lg font-medium font-sans;
   }
   .text-caption {
     @apply text-xs font-medium font-sans leading-tight;

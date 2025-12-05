@@ -62,8 +62,8 @@ export interface LocationResult {
   street: string;
   city: string;
   state: string;
-  country:string;
-  postalCode:string
+  country: string;
+  postalCode: string;
 }
 export type SidebarItem = {
   icon: React.FC<
@@ -90,14 +90,14 @@ export type PropertyDTO = {
 export type SubStepType = {
   id: number;
   title: string;
-  component: React.ComponentType<{ onNext?: () => void }>;
+  component: React.ComponentType<{ onNext?: () => void; onPrev?: () => void }>;
 };
 
 export type Step = {
   id: number;
   title: string;
   subSteps: SubStepType[];
-  component?: React.ComponentType<{ onNext: () => void }>;
+  component?: React.ComponentType<{ onNext: () => void; onPrev: () => void }>;
 };
 
 export type StepProgress = {

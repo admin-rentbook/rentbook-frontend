@@ -12,8 +12,9 @@ import {
   ArrowLeft01Icon,
   Cancel01Icon,
 } from 'hugeicons-react';
-import { ListingLinks, listingTypeOptions } from '../../constants';
-import { useBlock, useListingDescription } from '../../hooks';
+import { ListingLinks, listingTypeOptions } from '../../../constants';
+import { useBlock, useListingDescription } from '../../../hooks';
+import { ListingTitle, NavigateButtons } from '../../shared';
 import { AddToBlockContent } from './AddToBlockContent';
 import { CreateBlockContent } from './CreateBlockContent';
 
@@ -30,7 +31,7 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
     setOpenBlock,
     isAddListingToBlock,
     setIsAddListingToBlock,
-    handleAddToBlock
+    handleAddToBlock,
   } = useListingDescription(onNext);
   const {
     blockState,
@@ -43,17 +44,13 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
   const search = useSearch({ from: ListingLinks.LISTINGS });
   return (
     <div className="flex flex-col gap-10 h-full">
-      <div className="flex flex-col">
-        <h1 className="text-heading text-black-500">
-          Give your listing a title
-        </h1>
-        <p className="text-body-base-normal text-black-400">
-          Create a unique title and select appropriate listing type
-        </p>
-      </div>
+      <ListingTitle
+        description="Create a unique title and select appropriate listing type"
+        title="Give your listing a title"
+      />
 
       <Form form={form} onSubmit={onSubmit}>
-        <div className="flex flex-col gap-10 w-full xl:w-4/5">
+        <div className="flex flex-col gap-10 w-full xl:w-3/5">
           <div className="flex flex-col gap-6">
             <div className="flex justify-between items-center">
               <p>Add listing to a block</p>
@@ -130,20 +127,11 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
           </div>
         </div>
       </Form>
-      <div className="flex w-full gap-4 h-full align-baseline items-end justify-end">
-        <Button
-          variant="tertiary"
-          onClick={() => navigate({ to: ListingLinks.LISTINGS })}
-        >
-          Back
-        </Button>
-        <Button
-          disabled={isButtonDisabled}
-          onClick={form.handleSubmit(onSubmit)}
-        >
-          Continue
-        </Button>
-      </div>
+      <NavigateButtons
+        isButtonDisabled={isButtonDisabled}
+        onBack={() => navigate({ to: ListingLinks.LISTINGS_GET_STARTED })}
+        onContinue={form.handleSubmit(onSubmit)}
+      />
 
       <DialogComponent
         open={openBlock}

@@ -5,6 +5,7 @@ export * from './button-group';
 export * from './card';
 export * from './carousel';
 export * from './checkbox';
+export * from './collapsible';
 export * from './drawer';
 export * from './dropdown-menu';
 export * from './form';

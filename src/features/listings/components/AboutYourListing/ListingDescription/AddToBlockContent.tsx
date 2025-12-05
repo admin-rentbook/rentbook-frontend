@@ -1,5 +1,5 @@
 import { Button } from '@/shared/components';
-import type { BlockDTO } from '../../types';
+import type { BlockDTO } from '../../../types';
 import { Block } from './Block';
 
 type AddToBlockContentProps = {

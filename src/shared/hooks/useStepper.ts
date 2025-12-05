@@ -15,8 +15,8 @@ export type UseStepper = {
   getCompletedSubStepsCount: (stepId: number) => number;
   getProgressPercentage: (stepId: number) => number;
   getCurrentSubStep: (mainStepId: number) => number;
-  nextSubStep: () => void;
-  nextMainStep: () => void;
+  goBack: () => void;
+  goForward: () => void;
 };
 
 export const useStepper = (steps: Step[]): UseStepper => {
@@ -34,7 +34,7 @@ export const useStepper = (steps: Step[]): UseStepper => {
   const toggleExpand = (stepId: number) => {
     setExpandedSteps((prev) => ({
       ...prev,
-      [stepId]: !prev[stepId],
+      [stepId]: true,
     }));
   };
 
@@ -87,26 +87,63 @@ export const useStepper = (steps: Step[]): UseStepper => {
     return currentSubStep[mainStepId] ?? 0;
   };
 
-  const nextSubStep = () => {
-    const step = steps[currentMainStep];
-    if (!step?.subSteps?.length) return;
+  const goBack = () => {
+    const currentSubStepIndex = getCurrentSubStep(currentMainStep);
 
-    const current = getCurrentSubStep(currentMainStep);
-    completeSubStep(currentMainStep, current);
+    console.log('goBack:', { currentMainStep, currentSubStepIndex });
 
-    const nextSubStepIndex = current + 1;
-    if (nextSubStepIndex < step.subSteps.length) {
-      setCurrentSubStep({
-        ...currentSubStep,
-        [currentMainStep]: nextSubStepIndex,
-      });
+    // Try to go to previous substep first
+    if (currentSubStepIndex > 0) {
+      setCurrentSubStep((prev) => ({
+        ...prev,
+        [currentMainStep]: currentSubStepIndex - 1,
+      }));
+    }
+    // Go to previous main step
+    else if (currentMainStep > 0) {
+      const prevStepIndex = currentMainStep - 1;
+      const prevStep = steps[prevStepIndex];
+
+      setCurrentMainStep(prevStepIndex);
+      toggleExpand(prevStepIndex);
+
+      // Set to last substep of previous main step
+      if (prevStep?.subSteps?.length) {
+        setCurrentSubStep((prev) => ({
+          ...prev,
+          [prevStepIndex]: prevStep.subSteps.length - 1,
+        }));
+      } else {
+        setCurrentSubStep((prev) => ({
+          ...prev,
+          [prevStepIndex]: 0,
+        }));
+      }
     }
   };
 
-  const nextMainStep = () => {
-    if (currentMainStep < steps.length - 1) {
+  const goForward = () => {
+    const step = steps[currentMainStep];
+    const current = getCurrentSubStep(currentMainStep);
+    // Mark current substep as complete
+    if (step?.subSteps?.length) {
+      completeSubStep(currentMainStep, current);
+    }
+    // Try to go to next substep first
+    if (step?.subSteps?.length && current < step.subSteps.length - 1) {
+      setCurrentSubStep((prev) => ({
+        ...prev,
+        [currentMainStep]: current + 1,
+      }));
+    }
+    // Go to next main step
+    else if (currentMainStep < steps.length - 1) {
       setCurrentMainStep(currentMainStep + 1);
       toggleExpand(currentMainStep + 1);
+      setCurrentSubStep((prev) => ({
+        ...prev,
+        [currentMainStep + 1]: 0,
+      }));
     }
   };
 
@@ -124,7 +161,7 @@ export const useStepper = (steps: Step[]): UseStepper => {
     getCompletedSubStepsCount,
     getProgressPercentage,
     getCurrentSubStep,
-    nextSubStep,
-    nextMainStep,
+    goBack,
+    goForward,
   };
 };
