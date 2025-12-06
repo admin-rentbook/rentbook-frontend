@@ -19,7 +19,7 @@ export const useListingDescription = (onNext: (() => void) | undefined) => {
       listingType: '',
       noOfBeds: undefined,
       noOfBathrooms: undefined,
-      sizeSqFt: '',
+      sizeSqFt: undefined,
       listingDescription: '',
     },
   });

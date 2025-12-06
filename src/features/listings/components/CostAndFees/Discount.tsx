@@ -5,6 +5,7 @@ import { cn } from '@/shared/lib/utils';
 import { Add01Icon, Delete01Icon, DiscountTag02Icon } from 'hugeicons-react';
 import type { UseFormReturn } from 'react-hook-form';
 import type { DiscountFormValues } from '../../types';
+import { percentageFormatter } from '@/shared/utils';
 
 type DiscountProps = {
   isOpen: boolean;
@@ -54,6 +55,7 @@ export const DiscountCard = (props: DiscountProps) => {
               control={props.form.control}
               name="discount"
               label="% discount"
+              formatter={percentageFormatter}
               showErrorMessage
               size="sm"
             />

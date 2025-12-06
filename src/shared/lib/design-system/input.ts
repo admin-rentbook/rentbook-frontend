@@ -35,6 +35,7 @@ export const inputVariants = cva(
         sm: 'h-8 px-3 text-sm',
         md: 'h-10 px-3 text-sm',
         lg: 'h-11 px-4 text-lg',
+        '4xl': 'h-[92px] text-[3.375rem] px-4'
       },
       state: {
         // default: 'h-11 md:h-8 px-3 text-sm',

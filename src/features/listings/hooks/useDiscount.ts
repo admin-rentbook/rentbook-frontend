@@ -12,7 +12,7 @@ export const useDiscount = (setIsOpen: SetState) => {
     resolver: zodResolver(discountValidationSchema),
     mode: 'onChange',
     defaultValues: {
-      discount: '',
+      discount: undefined,
       duration: '',
     },
   });

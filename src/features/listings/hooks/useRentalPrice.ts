@@ -22,10 +22,24 @@ export const useRentalPrice = (
     mode: 'onChange',
     defaultValues: {
       selectType: selectType,
-      rentDuration: 0,
-      year: '',
-      securityDeposit: '',
-    },
+      ...(selectType === RentalPayType.FIXED_PRICE
+        ? {
+            rentalPrice: undefined,
+            rentDuration: undefined,
+            year: '',
+            securityDeposit: undefined,
+          }
+        : {
+            bidPrice: undefined,
+            rentDuration: undefined,
+            year: '',
+            securityDeposit: undefined,
+            bidStartDate: new Date(),
+            bidEndDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            autoAcceptHighestBidder: false,
+            extendLastMinuteBid: false,
+          }),
+    } as RentalPriceFormValues,
   });
 
   const handleSelectTypeChange = (newType: RentalPay) => {
@@ -35,21 +49,23 @@ export const useRentalPrice = (
     if (newType === RentalPayType.FIXED_PRICE) {
       form.reset({
         selectType: newType,
+        rentalPrice: undefined,
         rentDuration: currentValues.rentDuration ?? 0,
         year: currentValues.year || '',
-        securityDeposit: currentValues.securityDeposit || '',
+        securityDeposit: currentValues.securityDeposit || undefined,
       });
     } else {
       form.reset({
         selectType: newType,
         rentDuration: currentValues.rentDuration ?? 0,
+        bidPrice: 0,
         year: currentValues.year || '',
-        securityDeposit: currentValues.securityDeposit || '',
+        securityDeposit: currentValues.securityDeposit || undefined,
         bidStartDate: new Date(),
-        bidEndDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), 
+        bidEndDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         autoAcceptHighestBidder: false,
         extendLastMinuteBid: false,
-      } as RentalPriceFormValues);
+      });
     }
   };
 

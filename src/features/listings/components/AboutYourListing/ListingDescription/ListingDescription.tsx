@@ -6,6 +6,7 @@ import {
   FormSelect,
   FormTextarea,
 } from '@/shared/components/Form';
+import { numberFormatter } from '@/shared/utils';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
   ArrowDown01Icon,
@@ -92,6 +93,7 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
                 label="No of beds"
                 size="sm"
                 showErrorMessage
+                formatter={numberFormatter}
               />
               <FormInput
                 control={form.control}
@@ -99,6 +101,7 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
                 label="No of bathrooms"
                 size="sm"
                 showErrorMessage
+                formatter={numberFormatter}
               />
               <FormInput
                 control={form.control}
@@ -106,6 +109,7 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
                 label="Size.sq.ft"
                 size="sm"
                 showErrorMessage
+                formatter={numberFormatter}
               />
             </div>
           </div>

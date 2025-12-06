@@ -6,6 +6,7 @@ import {
   FormSelect,
 } from '@/shared/components/Form';
 import { useMobile } from '@/shared/hooks';
+import { currencyFormatter } from '@/shared/utils';
 import { Cancel01Icon } from 'hugeicons-react';
 import type { UseFormReturn } from 'react-hook-form';
 import { feeTypes, paymentFreqOptions } from '../../constants';
@@ -51,6 +52,7 @@ export const AdditionalPriceSetting = ({
               label="Fee name"
               showErrorMessage
               size="sm"
+            
             />
             <FormSelect
               control={form.control}
@@ -65,7 +67,7 @@ export const AdditionalPriceSetting = ({
               label="Amount"
               showErrorMessage
               size="sm"
-              type="number"
+              formatter={currencyFormatter}
             />
             <div className="flex flex-col gap-3">
               <p className="text-body-medium text-black-500">

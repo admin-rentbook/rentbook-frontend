@@ -5,22 +5,17 @@ export const listingDescriptionSchema = z.object({
   listingTitle: z.string().min(5, 'Title must be at least 5 characters'),
   listingType: z.string().min(1, 'Select listing type'),
   noOfBeds: z
-    .string()
-    .min(1, 'Number of beds is required')
-    .refine(
-      (val) => !isNaN(Number(val)),
-      'Number of beds must be a valid number'
-    ),
+    .number()
+    .int()
+    .min(1, 'Number of beds must be at least 1')
+    .optional(),
 
   noOfBathrooms: z
-    .string()
-    .min(1, 'Number of bathrooms is required')
-    .refine(
-      (val) => !isNaN(Number(val)),
-      'Number of bathrooms must be a valid number'
-    ),
-
-  sizeSqFt: z.string().min(1, 'Add size.sq.ft'),
+    .number()
+    .int()
+    .min(1, 'Number of baths must be at least 1')
+    .optional(),
+  sizeSqFt: z.number().min(1, 'Size must be at least 1 sq.ft').optional(),
   listingDescription: z
     .string()
     .min(5, 'Description must be at least 5 characters'),
@@ -32,17 +27,42 @@ export const createBlockSchema = z.object({
 
 export const fixedPriceSchema = z.object({
   selectType: z.literal(RentalPayType.FIXED_PRICE),
-  rentDuration: z.number().int().min(0, 'Rent duration must be at least 0'),
+  rentalPrice: z
+    .number()
+    .min(1, 'Bid Price must be at least N$1.00')
+    .optional()
+    .or(z.literal(undefined)),
+  rentDuration: z
+    .number()
+    .int()
+    .min(1, 'Rent duration must be at least 1')
+    .optional()
+    .or(z.literal(undefined)),
   year: z.string().min(1, 'Year is required'),
-  securityDeposit: z.string().min(1, 'Security deposit is required'),
+  securityDeposit: z
+    .number()
+    .int()
+    .min(1, 'Size.sq.ft must be at least 1')
+    .optional()
+    .or(z.literal(undefined)),
 });
 
 export const timedAuctionSchema = z
   .object({
     selectType: z.literal(RentalPayType.TIMED_AUCTION),
-    rentDuration: z.number().int().min(1, 'Rent duration must be at least 0'),
+    bidPrice: z
+      .number()
+      .min(1, 'Bid Price must be at least N$1.00')
+      .optional()
+      .or(z.literal(undefined)),
+    rentDuration: z
+      .number()
+      .int()
+      .min(1, 'Rent duration must be at least 1')
+      .optional()
+      .or(z.literal(undefined)),
     year: z.string().min(1, 'Year is required'),
-    securityDeposit: z.string().min(1, 'Security deposit is required'),
+    securityDeposit: z.number().min(0, 'Deposit cannot be negative').optional(),
     bidStartDate: z.coerce.date(),
     bidEndDate: z.coerce.date(),
     autoAcceptHighestBidder: z.boolean().default(false),
@@ -67,7 +87,12 @@ export const additionalFeeValSchema = z.object({
     ],
     { message: 'Payment Frequency is required' }
   ),
-  amount: z.string().min(1, 'Amount is required'),
+  amount: z
+    .number()
+    .int()
+    .min(1, 'Amount must be at least N$1.00')
+    .optional()
+    .or(z.literal(undefined)),
   feeRequirement: z.enum(
     [FeeTypes.INCLUDED_IN_BASE_RENT, FeeTypes.OPTIONAL, FeeTypes.REQUIRED],
     { message: 'Fee requirement is required' }
@@ -75,6 +100,9 @@ export const additionalFeeValSchema = z.object({
 });
 
 export const discountValidationSchema = z.object({
-  discount: z.string().min(1),
+  discount: z
+    .number()
+    .min(0, 'Discount cannot be negative')
+    .max(100, 'Discount cannot exceed 100%'),
   duration: z.coerce.date(),
 });
