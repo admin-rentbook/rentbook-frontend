@@ -6,6 +6,7 @@ export * from './Popover';
 export * from './PropertyImage';
 export * from './ResponsiveModal';
 export * from './SearchBox';
+export * from './SelectCard';
 export * from './Sheet';
 export * from './Stepper';
 export * from './ui';

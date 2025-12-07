@@ -125,3 +125,15 @@ export type CustomFilter = BaseFilter & {
 };
 
 export type FilterConfig = ListFilter | CustomFilter;
+
+export type SelectCardType = {
+  icon: React.FC<
+    Omit<HugeiconsProps, 'ref'> & React.RefAttributes<SVGSVGElement>
+  >;
+  name: string;
+  value: string;
+  subHeader?:string;
+  description: string;
+  bgColor: string;
+  color: string;
+};

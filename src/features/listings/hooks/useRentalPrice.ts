@@ -92,8 +92,6 @@ export const useRentalPrice = (
   }
 
   const isButtonDisabled = !form.formState.isValid;
-  console.log(form.formState.errors);
-  console.log(isButtonDisabled);
 
   return {
     onSubmit,

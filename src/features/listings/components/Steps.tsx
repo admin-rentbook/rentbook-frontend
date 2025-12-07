@@ -1,6 +1,8 @@
 import type { Step } from '@/shared/types';
 import { AddImages, Amenities, ListingDescription } from './AboutYourListing';
 import { CostAndFees } from './CostAndFees';
+import { AdditionalDetails, RentAvailability } from './RentAvailability';
+import { Viewing } from './Viewing';
 
 export const steps: Step[] = [
   {
@@ -36,10 +38,42 @@ export const steps: Step[] = [
         id: 0,
         title: 'Set your price',
         component: ({ onNext, onPrev }) => (
-         <CostAndFees onNext={onNext} onPrev={onPrev} />
+          <CostAndFees onNext={onNext} onPrev={onPrev} />
         ),
       },
     ],
   },
-  
+  {
+    id: 2,
+    title: 'Viewing',
+    subSteps: [
+      {
+        id: 0,
+        title: 'Set viewing',
+        component: ({ onNext, onPrev }) => (
+          <Viewing onNext={onNext} onPrev={onPrev} />
+        ),
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: 'Final details',
+    subSteps: [
+      {
+        id: 0,
+        title: 'Set final details',
+        component: ({ onNext, onPrev }) => (
+          <RentAvailability onNext={onNext} onPrev={onPrev} />
+        ),
+      },
+      {
+        id: 1,
+        title: 'Additional details',
+        component: ({ onNext, onPrev }) => (
+          <AdditionalDetails onNext={onNext} onPrev={onPrev} />
+        ),
+      },
+    ],
+  },
 ];

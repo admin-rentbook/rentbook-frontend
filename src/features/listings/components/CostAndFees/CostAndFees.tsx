@@ -30,9 +30,9 @@ export const CostAndFees = ({ onNext, onPrev }: CostAndFeesProps) => {
         <AdditionalPrice />
       </div>
       <NavigateButtons
-        isButtonDisabled={rentalPrice.isButtonDisabled}
+        // isButtonDisabled={rentalPrice.isButtonDisabled}
         onBack={() => onPrev?.()}
-        onContinue={rentalPrice.form.handleSubmit(rentalPrice.onSubmit)}
+        onContinue={() => onNext?.()}
       />
     </div>
   );

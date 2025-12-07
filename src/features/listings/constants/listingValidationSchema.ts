@@ -1,5 +1,11 @@
 import z from 'zod';
-import { FeeTypes, PaymentFrequency, RentalPayType } from './constants';
+import {
+  BookViewingTypes,
+  FeeTypes,
+  PaymentFrequency,
+  RentalPayType,
+  RentAvailabilityTypes,
+} from './constants';
 
 export const listingDescriptionSchema = z.object({
   listingTitle: z.string().min(5, 'Title must be at least 5 characters'),
@@ -105,4 +111,31 @@ export const discountValidationSchema = z.object({
     .min(0, 'Discount cannot be negative')
     .max(100, 'Discount cannot exceed 100%'),
   duration: z.coerce.date(),
+});
+
+export const viewFeeSchema = z.object({
+  bookViewingType: z.enum([
+    BookViewingTypes.BOOK_INSTANTLY,
+    BookViewingTypes.REVIEW_AND_CONFIRM,
+  ]),
+  viewingFee: z
+    .number()
+    .min(1, 'Viewing fee must be at least N$1.00')
+    .optional()
+    .or(z.literal(undefined)),
+});
+
+export const rentAvailabilitySchema = z.discriminatedUnion('rentAvailability', [
+  z.object({
+    rentAvailability: z.literal(RentAvailabilityTypes.AVAILABLE_NOW),
+  }),
+  z.object({
+    rentAvailability: z.literal(RentAvailabilityTypes.AVAILABLE_LATER),
+    listingDate: z.coerce.date(),
+  }),
+]);
+
+export const addNoteSchema = z.object({
+  noteTitle: z.string().min(3, 'Title must be at least 3 characters'),
+  noteDescription: z.string().min(5, 'Description must be at least 5 characters'),
 });

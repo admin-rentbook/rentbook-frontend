@@ -1,4 +1,4 @@
-import { Button } from '@/shared/components';
+import { Button, SelectCard } from '@/shared/components';
 import { Form, FormInput, FormSelect } from '@/shared/components/Form';
 import { currencyFormatter, percentageFormatter } from '@/shared/utils';
 import { Add01Icon, MinusSignIcon, Settings01Icon } from 'hugeicons-react';
@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { rentalPaymentTypes, type RentalPay } from '../../constants';
 import { type PaymentTypeSelection, type RentalPrice } from '../../hooks';
 import { BiddingRules } from './BIddingRules';
-import { PaymentTypeCard } from './PaymentTypeCard';
 import { Pricing } from './Pricing';
 
 type RentalPricingProps = {
@@ -29,7 +28,7 @@ export const RentalPricing = ({
       <div className="flex flex-col gap-6">
         <div className="grid grid-cols-2 gap-3">
           {rentalPaymentTypes.map((rentalType) => (
-            <PaymentTypeCard
+            <SelectCard
               key={rentalType.value}
               type={rentalType}
               isSelected={paymentTypeSelection.isSelected(rentalType.value)}

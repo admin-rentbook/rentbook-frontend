@@ -162,7 +162,7 @@
   --black-500: oklch(0.2237 0.0024 325.66);
 
   --custom-gray: oklch(0.9613 0.007 88.64); /*#F4F2ED*/
-  --custom-gray-100: oklch(0.937 0 0); /*#eaeaea*/
+  --custom-gray-100: oklch(0.937 0 0); /*#eaeaea #ebebeb*/
   --custom-gray-400: oklch(0.8141 0 0); /*#c2c2c2*/
   --custom-gray-300: oklch(0.8853 0 0); /*d9d9d9*/
   --custom-gray-500: oklch(0.8452 0 0); /*#CCCCCC*/

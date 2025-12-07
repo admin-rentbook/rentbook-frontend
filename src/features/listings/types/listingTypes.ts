@@ -3,9 +3,12 @@ import type { HugeiconsProps } from 'hugeicons-react';
 import type z from 'zod';
 import type {
   additionalFeeValSchema,
+  addNoteSchema,
   discountValidationSchema,
   listingDescriptionSchema,
   rentalPriceSchema,
+  rentAvailabilitySchema,
+  viewFeeSchema,
 } from '../constants';
 
 export type ListingDescriptionFormValues = z.infer<
@@ -14,6 +17,9 @@ export type ListingDescriptionFormValues = z.infer<
 export type RentalPriceFormValues = z.input<typeof rentalPriceSchema>;
 export type AdditionalFeeFormValues = z.infer<typeof additionalFeeValSchema>;
 export type DiscountFormValues = z.input<typeof discountValidationSchema>;
+export type ViewFeeFormValues = z.infer<typeof viewFeeSchema>;
+export type RentAvailabilityFormValues = z.input<typeof rentAvailabilitySchema>;
+export type AddNoteFormValues = z.infer<typeof addNoteSchema>;
 
 export type ListingDescriptionDTO = ListingDescriptionFormValues &
   StepProgress & {
@@ -34,4 +40,20 @@ export type RentalPaymentType = {
   description: string;
   bgColor: string;
   color: string;
+};
+
+export type TimeSlot = {
+  id: string;
+  startTime: string;
+  endTime: string;
+};
+
+export type DaySchedule = {
+  [key: string]: TimeSlot[];
+};
+
+export type Note = {
+  id: string;
+  noteTitle: string;
+  noteDescription: string;
 };
