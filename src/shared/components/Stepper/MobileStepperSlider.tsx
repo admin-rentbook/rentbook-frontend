@@ -47,11 +47,11 @@ export const MobileStepperSlider = ({
   };
 
   return (
-    <div className="w-full bg-white border-b sticky top-0 z-10 px-4 py-4">
+    <div className="w-full bg-white sticky top-0 z-10 px-4 py-4">
       {/* Progress Bar - moves with every substep completion */}
-      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+      <div className="h-2 bg-custom-neutral-150 rounded-full overflow-hidden">
         <div
-          className="h-full bg-primary transition-all duration-500 ease-out"
+          className="h-full bg-primary-500 transition-all duration-500 ease-out"
           style={{
             width: `${calculateProgress()}%`,
           }}
@@ -59,7 +59,7 @@ export const MobileStepperSlider = ({
       </div>
 
       {/* Optional: Show current step text */}
-      <div className="mt-2 text-xs text-center text-gray-600">
+      <div className="mt-2 text-black-400 text-center text-body-xs">
         {steps[currentMainStep]?.title}
         {steps[currentMainStep]?.subSteps &&
           steps[currentMainStep].subSteps!.length > 0 && (

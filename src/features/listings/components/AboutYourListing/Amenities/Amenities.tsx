@@ -25,8 +25,8 @@ export const Amenities = ({ onNext, onPrev }: AmenitiesProps) => {
   return (
     <div className="flex flex-col gap-10 h-full">
       <ListingTitle
-        description="Tell property seekers what stands out about your listing"
-        title="Select as many that apply"
+        description="Select as many that may apply"
+        title="Tell property seekers what stands out about your listing"
       />
       <div className="flex flex-wrap gap-3">
         {availableAmenities.map((amenity) => (
@@ -41,7 +41,7 @@ export const Amenities = ({ onNext, onPrev }: AmenitiesProps) => {
       <div className="flex flex-col gap-4">
         <p className="text-body-medium text-black-500">Additional amenities</p>
         <div className="flex w-full max-w-md items-end gap-2">
-          <div className="flex flex-col gap-3 lg:w-6/7">
+          <div className="flex flex-col gap-3 w-full lg:w-6/7">
             <Label className="text-label text-black-400">
               Describe the amenity
             </Label>

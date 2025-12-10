@@ -1,4 +1,4 @@
-import { DialogComponent, Sheet } from '@/shared/components';
+import { Button, DialogComponent, Sheet } from '@/shared/components';
 import { FormSwitch } from '@/shared/components/Form';
 import { useMobile } from '@/shared/hooks';
 import { Cancel01Icon } from 'hugeicons-react';
@@ -24,17 +24,19 @@ export const BiddingRules = ({
       <div className="bg-white rounded-[1.25em] p-6 flex flex-col gap-6">
         <div className="flex justify-between text-black-500">
           <h2 className="text-heading-3-semibold ">Bidding rules</h2>
-          <Cancel01Icon
-            className="size-6 cursor-pointer"
-            onClick={() => setIsOpen(false)}
-          />
+          {!isMobile && (
+            <Cancel01Icon
+              className="size-6 cursor-pointer"
+              onClick={() => setIsOpen(false)}
+            />
+          )}
         </div>
         <p className="text-body-base-normal text-black-400">
           Toggle applicable rules for you listing
         </p>
         <div className="flex flex-col gap-10 pt-6">
           <div className="flex justify-between gap-8">
-            <h5 className="text-body-medium text-icons-black">
+            <h5 className="text-body lg:text-body-medium text-icons-black">
               Automatically accept highest bidder when bidding ends
             </h5>
 
@@ -46,8 +48,8 @@ export const BiddingRules = ({
             />
           </div>
 
-          <div className="flex justify- gap-8">
-            <h5 className="text-body-medium text-icons-black">
+          <div className="flex  gap-8">
+            <h5 className="text-body lg:text-body-medium text-icons-black">
               If a bid is placed within the last 24 hours, extend the duration
               by 30 days
             </h5>
@@ -60,12 +62,18 @@ export const BiddingRules = ({
           </div>
         </div>
         <div className="flex justify-end pt-20">
-          <NavigateButtons
-            onBack={() => setIsOpen(false)}
-            onContinue={() => setIsOpen(false)}
-            btnText="Cancel"
-            saveBtnText="Save"
-          />
+          {isMobile ? (
+            <Button className="w-full" onClick={() => setIsOpen(false)}>
+              Save
+            </Button>
+          ) : (
+            <NavigateButtons
+              onBack={() => setIsOpen(false)}
+              onContinue={() => setIsOpen(false)}
+              btnText="Cancel"
+              saveBtnText="Save"
+            />
+          )}
         </div>
       </div>
     );
@@ -73,7 +81,12 @@ export const BiddingRules = ({
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={setIsOpen} children={<BidRules />} />
+      <Sheet
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        children={<BidRules />}
+        className="max-h-[70vh]"
+      />
     );
   }
   return (

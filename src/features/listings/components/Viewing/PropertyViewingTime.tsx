@@ -19,7 +19,7 @@ export const PropertyViewingTime = ({
           const hasSlots = daySlots.length > 0;
 
           return (
-            <div key={day} className="grid grid-cols-[15%_85%]">
+            <div key={day} className="grid lg:grid-cols-[15%_85%]">
               <div
                 className={`bg-sidebar p-5 ${day === 'Sun' ? 'border-b-0 ' : 'border-b'}
                  ${day === 'Mon' ? 'rounded-tl-[1.25em]' : 'rounded-none'} border-b-custom-gray-100
@@ -30,7 +30,7 @@ export const PropertyViewingTime = ({
                   {day}
                 </p>
               </div>
-              <div className="flex items-center px-4">
+              <div className="flex items-center px-4 py-2 lg:py-0">
                 {!hasSlots ? (
                   <div
                     className="flex justify-center py-2 gap-2 text-icons-black/50 cursor-pointer border border-dashed border-custom-gray-500 rounded-[0.75em] w-full"

@@ -1,4 +1,5 @@
 import { Form as ShadForm } from '@/shared/components/ui/form';
+import { cn } from '@/shared/lib/utils';
 import type { FieldValues, UseFormReturn } from 'react-hook-form';
 
 interface FormProps<TFieldValues extends FieldValues = FieldValues> {
@@ -15,7 +16,7 @@ export const Form = <TFieldValues extends FieldValues = FieldValues>(
     <ShadForm {...props.form}>
       <form
         onSubmit={props.form.handleSubmit(props.onSubmit)}
-        className="w-full"
+        className={cn("w-full", props.className)}
       >
         {props.children}
       </form>

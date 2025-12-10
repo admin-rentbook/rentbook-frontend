@@ -9,6 +9,7 @@ export * from './useListingDescription';
 export * from './usePaymentTypeSelection';
 export * from './useRentalPrice';
 export * from './useRentAvailability';
+export * from './useReview';
 export * from './useViewingFee';
 export * from './useViewingTimes';
 export * from './useViewingTypeSelection';

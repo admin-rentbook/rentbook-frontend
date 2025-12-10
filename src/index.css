@@ -304,7 +304,7 @@
     @apply text-[3.375rem] font-semibold font-sans
   }
   .text-heading-1 {
-    @apply text-xl md:text-2xl lg:text-[4rem] font-semibold font-sans leading-none;
+    @apply text-[1.75rem] lg:text-[4rem] font-semibold font-sans leading-none;
   }
   .text-heading-2 {
     @apply text-3xl font-semibold font-sans leading-snug;
@@ -316,14 +316,14 @@
     @apply text-2xl font-semibold font-sans;
   }
   .text-heading-4 {
-    @apply text-xl font-medium font-sans; /*20px*/
+    @apply text-base lg:text-xl font-medium font-sans; /*20px*/
   }
   .text-heading-5 {
     @apply text-[1.75rem] font-semibold font-sans leading-none;
   }
 
   .text-heading {
-    @apply text-[2rem] font-semibold font-sans;
+    @apply text-2xl lg:text-[2rem] font-semibold font-sans;
   }
   .text-heading-xl-semi {
     @apply text-xl font-semibold font-sans;
@@ -347,7 +347,7 @@
     @apply text-sm xl:text-base font-normal font-sans leading-normal;
   }
   .text-body-xs {
-    @apply text-xs font-normal font-sans leading-tight;
+    @apply text-xs font-normal font-sans leading-normal;
   }
   .text-body-sm-semi {
     @apply text-sm font-semibold font-sans leading-normal;

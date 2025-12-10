@@ -28,7 +28,7 @@ export const Sheet = (props: SheetProps) => {
       <SheetContent
         side={side}
         className={cn(
-          'h-screen w-screen p-0 flex border-0 max-sm:w-full max-sm:h-full',
+          'h-screen w-screen p-0  flex border-0 max-sm:w-full max-sm:h-full',
           props.className
         )}
         onInteractOutside={(e) => e.preventDefault()}
