@@ -6,14 +6,16 @@ import {
   FormSelect,
   FormTextarea,
 } from '@/shared/components/Form';
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { numberFormatter } from '@/shared/utils';
+import { useNavigate } from '@tanstack/react-router';
 import {
   ArrowDown01Icon,
   ArrowLeft01Icon,
   Cancel01Icon,
 } from 'hugeicons-react';
-import { ListingLinks, listingTypeOptions } from '../../constants';
-import { useBlock, useListingDescription } from '../../hooks';
+import { ListingLinks, listingTypeOptions } from '../../../constants';
+import { useBlock, useListingDescription } from '../../../hooks';
+import { ListingTitle, NavigateButtons } from '../../shared';
 import { AddToBlockContent } from './AddToBlockContent';
 import { CreateBlockContent } from './CreateBlockContent';
 
@@ -30,7 +32,9 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
     setOpenBlock,
     isAddListingToBlock,
     setIsAddListingToBlock,
-    handleAddToBlock
+    handleToggleChange,
+    selectedBlock,
+    handleBlockSelect,
   } = useListingDescription(onNext);
   const {
     blockState,
@@ -40,40 +44,46 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
     onBlockSubmit,
   } = useBlock(setOpenBlock);
   const navigate = useNavigate();
-  const search = useSearch({ from: ListingLinks.LISTINGS });
   return (
     <div className="flex flex-col gap-10 h-full">
-      <div className="flex flex-col">
-        <h1 className="text-heading text-black-500">
-          Give your listing a title
-        </h1>
-        <p className="text-body-base-normal text-black-400">
-          Create a unique title and select appropriate listing type
-        </p>
-      </div>
+      <ListingTitle
+        description="Create a unique title and select appropriate listing type"
+        title="Give your listing a title"
+      />
 
       <Form form={form} onSubmit={onSubmit}>
-        <div className="flex flex-col gap-10 w-full xl:w-4/5">
+        <div className="flex flex-col gap-10 w-full xl:w-3/5">
           <div className="flex flex-col gap-6">
             <div className="flex justify-between items-center">
               <p>Add listing to a block</p>
               <Switch
-                onCheckedChange={setIsAddListingToBlock}
+                onCheckedChange={(checked) => {
+                  setIsAddListingToBlock(checked);
+                  handleToggleChange(checked);
+                }}
                 checked={isAddListingToBlock}
               />
             </div>
             {isAddListingToBlock && (
-              <Button
-                variant="outline"
-                size="sm"
-                type="button"
-                onClick={() => setOpenBlock(true)}
-                className={`w-full ${search.blockName ? 'justify-between' : 'justify-end'} rounded-10 py-0 text-body text-black-400`}
-              >
-                {search?.blockName}
-                <ArrowDown01Icon />
-              </Button>
+              <div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  type="button"
+                  onClick={() => setOpenBlock(true)}
+                  className={`w-full justify-between rounded-10 py-0 text-body text-black-400`}
+                >
+                  {selectedBlock ?? 'Select block'}
+                  <ArrowDown01Icon />
+                </Button>
+                {form.formState.errors.blockId && (
+                  <p className="text-body-small text-red-300">
+                    {form.formState.errors.blockId.message}
+                  </p>
+                )}
+              </div>
             )}
+
             <FormInput
               control={form.control}
               name="listingTitle"
@@ -95,6 +105,7 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
                 label="No of beds"
                 size="sm"
                 showErrorMessage
+                formatter={numberFormatter}
               />
               <FormInput
                 control={form.control}
@@ -102,6 +113,7 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
                 label="No of bathrooms"
                 size="sm"
                 showErrorMessage
+                formatter={numberFormatter}
               />
               <FormInput
                 control={form.control}
@@ -109,6 +121,7 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
                 label="Size.sq.ft"
                 size="sm"
                 showErrorMessage
+                formatter={numberFormatter}
               />
             </div>
           </div>
@@ -130,20 +143,11 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
           </div>
         </div>
       </Form>
-      <div className="flex w-full gap-4 h-full align-baseline items-end justify-end">
-        <Button
-          variant="tertiary"
-          onClick={() => navigate({ to: ListingLinks.LISTINGS })}
-        >
-          Back
-        </Button>
-        <Button
-          disabled={isButtonDisabled}
-          onClick={form.handleSubmit(onSubmit)}
-        >
-          Continue
-        </Button>
-      </div>
+      <NavigateButtons
+        isButtonDisabled={isButtonDisabled}
+        onBack={() => navigate({ to: ListingLinks.LISTINGS_GET_STARTED })}
+        onContinue={form.handleSubmit(onSubmit)}
+      />
 
       <DialogComponent
         open={openBlock}
@@ -178,7 +182,7 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
             {blockState === 'ADD_TO_BLOCK' ? (
               <AddToBlockContent
                 blockItems={blockItems}
-                onBlockClick={handleAddToBlock}
+                onBlockClick={handleBlockSelect}
                 onCreateNew={() => setBlockState('CREATE_BLOCK')}
                 onClose={() => setOpenBlock(false)}
               />

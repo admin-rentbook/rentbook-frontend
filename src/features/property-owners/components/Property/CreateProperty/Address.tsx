@@ -38,30 +38,23 @@ export const Address = ({ form }: AddressProps) => {
     [form]
   );
 
-  const {
-    input,
-    setInput,
-    predictions,
-    loading,
-    handleSelectPrediction,
-  } = useGooglePlacesAutocomplete({
-    componentRestrictions: { country: 'na' },
-    setIsOpenPopover,
-    onLocationResult: (location) => {
-      handleFinalAddress(location);
-      setFinalAddress(location.address);
-    },
-  });
-  const {
-    loading: locationLoading,
-    handleGetCurrentLocation,
-  } = useCurrentLocation({
-    setIsOpenPopover,
-    onLocationResult: (location) => {
-      handleFinalAddress(location);
-      setFinalAddress(location.address);
-    },
-  });
+  const { input, setInput, predictions, loading, handleSelectPrediction } =
+    useGooglePlacesAutocomplete({
+      componentRestrictions: { country: 'na' },
+      setIsOpenPopover,
+      onLocationResult: (location) => {
+        handleFinalAddress(location);
+        setFinalAddress(location.address);
+      },
+    });
+  const { loading: locationLoading, handleGetCurrentLocation } =
+    useCurrentLocation({
+      setIsOpenPopover,
+      onLocationResult: (location) => {
+        handleFinalAddress(location);
+        setFinalAddress(location.address);
+      },
+    });
 
   const {
     selectedPosition,
@@ -88,6 +81,7 @@ export const Address = ({ form }: AddressProps) => {
         open={isOpenPopover}
         onOpenChange={setIsOpenPopover}
         side="bottom"
+        style={{ width: 'var(--radix-popover-trigger-width)' }}
         className="px-6 py-8 w-full bg-white"
         trigger={
           <Button

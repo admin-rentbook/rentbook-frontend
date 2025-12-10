@@ -10,19 +10,22 @@ interface ReusablePopoverProps {
   className?: string;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  style?: React.CSSProperties | undefined
 }
 
 export const PopoverComponent = (props: ReusablePopoverProps) => {
   const { side = 'bottom', align = 'center', sideOffset = 3 } = props;
   return (
     <Popover open={props.open} onOpenChange={props.onOpenChange}>
-      <PopoverTrigger asChild>{props.trigger}</PopoverTrigger>
+      {props.trigger && (
+        <PopoverTrigger asChild>{props.trigger}</PopoverTrigger>
+      )}
       <PopoverContent
         side={side}
         align={align}
         sideOffset={sideOffset}
         className={props.className}
-        style={{ width: 'var(--radix-popover-trigger-width)' }}
+        style={props.style}
       >
         {props.children}
       </PopoverContent>

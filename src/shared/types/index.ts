@@ -62,8 +62,8 @@ export interface LocationResult {
   street: string;
   city: string;
   state: string;
-  country:string;
-  postalCode:string
+  country: string;
+  postalCode: string;
 }
 export type SidebarItem = {
   icon: React.FC<
@@ -90,20 +90,21 @@ export type PropertyDTO = {
 export type SubStepType = {
   id: number;
   title: string;
-  component: React.ComponentType<{ onNext?: () => void }>;
+  component: React.ComponentType<{ onNext?: () => void; onPrev?: () => void }>;
 };
 
 export type Step = {
   id: number;
   title: string;
   subSteps: SubStepType[];
-  component?: React.ComponentType<{ onNext: () => void }>;
+  component?: React.ComponentType<{ onNext: () => void; onPrev: () => void }>;
 };
 
 export type StepProgress = {
   currentMainStep: number;
   currentSubStep: number;
   completedSteps: Record<string, boolean>;
+  lastUpdated: string;
 };
 
 export type BaseFilter = {
@@ -125,3 +126,15 @@ export type CustomFilter = BaseFilter & {
 };
 
 export type FilterConfig = ListFilter | CustomFilter;
+
+export type SelectCardType = {
+  icon: React.FC<
+    Omit<HugeiconsProps, 'ref'> & React.RefAttributes<SVGSVGElement>
+  >;
+  name: string;
+  value: string;
+  subHeader?:string;
+  description: string;
+  bgColor: string;
+  color: string;
+};

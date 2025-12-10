@@ -45,7 +45,7 @@ export const buttonVariants = cva(
           'text-danger-600 hover:bg-danger-50 active:bg-danger-100',
 
         // Utility variants
-        default: 'bg-background hover:bg-accent text-neutral-600',
+        default: 'bg-sidebar text-neutral-600/50',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline:
@@ -59,7 +59,7 @@ export const buttonVariants = cva(
         sm: 'h-10 md:h-8 px-3 text-sm',
         md: 'h-10 md:h-9 px-3 text-sm',
         default: 'h-11 lg:h-8 text-sm px-3 py-4',
-        lg: 'h-11 px-3 py-6',
+        lg: 'h-11 px-3',
         xl: 'h-12 px-10 text-base',
       },
     },

@@ -1,5 +1,3 @@
-import { Check } from 'lucide-react';
-
 type CircularProgressLoaderProps = {
   percentage: number;
   isCompleted: boolean;
@@ -41,14 +39,6 @@ export const CircularProgressLoader = (props: CircularProgressLoaderProps) => {
           />
         )}
       </svg>
-
-      <div className="absolute inset-0 flex items-center justify-center">
-        {props.isCompleted && (
-          <div className="w-full h-full rounded-full bg-red-500 flex items-center justify-center">
-            <Check className="w-6 h-6 text-white" />
-          </div>
-        )} 
-      </div>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+export * from './accordion';
 export * from './avatar';
 export * from './badge';
 export * from './button';
@@ -5,6 +6,7 @@ export * from './button-group';
 export * from './card';
 export * from './carousel';
 export * from './checkbox';
+export * from './collapsible';
 export * from './drawer';
 export * from './dropdown-menu';
 export * from './form';

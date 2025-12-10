@@ -1,10 +1,10 @@
 import { Button } from '@/shared/components';
-import type { BlockDTO } from '../../types';
+import type { BlockDTO } from '../../../types';
 import { Block } from './Block';
 
 type AddToBlockContentProps = {
   blockItems: BlockDTO[];
-  onBlockClick: (block: BlockDTO) => void;
+  onBlockClick: (blockId: number, blockName: string) => void;
   onCreateNew: () => void;
   onClose: () => void;
 };

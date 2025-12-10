@@ -13,7 +13,7 @@ function Input({
 }:  Omit<React.ComponentProps<'input'>, 'size'> &
   VariantProps<typeof inputVariants> & {
     asChild?: boolean;
-    size?: 'sm' | 'md' | 'lg' | 'default';
+    size?: 'sm' | 'md' | 'lg' | 'default' | '4xl';
   }) {
   return (
     <input
