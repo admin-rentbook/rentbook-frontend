@@ -15,7 +15,11 @@ type ViewingProps = {
 export const Viewing = ({ onNext, onPrev }: ViewingProps) => {
   const viewingTypeSelection = useViewingTypeSelection();
   const viewingTimesHook = useViewingTimes();
-  const viewingFeeHook = useViewingFee();
+  const viewingFeeHook = useViewingFee(
+    onNext,
+    viewingTimesHook.schedule,
+    viewingTypeSelection.selectedType
+  );
   return (
     <div>
       <div className="flex flex-col gap-6 xl:w-3/5 pb-10">
@@ -29,7 +33,8 @@ export const Viewing = ({ onNext, onPrev }: ViewingProps) => {
       </div>
       <NavigateButtons
         onBack={() => onPrev?.()}
-        onContinue={() => onNext?.()}
+        onContinue={viewingFeeHook.handleSubmit}
+        isButtonDisabled={!viewingFeeHook.canSubmit}
       />
     </div>
   );

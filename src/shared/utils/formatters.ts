@@ -6,7 +6,6 @@ export type Formatter = {
 export const currencyFormatter: Formatter = {
   format: (value: number | string | undefined): string => {
     if (value === undefined || value === null || value === '') return '';
-
     const numValue = typeof value === 'string' ? parseFloat(value) : value;
     if (isNaN(numValue)) return '';
 

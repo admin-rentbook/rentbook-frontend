@@ -57,7 +57,8 @@ export const UNIT_FILTER = {
   IS_LESS_THAN: 'IS_LESS_THAN',
   IS_GREATER_THAN: 'IS_GREATER_THAN',
   PARTIALLY_LISTED: 'PARTIALLY_LISTED',
-  FULLY_LISTED: 'FULLY_LISTED',};
+  FULLY_LISTED: 'FULLY_LISTED',
+};
 export const unitFilterOptions = Object.values(UNIT_FILTER).map(
   (unitFilter) => ({
     label: convertUnderscoreToSpace(unitFilter),
@@ -150,6 +151,7 @@ export const getStartedItems = [
 
 export const blockItems: BlockDTO[] = [
   {
+    id: 1,
     blockName: 'Sample block',
     listings: [
       {
@@ -171,6 +173,7 @@ export const blockItems: BlockDTO[] = [
     ] as ListingDescriptionDTO[],
   },
   {
+    id: 2,
     blockName: 'Sample block 2',
     listings: [
       {

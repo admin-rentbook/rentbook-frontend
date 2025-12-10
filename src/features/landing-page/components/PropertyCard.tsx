@@ -13,7 +13,7 @@ import { formatNamibianDollar } from '@/shared/utils';
 
 type PropertyCardProps = {
   property: PropertyDTO;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {

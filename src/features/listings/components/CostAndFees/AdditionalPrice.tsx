@@ -1,6 +1,6 @@
-import { convertUnderscoreToSpace } from '@/shared/utils';
 import { useState } from 'react';
 import { useAdditionalFee, useDiscount } from '../../hooks';
+import { AdditionalFeeBox } from '../shared';
 import { AdditionalPriceSetting } from './AdditinalPriceSettings';
 import { AdditionalFeeCard } from './AdditionalFeeCard';
 import { DiscountCard } from './Discount';
@@ -44,18 +44,7 @@ export const AdditionalPrice = () => {
         <div className="w-full h-[1px] bg-custom-gray-600" />
         <div className="flex flex-col gap-3">
           {additionalFees.map((fee) => (
-            <div className="flex flex-col gap-1">
-              <p className="text-heading-4 text-neutral-600">{fee.feeName}</p>
-              <p className="text-body-medium text-black-500">
-                N${fee.amount}
-                <span className="text-black-400">
-                  , paid {convertUnderscoreToSpace(fee.paymentFrequency)}
-                </span>
-                <span className="text-black-500">
-                  <b /> {convertUnderscoreToSpace(fee.feeRequirement)}
-                </span>
-              </p>
-            </div>
+            <AdditionalFeeBox additionalFee={fee} key={fee.feeName} />
           ))}
         </div>
       </div>

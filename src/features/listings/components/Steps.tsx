@@ -2,6 +2,7 @@ import type { Step } from '@/shared/types';
 import { AddImages, Amenities, ListingDescription } from './AboutYourListing';
 import { CostAndFees } from './CostAndFees';
 import { AdditionalDetails, RentAvailability } from './RentAvailability';
+import { ReviewListing } from './ReviewListing';
 import { Viewing } from './Viewing';
 
 export const steps: Step[] = [
@@ -73,6 +74,17 @@ export const steps: Step[] = [
         component: ({ onNext, onPrev }) => (
           <AdditionalDetails onNext={onNext} onPrev={onPrev} />
         ),
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: 'Review your listing',
+    subSteps: [
+      {
+        id: 0,
+        title: 'Review listing',
+        component: () => <ReviewListing />,
       },
     ],
   },

@@ -1,3 +1,4 @@
+import { DEFAULT_AMENITIES } from '@/features/listings/constants';
 import { useAmenities } from '@/features/listings/hooks';
 import { Button, Input, Label } from '@/shared/components';
 import { Add01Icon } from 'hugeicons-react';
@@ -18,8 +19,9 @@ export const Amenities = ({ onNext, onPrev }: AmenitiesProps) => {
     addCustomAmenity,
     isSelected,
     handleKeyPress,
+    handleSubmit,
     isButtonDisabled,
-  } = useAmenities();
+  } = useAmenities(DEFAULT_AMENITIES, onNext);
   return (
     <div className="flex flex-col gap-10 h-full">
       <ListingTitle
@@ -67,7 +69,7 @@ export const Amenities = ({ onNext, onPrev }: AmenitiesProps) => {
       <NavigateButtons
         isButtonDisabled={isButtonDisabled}
         onBack={() => onPrev?.()}
-        onContinue={() => onNext?.()}
+        onContinue={handleSubmit}
       />
     </div>
   );

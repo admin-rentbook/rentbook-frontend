@@ -4,13 +4,18 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import type z from 'zod';
 import { additionalFeeValSchema } from '../constants';
-import type { AdditionalFeeFormValues } from '../types';
+import { useListingDraft } from '../providers';
+import type { AdditionalFeeFormValues, RentalPriceData } from '../types';
 
 type SetState = React.Dispatch<React.SetStateAction<boolean>>;
 export const useAdditionalFee = (setIsOpen: SetState) => {
+  const { updateStepData, getStepData } = useListingDraft();
+  const savedData = getStepData('rentalPrice');
+
   const [additionalFees, setAdditionalFees] = useState<
     AdditionalFeeFormValues[]
-  >([]);
+  >(savedData?.additionalPrice || []);
+
   const form = useForm<AdditionalFeeFormValues>({
     resolver: zodResolver(additionalFeeValSchema),
     mode: 'onChange',
@@ -23,11 +28,17 @@ export const useAdditionalFee = (setIsOpen: SetState) => {
   });
 
   function onSubmit(data: z.infer<typeof additionalFeeValSchema>) {
-    console.log(data);
-    setAdditionalFees((prev) => [...prev, data]);
+    const newAdditionalFees = [...additionalFees, data];
+
+    setAdditionalFees(newAdditionalFees);
+    updateStepData('rentalPrice', {
+      ...savedData,
+      additionalPrice: newAdditionalFees,
+    } as RentalPriceData);
     toast.success(`${data.feeName} fee added successfully`, {
-      id: 'add-fee-succ',
+      id: 'add-fee-success',
     });
+
     setIsOpen(false);
     form.reset();
   }

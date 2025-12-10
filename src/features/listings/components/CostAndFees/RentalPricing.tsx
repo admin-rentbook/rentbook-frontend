@@ -1,6 +1,10 @@
 import { Button, SelectCard } from '@/shared/components';
 import { Form, FormInput, FormSelect } from '@/shared/components/Form';
-import { currencyFormatter, percentageFormatter } from '@/shared/utils';
+import {
+  currencyFormatter,
+  numberFormatter,
+  percentageFormatter,
+} from '@/shared/utils';
 import { Add01Icon, MinusSignIcon, Settings01Icon } from 'hugeicons-react';
 import { useState } from 'react';
 import { rentalPaymentTypes, type RentalPay } from '../../constants';
@@ -45,6 +49,7 @@ export const RentalPricing = ({
           <div className="flex flex-col gap-6">
             {paymentTypeSelection.selectedType === 'FIXED_PRICE' ? (
               <FormInput
+                key="rentalPrice"
                 label="Rental price"
                 control={rentalPricing.form.control}
                 name="rentalPrice"
@@ -52,6 +57,7 @@ export const RentalPricing = ({
                 className="placeholder:font-semibold text-center text-icons-black/50"
                 placeholder="N$35"
                 formatter={currencyFormatter}
+                showErrorMessage
                 descriptionNode={
                   <p className="text-body text-black-400">
                     Renters pays N$36.75 (Addition of %5 service fee){' '}
@@ -66,12 +72,14 @@ export const RentalPricing = ({
               />
             ) : (
               <FormInput
+                key="bidPrice"
                 label="Bid price"
                 size="4xl"
                 className="placeholder:font-semibold text-center text-icons-black/50"
                 control={rentalPricing.form.control}
                 name="bidPrice"
                 formatter={currencyFormatter}
+                showErrorMessage
                 placeholder="N$35"
                 descriptionNode={
                   <p className="text-body text-black-400">
@@ -96,6 +104,7 @@ export const RentalPricing = ({
                   name="bidStartDate"
                   type="date"
                   size="sm"
+                  showErrorMessage
                 />
                 <FormInput
                   label="Bid end date"
@@ -103,6 +112,7 @@ export const RentalPricing = ({
                   name="bidEndDate"
                   type="date"
                   size="sm"
+                  showErrorMessage
                 />
                 <div
                   className="col-span-2 row-span-2 cursor-pointer flex justify-center gap-3 py-[10px] bg-primary-foreground"
@@ -119,9 +129,9 @@ export const RentalPricing = ({
                 control={rentalPricing.form.control}
                 name="rentDuration"
                 size="sm"
-                type="number"
                 min={0}
                 step={1}
+                formatter={numberFormatter}
                 trailingAddOn={
                   <div className="flex items-center gap-1">
                     <Button
@@ -166,6 +176,7 @@ export const RentalPricing = ({
                   name="securityDeposit"
                   size="sm"
                   formatter={percentageFormatter}
+                  showErrorMessage
                 />
               </div>
             </div>

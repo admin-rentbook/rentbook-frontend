@@ -6,11 +6,14 @@ import {
   BookViewingTypes,
   viewFeeSchema,
   type BookViewingType,
+  type ViewingType,
 } from '../constants';
-import type { ViewFeeFormValues } from '../types';
+import { useListingDraft } from '../providers';
+import type { DaySchedule, ViewFeeFormValues } from '../types';
+import { useAutoSave } from './useAutoSave';
 
 export type UseViewingFee = {
-  isButtonDisabled: boolean;
+  canSubmit: boolean;
   form: UseFormReturn<ViewFeeFormValues>;
   handleSelectBookViewTypeChange: (newBookViewType: BookViewingType) => void;
   onSubmit: (data: ViewFeeFormValues) => void;
@@ -21,11 +24,22 @@ export type UseViewingFee = {
   isHovered: (value: string) => boolean;
   handleMouseEnter: (value: string) => void;
   handleMouseLeave: () => void;
+  handleSubmit: () => void;
 };
 
-export const useViewingFee = (): UseViewingFee => {
+export const useViewingFee = (
+  onNext: (() => void) | undefined,
+  schedule: DaySchedule,
+  viewingType: ViewingType
+): UseViewingFee => {
+  const { updateStepData, markMainStepComplete, markStepComplete, draft } =
+    useListingDraft();
+
   const [selectedBookViewingType, setSelectedBookViewingType] =
-    useState<BookViewingType>(BookViewingTypes.BOOK_INSTANTLY);
+    useState<BookViewingType>(
+      draft?.viewingTimes?.viewingFee?.bookViewingType ||
+        BookViewingTypes.BOOK_INSTANTLY
+    );
   const [hoveredType, setHoveredType] = useState<string | null>(null);
 
   const selectBookViewType = (value: BookViewingType) => {
@@ -41,10 +55,15 @@ export const useViewingFee = (): UseViewingFee => {
   const form = useForm<ViewFeeFormValues>({
     resolver: zodResolver(viewFeeSchema),
     mode: 'onChange',
-    defaultValues: {
+    defaultValues: draft?.viewingTimes?.viewingFee || {
       bookViewingType: selectedBookViewingType,
       viewingFee: undefined,
     },
+  });
+
+  useAutoSave(form, (value) => {
+    const currentDraft = draft?.viewingTimes;
+    updateStepData('viewingTimes', { ...currentDraft, viewingFee: value });
   });
 
   const handleSelectBookViewTypeChange = (newBookViewType: BookViewingType) => {
@@ -54,15 +73,35 @@ export const useViewingFee = (): UseViewingFee => {
       bookViewingType: newBookViewType,
       viewingFee: currentValues.viewingFee ?? undefined,
     });
+    const currentDraft = draft?.rentalPrice || {};
+
+    updateStepData('viewingTimes', {
+      ...currentDraft,
+      viewingFee: currentValues,
+    });
   };
   function onSubmit(data: z.infer<typeof viewFeeSchema>) {
     console.log(data);
   }
 
   const isButtonDisabled = !form.formState.isValid;
+  const isScheduleNotEmpty = Object.values(schedule).some(
+    (slots) => slots.length > 0
+  );
+
+  const canSubmit =
+    !isButtonDisabled && isScheduleNotEmpty && Boolean(viewingType);
+
+  const handleSubmit = () => {
+    if (canSubmit) {
+      markStepComplete(2, 0);
+      markMainStepComplete(2);
+      onNext?.();
+    }
+  };
 
   return {
-    isButtonDisabled,
+    canSubmit,
     form,
     handleSelectBookViewTypeChange,
     onSubmit,
@@ -73,5 +112,6 @@ export const useViewingFee = (): UseViewingFee => {
     isHovered,
     handleMouseEnter,
     handleMouseLeave,
+    handleSubmit,
   };
 };

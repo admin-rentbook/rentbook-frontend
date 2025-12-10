@@ -1,11 +1,41 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { useListingDraft } from '../providers';
+import { useAutoSaveValue } from './useAutoSave';
 
-export const useImageUpload = () => {
-  const REQUIRED_IMAGE_NUMBER = 5;
-  const [images, setImages] = useState<File[]>([]);
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+export const useImageUpload = (onNext: (() => void) | undefined) => {
+  const MINIMUM_IMAGE_NUMBER = 5;
+
+  const {
+    updateStepData,
+    markStepComplete,
+    getStepData,
+    markMainStepComplete,
+  } = useListingDraft();
+  const savedData = useMemo(() => getStepData('media'), []);
+
+  const [images, setImages] = useState<File[]>(() => {
+    if (!savedData?.images) return [];
+
+    return savedData.images.map((img) => {
+      // Re-create a File-like object using Blob
+      return new File(['placeholder'], img.name, { type: img.type });
+    });
+  });
+  const [previewUrls, setPreviewUrls] = useState<string[]>(() => {
+    return savedData?.images?.map((img) => img.url) ?? [];
+  });
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useAutoSaveValue(images, (current) => {
+    const mediaImages = current.map((file, index) => ({
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      url: previewUrls[index],
+    }));
+    updateStepData('media', { images: mediaImages });
+  });
 
   const handleFileSelect = (files: FileList | null) => {
     if (!files) return;
@@ -23,7 +53,6 @@ export const useImageUpload = () => {
       }
 
       if (file.size > 5 * 1024 * 1024) {
-        console.log('error');
         toast.error('File too large', {
           description: `${file.name} exceeds 5MB. Please choose a smaller image.`,
         });
@@ -53,7 +82,7 @@ export const useImageUpload = () => {
     fileInputRef.current?.click();
   };
 
-  const cannotProceed = images.length !== REQUIRED_IMAGE_NUMBER;
+  const cannotProceed = images.length < MINIMUM_IMAGE_NUMBER;
 
   useEffect(() => {
     return () => {
@@ -72,6 +101,19 @@ export const useImageUpload = () => {
     handleFileSelect(e.dataTransfer.files);
   };
 
+  const handleSubmitImages = () => {
+    const mediaImages = images.map((file, index) => ({
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      url: previewUrls[index],
+    }));
+    updateStepData('media', { images: mediaImages });
+    markStepComplete(0, 2);
+    markMainStepComplete(0);
+    onNext?.();
+  };
+
   return {
     images,
     previewUrls,
@@ -83,5 +125,6 @@ export const useImageUpload = () => {
     imageCount: images.length,
     handleDragOver,
     handleDrop,
+    handleSubmitImages,
   };
 };

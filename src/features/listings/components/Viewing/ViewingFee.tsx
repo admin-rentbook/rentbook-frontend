@@ -29,6 +29,7 @@ export const ViewingFee = ({ viewFeeHook }: ViewingFeeProps) => {
             className="placeholder:font-semibold text-center text-icons-black/50"
             placeholder="N$10"
             formatter={currencyFormatter}
+            showErrorMessage
             descriptionNode={
               <p className="text-body text-black-400">
                 Viewers pays N$11.75 (Addition of %5 service fee){' '}

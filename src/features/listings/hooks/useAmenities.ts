@@ -1,11 +1,24 @@
-import { useState } from 'react';
-import { DEFAULT_AMENITIES } from '../constants';
+import { useMemo, useState } from 'react';
+import { useListingDraft } from '../providers';
+import { useAutoSaveValue } from './useAutoSave';
 
-export const useAmenities = (initialAmenities = DEFAULT_AMENITIES) => {
+export const useAmenities = (
+  initialAmenities: string[],
+  onNext: (() => void) | undefined
+) => {
+  const { updateStepData, markStepComplete, getStepData } = useListingDraft();
+  const savedData = useMemo(() => getStepData('amenities'), []);
+
   const [availableAmenities, setAvailableAmenities] =
     useState<string[]>(initialAmenities);
-  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>(
+    savedData?.selectedAmenities || []
+  );
   const [inputValue, setInputValue] = useState('');
+
+  useAutoSaveValue(selectedAmenities, (current) => {
+    updateStepData('amenities', { selectedAmenities: current });
+  });
 
   const toggleAmenity = (amenity: string) => {
     setSelectedAmenities((prev) => {
@@ -28,20 +41,24 @@ export const useAmenities = (initialAmenities = DEFAULT_AMENITIES) => {
     }
 
     setAvailableAmenities((prev) => [...prev, trimmedValue]);
-
     setSelectedAmenities((prev) => [...prev, trimmedValue]);
-
     setInputValue('');
   };
 
   const isSelected = (amenity: string) => selectedAmenities.includes(amenity);
-  const isButtonDisabled = selectedAmenities.length === 0
+  const isButtonDisabled = selectedAmenities.length === 0;
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-    addCustomAmenity();
+      addCustomAmenity();
     }
+  };
+
+  const handleSubmit = () => {
+    updateStepData('amenities', { selectedAmenities: selectedAmenities });
+    markStepComplete(0, 1);
+    onNext?.();
   };
 
   return {
@@ -53,6 +70,7 @@ export const useAmenities = (initialAmenities = DEFAULT_AMENITIES) => {
     addCustomAmenity,
     isSelected,
     handleKeyPress,
-    isButtonDisabled
+    isButtonDisabled,
+    handleSubmit,
   };
 };

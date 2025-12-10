@@ -1,3 +1,4 @@
+import { formatForDateInput, isAvailableLater } from '@/shared/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm, type UseFormReturn } from 'react-hook-form';
@@ -7,7 +8,9 @@ import {
   RentAvailabilityTypes,
   type RentAvailabilityType,
 } from '../constants';
+import { useListingDraft } from '../providers';
 import type { RentAvailabilityFormValues } from '../types';
+import { useAutoSave } from './useAutoSave';
 
 export type UseRentAvailability = {
   isButtonDisabled: boolean;
@@ -28,8 +31,12 @@ export type UseRentAvailability = {
 export const useRentAvailability = (
   onNext: (() => void) | undefined
 ): UseRentAvailability => {
+  const { updateStepData, markStepComplete, draft } = useListingDraft();
   const [selectedRentAvailabilityType, setSelectedRentAvailabilityType] =
-    useState<RentAvailabilityType>(RentAvailabilityTypes.AVAILABLE_NOW);
+    useState<RentAvailabilityType>(
+      draft?.finalDetails?.rentAvailability?.rentAvailability ||
+        RentAvailabilityTypes.AVAILABLE_NOW
+    );
   const [hoveredType, setHoveredType] = useState<string | null>(null);
 
   const selectRentAvailabilityType = (value: RentAvailabilityType) => {
@@ -45,31 +52,62 @@ export const useRentAvailability = (
   const form = useForm<RentAvailabilityFormValues>({
     resolver: zodResolver(rentAvailabilitySchema),
     mode: 'onChange',
-    defaultValues: {
-      rentAvailability: selectedRentAvailabilityType,
-      ...(selectedRentAvailabilityType ===
-        RentAvailabilityTypes.AVAILABLE_LATER && {
-        listingDate: undefined,
-      }),
-    } as RentAvailabilityFormValues,
+    defaultValues:
+      draft?.finalDetails?.rentAvailability ||
+      ({
+        rentAvailability: selectedRentAvailabilityType,
+        ...(selectedRentAvailabilityType ===
+          RentAvailabilityTypes.AVAILABLE_LATER && {
+          listingDate: undefined,
+        }),
+      } as RentAvailabilityFormValues),
   });
+
+  useAutoSave(form, (value) => {
+    const currentDraft = draft?.finalDetails || {};
+    updateStepData('finalDetails', {
+      ...currentDraft,
+      rentAvailability: value,
+    });
+  });
+
   const handleSelectRentAvailabilityTypeChange = (
     newType: RentAvailabilityType
   ) => {
     selectRentAvailabilityType(newType);
-    if (newType === RentAvailabilityTypes.AVAILABLE_NOW) {
-      form.reset({
-        rentAvailability: newType,
-      });
-    } else {
-      form.reset({
-        rentAvailability: newType,
-        listingDate: undefined,
-      });
+
+    const currentDraft = draft?.finalDetails || {};
+    const savedAvailability = currentDraft.rentAvailability;
+
+    let savedListingDate = '';
+    if (savedAvailability && isAvailableLater(savedAvailability)) {
+      savedListingDate = savedAvailability.listingDate;
     }
+
+    let newFormData: RentAvailabilityFormValues;
+
+    if (newType === RentAvailabilityTypes.AVAILABLE_NOW) {
+      newFormData = {
+        rentAvailability: newType,
+      };
+    } else {
+      newFormData = {
+        rentAvailability: newType,
+        listingDate: formatForDateInput(savedListingDate),
+      } as RentAvailabilityFormValues;
+    }
+    form.reset(newFormData);
+
+    updateStepData('finalDetails', {
+      ...currentDraft,
+      rentAvailability: newFormData,
+    });
   };
-  function onSubmit(data: z.input<typeof rentAvailabilitySchema>) {
-    console.log(data);
+  function onSubmit(data: z.infer<typeof rentAvailabilitySchema>) {
+    const currentDraft = draft?.finalDetails || {};
+
+    updateStepData('finalDetails', { ...currentDraft, rentAvailability: data });
+    markStepComplete(3, 0);
     onNext?.();
   }
   const isButtonDisabled = !form.formState.isValid;

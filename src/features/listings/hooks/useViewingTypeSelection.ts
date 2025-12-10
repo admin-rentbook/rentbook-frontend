@@ -1,19 +1,24 @@
 import { useState } from 'react';
 import { type ViewingType, ViewingTypes } from '../constants';
-
+import { useListingDraft } from '../providers';
 
 export type SelectCardSelection = {
-    selectedType: ViewingType;
-    hoveredType: string | null;
-    selectType: (value: ViewingType) => void;
-    isSelected: (value: string) => boolean;
-    isHovered: (value: string) => boolean;
-    handleMouseEnter: (value: string) => void;
-    handleMouseLeave: () => void;
-}
+  selectedType: ViewingType;
+  hoveredType: string | null;
+  selectType: (value: ViewingType) => void;
+  isSelected: (value: string) => boolean;
+  isHovered: (value: string) => boolean;
+  handleMouseEnter: (value: string) => void;
+  handleMouseLeave: () => void;
+  handleSelectViewingTypeChange: (viewingType: ViewingType) => void;
+};
 
-export const useViewingTypeSelection = ():SelectCardSelection => {
-  const [selectedType, setSelectedType] = useState<ViewingType>(ViewingTypes.VIEWING_AVAILABLE);
+export const useViewingTypeSelection = (): SelectCardSelection => {
+  const { updateStepData, draft } = useListingDraft();
+
+  const [selectedType, setSelectedType] = useState<ViewingType>(
+    draft?.viewingTimes?.viewingType || ViewingTypes.VIEWING_AVAILABLE
+  );
   const [hoveredType, setHoveredType] = useState<string | null>(null);
 
   const selectType = (value: ViewingType) => {
@@ -26,6 +31,15 @@ export const useViewingTypeSelection = ():SelectCardSelection => {
   const handleMouseEnter = (value: string) => setHoveredType(value);
   const handleMouseLeave = () => setHoveredType(null);
 
+  const handleSelectViewingTypeChange = (viewingType: ViewingType) => {
+    const currentDraft = draft?.viewingTimes;
+    selectType(viewingType);
+    updateStepData('viewingTimes', {
+      ...currentDraft,
+      viewingType: viewingType,
+    });
+  };
+
   return {
     selectedType,
     hoveredType,
@@ -34,5 +48,6 @@ export const useViewingTypeSelection = ():SelectCardSelection => {
     isHovered,
     handleMouseEnter,
     handleMouseLeave,
+    handleSelectViewingTypeChange,
   };
 };

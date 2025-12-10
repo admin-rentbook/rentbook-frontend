@@ -3,10 +3,14 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type z from 'zod';
 import { addNoteSchema } from '../constants';
+import { useListingDraft } from '../providers';
 import type { AddNoteFormValues, Note } from '../types';
 
 export const useAddNote = (onNext: (() => void) | undefined) => {
-  const [notes, setNotes] = useState<Note[]>([]);
+  const { updateStepData, markStepComplete, markMainStepComplete, draft } =
+    useListingDraft();
+
+  const [notes, setNotes] = useState<Note[]>(draft?.finalDetails?.notes ?? []);
   const form = useForm<AddNoteFormValues>({
     resolver: zodResolver(addNoteSchema),
     mode: 'onChange',
@@ -24,8 +28,15 @@ export const useAddNote = (onNext: (() => void) | undefined) => {
         noteTitle: values.noteTitle.trim(),
         noteDescription: values.noteDescription.trim(),
       };
+      const updatedNotes = [...notes, newNote];
 
-      setNotes((prev) => [...prev, newNote]);
+      setNotes(updatedNotes);
+
+      const currentDraft = draft?.finalDetails || {};
+      updateStepData('finalDetails', {
+        ...currentDraft,
+        notes: updatedNotes,
+      });
       form.reset({
         noteTitle: '',
         noteDescription: '',
@@ -58,6 +69,14 @@ export const useAddNote = (onNext: (() => void) | undefined) => {
 
   const isButtonDisabled = !form.formState.isValid;
 
+  const handleSubmit = () => {
+    if (canSubmit) {
+      markStepComplete(3, 1);
+      markMainStepComplete(3);
+      onNext?.();
+    }
+  };
+
   return {
     form,
     onSubmit,
@@ -69,5 +88,6 @@ export const useAddNote = (onNext: (() => void) | undefined) => {
     handleKeyDown,
     hasNotes,
     canSubmit,
+    handleSubmit,
   };
 };

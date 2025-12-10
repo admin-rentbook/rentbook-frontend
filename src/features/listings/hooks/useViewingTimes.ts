@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import type { DayOfWeek } from '../constants';
+import { useListingDraft } from '../providers';
 import type { DaySchedule, TimeSlot } from '../types';
+import { useAutoSaveValue } from './useAutoSave';
 
 export type UseViewingTimes = {
   schedule: DaySchedule;
@@ -20,7 +22,10 @@ export type UseViewingTimes = {
   confirmDelete: () => void;
 };
 export const useViewingTimes = (): UseViewingTimes => {
-  const [schedule, setSchedule] = useState<DaySchedule>({});
+  const { updateStepData, draft } = useListingDraft();
+  const [schedule, setSchedule] = useState<DaySchedule>(
+    draft?.viewingTimes?.viewingTimesData ?? {}
+  );
   const [deleteConfirmDay, setDeleteConfirmDay] = useState<DayOfWeek | null>(
     null
   );
@@ -91,6 +96,14 @@ export const useViewingTimes = (): UseViewingTimes => {
       return updated;
     });
   };
+
+  useAutoSaveValue(schedule, (current) => {
+    const currentDraft = draft?.viewingTimes;
+    updateStepData('viewingTimes', {
+      ...currentDraft,
+      viewingTimesData: current,
+    });
+  });
 
   return {
     schedule,

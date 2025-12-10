@@ -3,7 +3,8 @@ import type { BlockDTO } from '../../../types';
 
 type BlockProps = {
   block: BlockDTO;
-  onBlockClick: (block: BlockDTO) => void;
+  onBlockClick: (blockId: number, blockName: string) => void;
+  
 };
 
 export const Block = (props: BlockProps) => {
@@ -24,7 +25,7 @@ export const Block = (props: BlockProps) => {
   return (
     <div
       className="flex flex-col gap-2 bg-white border border-custom-neutral-50 cursor-pointer hover:opacity-90 transition-opacity rounded-[1.25em] p-1"
-      onClick={() => props.onBlockClick(props.block)}
+      onClick={() => props.onBlockClick(props.block.id, props.block.blockName)}
     >
       <div className="relative w-full rounded-[1.25em] overflow-hidden aspect-[4/4]">
         {props.block.listings.length > 0 ? (

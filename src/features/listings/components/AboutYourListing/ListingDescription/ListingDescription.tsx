@@ -7,7 +7,7 @@ import {
   FormTextarea,
 } from '@/shared/components/Form';
 import { numberFormatter } from '@/shared/utils';
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import {
   ArrowDown01Icon,
   ArrowLeft01Icon,
@@ -32,7 +32,9 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
     setOpenBlock,
     isAddListingToBlock,
     setIsAddListingToBlock,
-    handleAddToBlock,
+    handleToggleChange,
+    selectedBlock,
+    handleBlockSelect,
   } = useListingDescription(onNext);
   const {
     blockState,
@@ -42,7 +44,6 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
     onBlockSubmit,
   } = useBlock(setOpenBlock);
   const navigate = useNavigate();
-  const search = useSearch({ from: ListingLinks.LISTINGS });
   return (
     <div className="flex flex-col gap-10 h-full">
       <ListingTitle
@@ -56,22 +57,33 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
             <div className="flex justify-between items-center">
               <p>Add listing to a block</p>
               <Switch
-                onCheckedChange={setIsAddListingToBlock}
+                onCheckedChange={(checked) => {
+                  setIsAddListingToBlock(checked);
+                  handleToggleChange(checked);
+                }}
                 checked={isAddListingToBlock}
               />
             </div>
             {isAddListingToBlock && (
-              <Button
-                variant="outline"
-                size="sm"
-                type="button"
-                onClick={() => setOpenBlock(true)}
-                className={`w-full ${search.blockName ? 'justify-between' : 'justify-end'} rounded-10 py-0 text-body text-black-400`}
-              >
-                {search?.blockName}
-                <ArrowDown01Icon />
-              </Button>
+              <div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  type="button"
+                  onClick={() => setOpenBlock(true)}
+                  className={`w-full justify-between rounded-10 py-0 text-body text-black-400`}
+                >
+                  {selectedBlock ?? 'Select block'}
+                  <ArrowDown01Icon />
+                </Button>
+                {form.formState.errors.blockId && (
+                  <p className="text-body-small text-red-300">
+                    {form.formState.errors.blockId.message}
+                  </p>
+                )}
+              </div>
             )}
+
             <FormInput
               control={form.control}
               name="listingTitle"
@@ -170,7 +182,7 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
             {blockState === 'ADD_TO_BLOCK' ? (
               <AddToBlockContent
                 blockItems={blockItems}
-                onBlockClick={handleAddToBlock}
+                onBlockClick={handleBlockSelect}
                 onCreateNew={() => setBlockState('CREATE_BLOCK')}
                 onClose={() => setOpenBlock(false)}
               />

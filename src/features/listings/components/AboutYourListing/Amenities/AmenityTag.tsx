@@ -4,8 +4,8 @@ import { Add01Icon, Tick02Icon } from 'hugeicons-react';
 
 type AmenityTagsProps = {
   amenity: string;
-  isSelected: boolean;
-  onClick: () => void;
+  isSelected?: boolean;
+  onClick?: () => void;
 };
 export const AmenityTag = ({
   isSelected,

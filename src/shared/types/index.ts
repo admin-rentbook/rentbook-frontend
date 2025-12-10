@@ -104,6 +104,7 @@ export type StepProgress = {
   currentMainStep: number;
   currentSubStep: number;
   completedSteps: Record<string, boolean>;
+  lastUpdated: string;
 };
 
 export type BaseFilter = {

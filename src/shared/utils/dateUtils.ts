@@ -95,3 +95,11 @@ export const formatTimeToDisplay = (time: string): string => {
   const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
   return `${displayHour}:${minutes} ${period}`;
 };
+
+export function formatForDateInput(date: string | Date | undefined): string {
+  if (!date) return '';
+  const d = typeof date === 'string' ? new Date(date) : date;
+  console.log('date', d)
+  if (isNaN(d.getTime())) return '';
+  return d.toISOString().substring(0, 10);
+}

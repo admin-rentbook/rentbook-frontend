@@ -21,6 +21,14 @@ export const ListingTypes = {
   APARTMENT: 'APARTMENT',
   TOWNHOUSE: 'TOWNHOUSE',
 };
+export type ListingType = (typeof ListingTypes)[keyof typeof ListingTypes];
+export const listingTypeOptions = Object.values(ListingTypes).map(
+  (listing) => ({
+    label: convertUnderscoreToSpace(listing),
+    value: listing,
+  })
+);
+
 export const FeeTypes = {
   INCLUDED_IN_BASE_RENT: 'INCLUDED_IN_BASE_RENT',
   REQUIRED: 'REQUIRED',
@@ -57,13 +65,7 @@ export const RentAvailabilityTypes = {
 export type RentAvailabilityType =
   (typeof RentAvailabilityTypes)[keyof typeof RentAvailabilityTypes];
 
-export type ListingType = (typeof ListingTypes)[keyof typeof ListingTypes];
-export const listingTypeOptions = Object.values(ListingTypes).map(
-  (listing) => ({
-    label: convertUnderscoreToSpace(listing),
-    value: listing,
-  })
-);
+
 
 export type DayOfWeek = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun';
 

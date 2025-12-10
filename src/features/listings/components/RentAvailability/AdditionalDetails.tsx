@@ -62,7 +62,7 @@ export const AdditionalDetails = ({
             </h4>
             {addNoteHook.notes.map((note, index) => (
               <NoteDetails
-                key={note.id}
+                key={index}
                 note={note}
                 handleRemoveNote={addNoteHook.handleRemoveNote}
                 index={index}
@@ -74,7 +74,7 @@ export const AdditionalDetails = ({
       <NavigateButtons
         isButtonDisabled={!addNoteHook.canSubmit}
         onBack={() => onPrev?.()}
-        onContinue={() => onNext?.()}
+        onContinue={addNoteHook.handleSubmit}
       />
     </div>
   );

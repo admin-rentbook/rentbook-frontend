@@ -1,5 +1,5 @@
 import { SelectCard } from '@/shared/components';
-import { viewingTypes, type ViewingType } from '../../constants';
+import { viewingTypes } from '../../constants';
 import type { SelectCardSelection } from '../../hooks';
 import { TimeZone } from './TimeZone';
 
@@ -10,9 +10,6 @@ type ViewingSelectionProps = {
 export const ViewingSelection = ({
   viewingTypeSelection,
 }: ViewingSelectionProps) => {
-  const handleSelectViewing = (selectedType: ViewingType) => {
-    viewingTypeSelection.selectType(selectedType);
-  };
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-2 gap-3">
@@ -22,7 +19,11 @@ export const ViewingSelection = ({
             type={rentalType}
             isSelected={viewingTypeSelection.isSelected(rentalType.value)}
             isHovered={viewingTypeSelection.isHovered(rentalType.value)}
-            onSelect={() => handleSelectViewing(rentalType.value)}
+            onSelect={() =>
+              viewingTypeSelection.handleSelectViewingTypeChange(
+                rentalType.value
+              )
+            }
             onMouseEnter={() =>
               viewingTypeSelection.handleMouseEnter(rentalType.value)
             }

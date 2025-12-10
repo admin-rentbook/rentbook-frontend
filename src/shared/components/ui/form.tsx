@@ -147,7 +147,7 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
     <p
       data-slot="form-message"
       id={formMessageId}
-      className={cn('text-red-300 text-sm', className)}
+      className={cn('text-body-small text-red-300 text-sm', className)}
       {...props}
     >
       {body}

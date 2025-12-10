@@ -16,15 +16,16 @@ export const AddImages = ({ onNext, onPrev }: AddImagesProps) => {
     removeImage,
     openFilePicker,
     cannotProceed,
-  } = useImageUpload();
+    handleSubmitImages,
+  } = useImageUpload(onNext);
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full gap-10">
       <div className="xl:w-3/5 2xl:w-1/2">
         <ListingTitle
           title="Add images that showcases your listing"
           description="You will need a minimum of 5 images. You can add more or make changes later"
         />
-        <div className='pt-10'>
+        <div className="pt-10">
           {previewUrls.length === 0 && (
             <div className="flex items-center py-20  justify-center border border-dashed rounded-[1.25em] border-custom-gray-500 bg-sidebar">
               <div className="flex flex-col gap-12">
@@ -52,7 +53,7 @@ export const AddImages = ({ onNext, onPrev }: AddImagesProps) => {
             {previewUrls.map((url, index) => (
               <>
                 {index === 0 ? (
-                  <div className="row-span-1 col-span-2">
+                  <div key={url} className="row-span-1 col-span-2">
                     <ImagePreviewCard
                       url={url}
                       index={index}
@@ -70,21 +71,19 @@ export const AddImages = ({ onNext, onPrev }: AddImagesProps) => {
                 )}
               </>
             ))}
-            {previewUrls.length !== 5 && (
-              <div
-                className="rounded-[1.25em] flex items-center justify-center border-custom-gray-500  bg-sidebar cursor-pointer"
-                onClick={openFilePicker}
-              >
-                <Add01Icon className="size-[50px] text-black-400" />
-              </div>
-            )}
+            <div
+              className="rounded-[1.25em] flex items-center justify-center border-custom-gray-500  bg-sidebar cursor-pointer"
+              onClick={openFilePicker}
+            >
+              <Add01Icon className="size-[50px] text-black-400" />
+            </div>
           </div>
         )}
       </div>
       <NavigateButtons
         isButtonDisabled={cannotProceed}
         onBack={() => onPrev?.()}
-        onContinue={() => onNext?.()}
+        onContinue={handleSubmitImages}
       />
     </div>
   );
