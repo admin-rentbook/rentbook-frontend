@@ -36,14 +36,14 @@ export const SelectCard = ({
         className={`flex gap-2 items-center ${isActive ? type.color : 'text-sidebar-ring'} transition-colors`}
       >
         <IconComponent className="h-5 w-5" />
-        <h5 className="text-body-lg">{type.name}</h5>
+        <h5 className="text-body-lg leading-tight lg:leading-normal">{type.name}</h5>
       </div>
       <div className="flex flex-col gap-0">
         {type.subHeader && (
           <p className={subHeaderClassName}>{type.subHeader}</p>
         )}
         <p
-          className={`text-body-small ${isActive ? `${type.color}` : 'text-sidebar-ring'} transition-colors`}
+          className={`text-body-xs lg:text-body-small ${isActive ? `${type.color}` : 'text-sidebar-ring'} transition-colors`}
         >
           {type.description}
         </p>

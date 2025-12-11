@@ -1,4 +1,4 @@
-import { DialogComponent, Sheet } from '@/shared/components';
+import { Button, DialogComponent, Sheet } from '@/shared/components';
 import {
   Form,
   FormInput,
@@ -31,59 +31,71 @@ export const AdditionalPriceSetting = ({
 
   const AdditionalFee = () => {
     return (
-      <div className="bg-white rounded-[1.25em] p-6 flex flex-col gap-6">
-        <div className="flex justify-between text-black-500">
-          <h2 className="text-heading-3-semibold ">Additional fee</h2>
-          <Cancel01Icon
-            className="size-6 cursor-pointer"
-            onClick={() => setIsOpen(false)}
-          />
-        </div>
-        <p className="text-body-base-normal text-black-400">
-          Let renters know the fee type and amount, when it's charged, and
-          whether it's included in the base rent. These details will appear on
-          your listing.
-        </p>
-        <Form form={form} onSubmit={onSubmit}>
-          <div className="flex flex-col gap-4">
-            <FormInput
-              control={form.control}
-              name="feeName"
-              label="Fee name"
-              showErrorMessage
-              size="sm"
-            
-            />
-            <FormSelect
-              control={form.control}
-              options={paymentFreqOptions}
-              name="paymentFrequency"
-              label="Payment frequency"
-              size="sm"
-            />
-            <FormInput
-              control={form.control}
-              name="amount"
-              label="Amount"
-              showErrorMessage
-              size="sm"
-              formatter={currencyFormatter}
-            />
-            <div className="flex flex-col gap-3">
-              <p className="text-body-medium text-black-500">
-                Is this fee required?
-              </p>
-              <FormRadio
-                control={form.control}
-                name="feeRequirement"
-                options={feeTypes}
+      <div className="bg-white rounded-[1.25em] p-6 flex flex-col gap-6 h-full">
+        <div className="flex flex-col gap-6 ">
+          <div className="flex items-center justify-between text-black-500">
+            <h2 className="text-heading-3-semibold ">Additional fee</h2>
+            {!isMobile && (
+              <Cancel01Icon
+                className="size-6 cursor-pointer"
+                onClick={() => setIsOpen(false)}
               />
+            )}
+          </div>
+
+          <p className="text-body-base-normal text-black-400">
+            Let renters know the fee type and amount, when it's charged, and
+            whether it's included in the base rent. These details will appear on
+            your listing.
+          </p>
+        </div>
+
+        <Form form={form} onSubmit={onSubmit} className="h-full">
+          <div className="flex flex-col h-full justify-between lg:justify-center gap-4">
+            <div className="flex flex-col gap-4 h-full lg:h-auto">
+              <FormInput
+                control={form.control}
+                name="feeName"
+                label="Fee name"
+                showErrorMessage
+                size="sm"
+              />
+              <FormSelect
+                control={form.control}
+                options={paymentFreqOptions}
+                name="paymentFrequency"
+                label="Payment frequency"
+                size="sm"
+              />
+              <FormInput
+                control={form.control}
+                name="amount"
+                label="Amount"
+                showErrorMessage
+                size="sm"
+                formatter={currencyFormatter}
+              />
+              <div className="flex flex-col gap-3">
+                <p className="text-body-medium text-black-500">
+                  Is this fee required?
+                </p>
+                <FormRadio
+                  control={form.control}
+                  name="feeRequirement"
+                  options={feeTypes}
+                />
+              </div>
             </div>
-            <NavigateButtons
-              onBack={() => setIsOpen(false)}
-              isButtonDisabled={isButtonDisabled}
-              btnText="Cancel"
-            />
+
+            {isMobile ? (
+              <Button disabled={isButtonDisabled}>Save</Button>
+            ) : (
+              <NavigateButtons
+                onBack={() => setIsOpen(false)}
+                isButtonDisabled={isButtonDisabled}
+                btnText="Cancel"
+              />
+            )}
           </div>
         </Form>
       </div>

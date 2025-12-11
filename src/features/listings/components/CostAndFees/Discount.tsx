@@ -2,10 +2,10 @@ import { Button } from '@/shared/components';
 import { CollapsibleComponent } from '@/shared/components/Collapsible';
 import { Form, FormInput } from '@/shared/components/Form';
 import { cn } from '@/shared/lib/utils';
+import { percentageFormatter } from '@/shared/utils';
 import { Add01Icon, Delete01Icon, DiscountTag02Icon } from 'hugeicons-react';
 import type { UseFormReturn } from 'react-hook-form';
 import type { DiscountFormValues } from '../../types';
-import { percentageFormatter } from '@/shared/utils';
 
 type DiscountProps = {
   isOpen: boolean;
@@ -69,11 +69,20 @@ export const DiscountCard = (props: DiscountProps) => {
               description="Your listing price will go back to its default price after the duration"
             />
           </div>
-          <div className="flex justify-end px-6 pb-2 gap-4">
-            <Button variant="tertiary" onClick={() => props.setIsOpen(false)}>
+          <div className="flex justify-end px-6 pb-4 gap-4">
+            <Button
+              variant="tertiary"
+              className="w-1/2 lg:w-auto"
+              onClick={() => props.setIsOpen(false)}
+            >
               Cancel
             </Button>
-            <Button disabled={props.isButtonDisabled}>Add</Button>
+            <Button
+              disabled={props.isButtonDisabled}
+              className="w-1/2 lg:w-auto"
+            >
+              Add
+            </Button>
           </div>
         </Form>
       }

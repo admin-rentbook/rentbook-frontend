@@ -33,7 +33,7 @@ export const TimeSlotRow = (props: TimeSlotRowProps) => {
           value={props.slot.startTime}
           onValueChange={(val) => props.onUpdate('startTime', val)}
         >
-          <SelectTrigger className="px-3 h-11 py-2 w-full flex justify-center  rounded-[0.75em] bg-custom-gray-100/40 text-body-medium border-none focus:outline-none focus:ring-0">
+          <SelectTrigger className="px-3 h-11 py-2 w-full flex justify-center rounded-[0.75em] bg-custom-gray-100/40 text-body-medium border-none focus:outline-none focus:ring-0">
             <SelectValue placeholder="Start Time" />
           </SelectTrigger>
           <SelectContent>
@@ -96,14 +96,16 @@ export const TimeSlotRow = (props: TimeSlotRowProps) => {
             </Button>
           </div>
         ) : (
-          <Button
-            type="button"
-            className="p-0"
-            variant="icon"
-            onClick={props.onDelete}
-          >
-            <Delete02Icon className="size-5" />
-          </Button>
+          <div className='flex justify-end'>
+            <Button
+              type="button"
+              className="p-0"
+              variant="icon"
+              onClick={props.onDelete}
+            >
+              <Delete02Icon className="size-5" />
+            </Button>
+          </div>
         )}
       </div>
     </div>

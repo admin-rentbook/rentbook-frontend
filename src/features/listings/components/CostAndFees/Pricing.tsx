@@ -14,7 +14,12 @@ export const Pricing = ({ isOpen, setIsOpen }: PricingProps) => {
       <div className="bg-white rounded-[1.25em] p-6 flex flex-col gap-6">
         <div className="flex justify-between text-black-500">
           <h2 className="text-heading-3-semibold ">Pricing</h2>
-          <Cancel01Icon className="size-6 cursor-pointer" onClick={() => setIsOpen(false)} />
+          {!isMobile && (
+            <Cancel01Icon
+              className="size-6 cursor-pointer"
+              onClick={() => setIsOpen(false)}
+            />
+          )}
         </div>
         <p className="text-body-base-normal text-black-400">
           Rentbook applies a service fee of 5% on the first transaction

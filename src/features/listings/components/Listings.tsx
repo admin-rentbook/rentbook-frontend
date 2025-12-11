@@ -9,26 +9,23 @@ export const Listings = () => {
   const stepper = useStepper(steps);
   const currentStep = steps[stepper.currentMainStep];
   const navigate = useNavigate();
-  const {isMobile} = useMobile()
+  const { isMobile } = useMobile();
 
- const getCurrentComponent = () => {
-  if (currentStep.subSteps?.length > 0) {
-    const currentSubStepIndex = stepper.getCurrentSubStep(
-      stepper.currentMainStep
-    );
-    const Component = currentStep.subSteps[currentSubStepIndex].component;
+  const getCurrentComponent = () => {
+    if (currentStep.subSteps?.length > 0) {
+      const currentSubStepIndex = stepper.getCurrentSubStep(
+        stepper.currentMainStep
+      );
+      const Component = currentStep.subSteps[currentSubStepIndex].component;
 
-    return (
-      <Component onNext={stepper.goForward} onPrev={stepper.goBack} />
-    );
-  } else {
-    const Component = currentStep.component;
-    return Component ? (
-      <Component onNext={stepper.goForward} onPrev={stepper.goBack} />
-    ) : null;
-  }
-};
-
+      return <Component onNext={stepper.goForward} onPrev={stepper.goBack} />;
+    } else {
+      const Component = currentStep.component;
+      return Component ? (
+        <Component onNext={stepper.goForward} onPrev={stepper.goBack} />
+      ) : null;
+    }
+  };
 
   return (
     <div className="grid grid-rows-[auto_1fr] h-screen">
@@ -39,9 +36,7 @@ export const Listings = () => {
         />
       </div>
 
-       {/* ✅ Conditional rendering based on screen size */}
       {isMobile ? (
-        // Mobile Layout with Slider
         <div className="flex flex-col h-full">
           <MobileStepperSlider
             steps={steps}
@@ -55,7 +50,6 @@ export const Listings = () => {
           </div>
         </div>
       ) : (
-        // Desktop Layout with Sidebar Stepper
         <div className="grid grid-cols-[30%_1fr] p-5 lg:px-10 lg:pt-10">
           <div className="h-fit sticky top-8">
             <Stepper steps={steps} stepper={stepper} />

@@ -84,7 +84,9 @@ export const steps: Step[] = [
       {
         id: 0,
         title: 'Review listing',
-        component: () => <ReviewListing />,
+        component: ({ onNext, onPrev }) => (
+          <ReviewListing onNext={onNext} onPrev={onPrev} />
+        ),
       },
     ],
   },

@@ -148,7 +148,6 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
         onBack={() => navigate({ to: ListingLinks.LISTINGS_GET_STARTED })}
         onContinue={form.handleSubmit(onSubmit)}
       />
-
       <DialogComponent
         open={openBlock}
         onOpenChange={setOpenBlock}
