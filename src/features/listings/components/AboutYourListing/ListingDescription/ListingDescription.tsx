@@ -55,7 +55,7 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
         <div className="flex flex-col gap-10 w-full xl:w-3/5">
           <div className="flex flex-col gap-6">
             <div className="flex justify-between items-center">
-              <p>Add listing to a block</p>
+              <p>Add listing to a complex</p>
               <Switch
                 onCheckedChange={(checked) => {
                   setIsAddListingToBlock(checked);
@@ -73,7 +73,7 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
                   onClick={() => setOpenBlock(true)}
                   className={`w-full justify-between rounded-10 py-0 text-body text-black-400`}
                 >
-                  {selectedBlock ?? 'Select block'}
+                  {selectedBlock ?? 'Select complex'}
                   <ArrowDown01Icon />
                 </Button>
                 {form.formState.errors.blockId && (

@@ -88,5 +88,6 @@ export const useListingDraftState = () => {
     getStepData,
     markMainStepComplete,
     isMainStepComplete,
+    setDraft
   };
 };

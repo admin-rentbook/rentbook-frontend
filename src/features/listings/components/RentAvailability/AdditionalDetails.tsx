@@ -72,7 +72,6 @@ export const AdditionalDetails = ({
         )}
       </div>
       <NavigateButtons
-        isButtonDisabled={!addNoteHook.canSubmit}
         onBack={() => onPrev?.()}
         onContinue={addNoteHook.handleSubmit}
       />

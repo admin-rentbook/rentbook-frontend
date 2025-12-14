@@ -1,3 +1,4 @@
+import type { Note } from '@/features/listings/types';
 import type { HugeiconsProps } from 'hugeicons-react';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 
@@ -73,18 +74,36 @@ export type SidebarItem = {
   link?: string;
 };
 
-type Amenity = {
-  icon: React.ComponentType<{ className?: string }>;
-  count: number;
-  label: string;
-};
-
 export type PropertyDTO = {
+  id?: string;
   images: string[];
   propertyName: string;
   location: string;
-  amenities: Amenity[];
+  amenities: string[];
   amount: number;
+  bedrooms: number;
+  bathrooms: number;
+  square: number;
+  description?: string;
+  propertyType?: string;
+  locationResult?: LocationResult;
+  reviews?: ReviewDTO;
+  notes?: Note[];
+  isWaitlisted?: boolean;
+};
+
+export type ReviewDTO = {
+  id: number;
+  averageRating: number;
+  totalReviews: number;
+  reviews: Review[];
+};
+export type Review = {
+  reviewerName: string;
+  rating: number;
+  comment: string;
+  date: string;
+  image: string;
 };
 
 export type SubStepType = {
@@ -133,7 +152,7 @@ export type SelectCardType = {
   >;
   name: string;
   value: string;
-  subHeader?:string;
+  subHeader?: string;
   description: string;
   bgColor: string;
   color: string;

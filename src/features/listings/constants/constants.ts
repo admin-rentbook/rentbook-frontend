@@ -35,7 +35,7 @@ export const FeeTypes = {
   OPTIONAL: 'OPTIONAL',
 };
 export const PaymentFrequency = {
-  WEEKLY: 'WEEKLY',
+  ONE_TIME: 'ONE_TIME',
   MONTHLY: 'MONTHLY',
   ANNUALLY: 'ANNUALLY',
 };
@@ -64,8 +64,6 @@ export const RentAvailabilityTypes = {
 } as const;
 export type RentAvailabilityType =
   (typeof RentAvailabilityTypes)[keyof typeof RentAvailabilityTypes];
-
-
 
 export type DayOfWeek = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun';
 
@@ -189,8 +187,8 @@ export const feeTypes = [
 
 export const paymentFreqOptions = [
   {
-    label: 'Weekly',
-    value: PaymentFrequency.WEEKLY,
+    label: 'One tme',
+    value: PaymentFrequency.ONE_TIME,
   },
   {
     label: 'Monthly',

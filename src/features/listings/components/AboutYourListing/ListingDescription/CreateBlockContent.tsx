@@ -19,10 +19,10 @@ export const CreateBlockContent = ({
   <>
     <Form form={form} onSubmit={onSubmit}>
       <FormInput
-        label="Block name"
+        label="Complex name"
         control={form.control}
         name="blockName"
-        placeholder="Enter block name"
+        placeholder="Enter complex name"
       />
     </Form>
 
@@ -31,7 +31,7 @@ export const CreateBlockContent = ({
         Cancel
       </Button>
       <Button disabled={isDisabled} onClick={form.handleSubmit(onSubmit)}>
-        Create block
+        Create complex
       </Button>
     </div>
   </>
