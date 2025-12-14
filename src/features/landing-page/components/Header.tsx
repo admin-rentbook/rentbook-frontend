@@ -15,7 +15,7 @@ export const Header = () => {
     <div className="w-full flex flex-col gap-2">
       <div className="flex justify-center">
         <div className="flex flex-col gap-8 items-center">
-          <h1 className="text-heading-xl text-black-500 text-center min-w-xl">
+          <h1 className="text-heading-xl text-black-500 text-center">
             Find your dream home that
             <br /> tick all your boxes
           </h1>
@@ -35,7 +35,7 @@ export const Header = () => {
                 </InputGroupAddon>
               }
             />
-            <div className="flex gap-5 w-full justify-around">
+            <div className="flex flex-col lg:flex-row gap-5 w-full justify-around">
               <PropertyTypeFilter
                 propertyTypeFilters={filters.propertyType}
                 setPropertyTypeFilter={setPropertyType}
