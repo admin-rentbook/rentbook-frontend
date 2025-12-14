@@ -70,11 +70,10 @@ export const useAddNote = (onNext: (() => void) | undefined) => {
   const isButtonDisabled = !form.formState.isValid;
 
   const handleSubmit = () => {
-    if (canSubmit) {
       markStepComplete(3, 1);
       markMainStepComplete(3);
       onNext?.();
-    }
+    
   };
 
   return {

@@ -1,13 +1,21 @@
+import { ListingDetailsLinks } from '@/features/listing-details/constants';
+import type { PropertyDTO } from '@/shared/types';
+import { useNavigate } from '@tanstack/react-router';
 import { ArrowRight01Icon } from 'hugeicons-react';
 import { propertyCards } from '../constants';
 import { PropertyCard } from './PropertyCard';
 
 export const Listings = () => {
-  const handleClick = () => {
-    console.log('click');
+  const navigate = useNavigate();
+  const handleClick = (property: PropertyDTO) => {
+    console.log('Navigating to viewing request for property:', property);
+    navigate({
+      to: ListingDetailsLinks.LISTING_DETAILS,
+      state: { property: property },
+    });
   };
   return (
-    <div className="flex flex-col gap-3 justify-start">
+    <div className="flex flex-col gap-3 justify-start pt-6">
       <div className="flex gap-4 items-center">
         <h3 className="text-heading-xl-semi text-black-500">
           Popular homes in Windhoek

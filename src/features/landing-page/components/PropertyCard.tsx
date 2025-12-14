@@ -1,3 +1,4 @@
+import { usePropertyInfoStore } from '@/core/store';
 import {
   Card,
   CardContent,
@@ -10,10 +11,17 @@ import {
 import { useCarouselHook } from '@/shared/hooks';
 import type { PropertyDTO } from '@/shared/types';
 import { formatNamibianDollar } from '@/shared/utils';
+import {
+  Bathtub01Icon,
+  BedSingle02Icon,
+  CalendarLock01Icon,
+  DashedLine02Icon,
+  FavouriteIcon,
+} from 'hugeicons-react';
 
 type PropertyCardProps = {
   property: PropertyDTO;
-  onClick?: () => void;
+  onClick?: (property: PropertyDTO) => void;
 };
 
 export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
@@ -21,15 +29,68 @@ export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
     useCarouselHook();
 
   const { symbol, amount } = formatNamibianDollar(property.amount);
+  const toggleWishlist = usePropertyInfoStore((s) => s.toggleWishlist);
+  const isWishlisted = usePropertyInfoStore((s) =>
+    s.isWishlisted(property.id ?? '')
+  );
+  const isWaitlisted = usePropertyInfoStore((s) =>
+    s.isWaitlisted(property.id ?? '')
+  );
+  const handleWishlistClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleWishlist(property);
+  };
+
+  const propertyItems = [
+    {
+      count: property.bedrooms,
+      icon: BedSingle02Icon,
+    },
+    {
+      count: property.bathrooms,
+      icon: Bathtub01Icon,
+    },
+    {
+      count: property.square,
+      icon: DashedLine02Icon,
+    },
+  ];
 
   return (
     <Card
-      className="overflow-hidden bg-white hover:shadow-lg transition-shadow cursor-pointer h-[500px] flex flex-col"
+      className="overflow-hidden rounded-[1.25em] bg-white hover:shadow-lg transition-shadow cursor-pointer h-auto flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => onClick?.(property)}
     >
-      <CardContent className="p-1.5 flex flex-col h-full gap-2">
-        <div className="relative flex-1 min-h-0 rounded-[20px] overflow-hidden">
+      <CardContent className="p-1 flex flex-col h-full gap-2 rounded-[1.25em]">
+        <div className="relative z-1 flex-1 min-h-0 rounded-[1.25em] overflow-hidden">
+          <div className="absolute top-2 w-full z-10">
+            <div
+              className={`flex ${isWaitlisted ? 'justify-between' : 'justify-end'} px-2 items-center`}
+            >
+              {isWaitlisted && (
+                <div className="flex gap-2 text-body text-primary-500 px-2 py-1 bg-white rounded-full">
+                  <CalendarLock01Icon className="size-4" />
+                  <p>10 days left</p>
+                </div>
+              )}
+              <button
+                onClick={handleWishlistClick}
+                aria-label={
+                  isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'
+                }
+              >
+                <FavouriteIcon
+                  className={`size-6 transition-colors ${
+                    isWishlisted
+                      ? 'fill-primary-500 text-white'
+                      : 'fill-gray-900 text-white'
+                  }`}
+                />
+              </button>
+            </div>
+          </div>
           <Carousel
             opts={{
               align: 'start',
@@ -42,11 +103,11 @@ export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
             <CarouselContent className="h-full">
               {property.images.map((image, index) => (
                 <CarouselItem key={index} className="h-full">
-                  <div className="h-full w-full" onClick={onClick}>
+                  <div className="h-full w-full">
                     <img
                       src={image}
                       alt={`${property.propertyName} - Image ${index + 1}`}
-                      className="w-full h-full object-cover rounded-[20px]"
+                      className="w-full h-[260px] object-cover rounded-[1.25em]"
                     />
                   </div>
                 </CarouselItem>
@@ -81,7 +142,7 @@ export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
           </Carousel>
         </div>
 
-        <div className="flex px-2 py-1 justify-between items-end">
+        <div className="flex px-2 py-1 justify-between items-end pr-5">
           <div className="space-y-0.5">
             <h5 className="text-base font-semibold text-gray-900 truncate">
               {property.propertyName}
@@ -90,10 +151,10 @@ export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
               {property.location}
             </p>
             <div className="flex gap-4 pt-1">
-              {property.amenities.map((item, index) => (
+              {propertyItems.map((item, index) => (
                 <div
-                  key={`${item.label}-${index}`}
-                  className="flex items-start gap-1.5 text-gray-700"
+                  key={`${item.count}-${index}`}
+                  className="flex items-center gap-1.5 text-gray-700"
                 >
                   <item.icon className="size-4" />
                   <span className="text-body-small">{item.count}</span>

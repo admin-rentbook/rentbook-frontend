@@ -1,4 +1,5 @@
 import { landingPageRoute } from '@/features/landing-page';
+import { listingDetailsRoute } from '@/features/listing-details';
 import { listingGetStartedRoute, listingsRoute } from '@/features/listings';
 import {
   calendarRoute,
@@ -13,6 +14,8 @@ import {
   settingsRoute,
   supportRoute,
 } from '@/features/property-owners';
+import { myInterestRoute } from '@/features/wait-wish-lists';
+import type { PropertyDTO } from '@/shared/types';
 import { createRouter } from '@tanstack/react-router';
 import { rootRoute } from './rootRoute';
 
@@ -31,12 +34,17 @@ const routeTree = rootRoute.addChildren([
   getStartedRoute,
   listingGetStartedRoute,
   listingsRoute,
+  listingDetailsRoute,
+  myInterestRoute,
 ]); //this will be updated properly by putting them in their correct features
 const router = createRouter({ routeTree });
 
 declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router;
+  }
+  interface HistoryState {
+    property?: PropertyDTO;
   }
 }
 

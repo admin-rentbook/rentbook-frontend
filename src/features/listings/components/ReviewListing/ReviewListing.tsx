@@ -1,10 +1,5 @@
 import propertyImage from '@/assets/images/property-image.jpg';
 import { PropertyCard } from '@/features/landing-page/components/PropertyCard';
-import {
-  Bathtub01Icon,
-  BedSingle02Icon,
-  DashedLine02Icon,
-} from 'hugeicons-react';
 import { useReview } from '../../hooks';
 import type {
   AmenitiesData,
@@ -28,15 +23,33 @@ export const ReviewListing = ({ onNext, onPrev }: ReviewListingProps) => {
   const { handleReviewSubmit, draft } = useReview(onNext);
 
   const property = {
+    id: '1',
     propertyName: 'The Palm Residence',
     location: 'Windhoek, Khomas Region',
     images: [propertyImage, propertyImage, propertyImage],
     amenities: [
-      { icon: BedSingle02Icon, count: 3, label: 'Bedrooms' },
-      { icon: Bathtub01Icon, count: 2, label: 'Bathrooms' },
-      { icon: DashedLine02Icon, count: 1, label: 'Garage' },
+      'SWIMMING_POOL',
+      'BAR',
+      'JACUZZI',
+      'GYM',
+      'dryer',
+      'free_parking',
+      'pool',
+      'gym',
+      'elevator',
+      'security_system',
+      'balcony',
+      'garden',
+      'pet_friendly',
+      'wheelchair_accessible',
     ],
     amount: 20000,
+    bedrooms: 3,
+    bathrooms: 2,
+    square: 25,
+    propertyType: 'APARTMENT',
+    description:
+      'Spacious 3-bedroom apartment with modern amenities, located in a secure neighborhood. Features include a fully equipped kitchen, ensuite master bedroom, ample parking, and 24/7 security. Spacious 3-bedroom apartment with modern amenities, located in a secure neighborhood. Features include a fully equipped kitchen, ensuite master bedroom, ample parking, and 24/7 security. ',
   };
 
   return (
@@ -67,11 +80,13 @@ export const ReviewListing = ({ onNext, onPrev }: ReviewListingProps) => {
           </div>
         </div>
       </div>
-      <NavigateButtons
-        onBack={() => onPrev?.()}
-        onContinue={handleReviewSubmit}
-        saveBtnText="Publish listing"
-      />
+      <div className='pt-10'>
+        <NavigateButtons
+          onBack={() => onPrev?.()}
+          onContinue={handleReviewSubmit}
+          saveBtnText="Publish listing"
+        />
+      </div>
     </div>
   );
 };

@@ -90,6 +90,7 @@
   --color-success-400: var(--success-400);
   --color-success-500: var(--success-500);
 
+  --color-warning-300: var(--warning-300);
   --color-warning-500: var(--warning-500);
   --color-warning-600: var(--warning-600);
 
@@ -141,7 +142,7 @@
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);/*#e5e5e5*/
+  --sidebar-border: oklch(0.922 0 0); /*#e5e5e5*/
   --sidebar-ring: oklch(0.708 0 0);
 
   /* my colors */
@@ -149,7 +150,7 @@
   --custom-neutral-50: oklch(0.9551 0 0); /*#f0f0f0*/
   --custom-neutral-200: oklch(0.9189 0 0); /*#e4e4e4*/
   --custom-neutral-300: oklch(0.9084 0.0067 340.4); /*#e4dfe2*/
-  --custom-neutral-100: oklch(0.9067 0 0); /*#f4f4f4*/
+  --custom-neutral-100: oklch(0.9067 0 0); /*#f4f4f4 e0e0e0e*/
   --custom-neutral-150: oklch(0.9642 0 0); /*f3f3f3*/
   --neutral-200: oklch(0.9255 0.0027 286.35); /*#e6e6e8*/
   --custom-neutral-500: oklch(0.1543 0 0 / 80%);
@@ -166,7 +167,7 @@
   --custom-gray-400: oklch(0.8141 0 0); /*#c2c2c2*/
   --custom-gray-300: oklch(0.8853 0 0); /*d9d9d9*/
   --custom-gray-500: oklch(0.8452 0 0); /*#CCCCCC*/
-  --custom-gray-600:oklch(0.839 0 0);/*#cacaca*/
+  --custom-gray-600: oklch(0.839 0 0); /*#cacaca*/
   --custom-gray-900: oklch(0.1822 0 0); /*121212*/
 
   --medium-contrast: oklch(0.5243 0 0); /*#6A6A6A*/
@@ -177,7 +178,7 @@
   --success-400: oklch(0.7303 0.1944 147.44); /*#34c759*/
   --success-500: oklch(0.282 0.0846 157.98); /*#1c5d3d*/
 
-  --sidebar: oklch(0.985 0 0);/*f9f9f9*/
+  --sidebar: oklch(0.985 0 0); /*f9f9f9*/
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
@@ -208,6 +209,7 @@
   --red-800: oklch(27% 0.13 29);
   --red-900: oklch(20% 0.1 29); /* deepest shade */
 
+  --warning-300: oklch(0.9967 0.0054 95.1); /*fffefa*/
   --warning-500: oklch(0.7474 0.1801 57.36); /*#ff8a00*/
   --warning-600: oklch(0.7269 0.1617 65.48); /*#ea8e04*/
   --icons-black: oklch(0.2237 0.0024 325.66); /*1c1b1c*/
@@ -223,8 +225,9 @@
     0px 1px 2px 0px oklch(30% 0 260 / 12%);
   --shadow-pri: 0px 0px 0px 4px oklch(0.5803 0.2252 359.96 / 5.1%);
   --shadow-ter:
-    0px 2.77px 2.21px 0px oklch(0 0 0 / 0.05),
-    0px 6.65px 5.32px 0px oklch(0 0 0 / 0.07);
+    -3px 10px 20px 0px oklch(0 0 0 / 3.14%),
+    -6px 20px 30px 0px oklch(0 0 0 / 3.14%),
+    0px 12.52px 10.02px 0px oklch(0 0 0 / 0%);
 }
 
 .dark {
@@ -301,7 +304,7 @@
 
 @layer utilities {
   .text-54px {
-    @apply text-[3.375rem] font-semibold font-sans
+    @apply text-[3.375rem] font-semibold font-sans;
   }
   .text-heading-1 {
     @apply text-[1.75rem] lg:text-[4rem] font-semibold font-sans leading-none;
@@ -349,6 +352,9 @@
   .text-body-xs {
     @apply text-xs font-normal font-sans leading-normal;
   }
+  .text-body-18 {
+    @apply text-[1.125rem] font-normal font-sans leading-normal;
+  }
   .text-body-sm-semi {
     @apply text-sm font-semibold font-sans leading-normal;
   }
@@ -369,6 +375,9 @@
   }
   .text-label {
     @apply text-sm font-medium font-sans leading-4 tracking-normal;
+  }
+  .text-11 {
+    @apply text-[0.6875rem] font-normal font-sans;
   }
   .logo-text {
     @apply text-[1.375rem] font-abeat font-normal;

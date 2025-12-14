@@ -1,8 +1,10 @@
 import { Links } from '@/features/property-owners/constants';
-import { MobileStepperSlider, Stepper } from '@/shared/components';
+import { Button, MobileStepperSlider, Stepper } from '@/shared/components';
 import { Header } from '@/shared/components/Header';
 import { useMobile, useStepper } from '@/shared/hooks';
 import { useNavigate } from '@tanstack/react-router';
+import { useListingDraft } from '../providers';
+import { listingDraftStorage } from '../utils';
 import { steps } from './Steps';
 
 export const Listings = () => {
@@ -27,13 +29,28 @@ export const Listings = () => {
     }
   };
 
+  const { setDraft, draft } = useListingDraft();
+  const isEmpty = (obj: object | null | undefined): boolean =>
+    !!obj && Object.keys(obj).length === 0;
+  const existingDraft = listingDraftStorage.getDraft();
+  const handleOnClick = () => {
+    setDraft(existingDraft);
+    navigate({ to: Links.CREATE_PROPERTY });
+  };
   return (
     <div className="grid grid-rows-[auto_1fr] h-screen">
-      <div>
+      <div className="flex justify-between items-center pr-5">
         <Header
           title="Create listing"
           onCancel={() => navigate({ to: Links.CREATE_PROPERTY })}
         />
+        <Button
+          variant="tertiary"
+          onClick={handleOnClick}
+          disabled={isEmpty(draft?.progress.completedSteps)}
+        >
+          Save & exit
+        </Button>
       </div>
 
       {isMobile ? (

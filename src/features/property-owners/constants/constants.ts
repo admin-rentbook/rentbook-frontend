@@ -152,7 +152,7 @@ export const getStartedItems = [
 export const blockItems: BlockDTO[] = [
   {
     id: 1,
-    blockName: 'Sample block',
+    blockName: 'Sample complex',
     listings: [
       {
         listingTitle: 'Sample Listing',
@@ -174,7 +174,7 @@ export const blockItems: BlockDTO[] = [
   },
   {
     id: 2,
-    blockName: 'Sample block 2',
+    blockName: 'Sample complex 2',
     listings: [
       {
         listingTitle: 'Sample Listing',

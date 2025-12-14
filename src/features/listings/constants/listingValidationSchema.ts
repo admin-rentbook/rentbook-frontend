@@ -84,7 +84,7 @@ export const additionalFeeValSchema = z.object({
   feeName: z.string().min(1, 'Fee name is required'),
   paymentFrequency: z.enum(
     [
-      PaymentFrequency.WEEKLY,
+      PaymentFrequency.ONE_TIME,
       PaymentFrequency.MONTHLY,
       PaymentFrequency.ANNUALLY,
     ],

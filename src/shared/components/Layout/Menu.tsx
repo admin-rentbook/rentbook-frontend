@@ -9,9 +9,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/components';
+import { menuItems } from '@/shared/constants';
 import { DropdownMenuContent } from '@radix-ui/react-dropdown-menu';
 import { Menu01Icon } from 'hugeicons-react';
-import { menuItems } from '../constants';
 
 export const Menu = () => {
   const logout = useAppStore((s) => s.logout);

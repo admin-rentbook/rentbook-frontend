@@ -29,7 +29,7 @@ export const AddToBlockContent = ({
       <Button variant="tertiary" onClick={onClose}>
         Cancel
       </Button>
-      <Button onClick={onCreateNew}>Create new block</Button>
+      <Button onClick={onCreateNew}>Create new complex</Button>
     </div>
   </>
 );
