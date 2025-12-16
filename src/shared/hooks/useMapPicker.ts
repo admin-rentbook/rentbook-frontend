@@ -7,14 +7,16 @@ interface UseMapPickerProps {
     lat: number;
     lng: number;
   };
+  setIsOpenMap?: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpenPopover?: React.Dispatch<React.SetStateAction<boolean>>;
   onLocationResult?: (location: LocationResult) => void;
 }
 
 export function useMapPicker({
   initialLocation,
-  setIsOpenPopover,
+  setIsOpenMap,
   onLocationResult,
+  setIsOpenPopover
 }: UseMapPickerProps = {}) {
   const DEFAULT_LOCATION = { lat: -22.5609, lng: 17.0658 }; // Windhoek, Namibia
 
@@ -24,7 +26,6 @@ export function useMapPicker({
   const [coordinates, setCoordinates] = useState('');
   const [fullAddress, setFullAddress] = useState<LocationResult | null>(null);
   const [loading, setLoading] = useState(false);
-  //   const [gettingCurrentLocation, setGettingCurrentLocation] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const extractAddressFromResult = (
@@ -178,7 +179,8 @@ export function useMapPicker({
     const location = await confirmLocation();
     if (location) {
       setFullAddress(location);
-      setIsOpenPopover?.(false);
+      setIsOpenMap?.(false);
+      setIsOpenPopover?.(false)
       onLocationResult?.(location);
     }
   };

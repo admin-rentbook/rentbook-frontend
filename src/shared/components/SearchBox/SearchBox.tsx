@@ -21,7 +21,6 @@ type SearchBoxProps = {
 export const SearchBox = (props: SearchBoxProps) => {
   const { debounceValue = 500 } = props;
   const [localValue, setLocalValue] = useState(props.inputValue);
-
   const debouncedSearch = useCallback(
     debounce((value: string) => {
       props.setInputValue(value);

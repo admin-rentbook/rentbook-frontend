@@ -1,6 +1,7 @@
 import { Sheet } from '@/shared/components';
 import { NavigationMenuComp } from '@/shared/components/NavigationMenu';
 import { useMobile } from '@/shared/hooks';
+import { cn } from '@/shared/lib/utils';
 import { currencyFormatter } from '@/shared/utils';
 import { DollarCircleIcon } from 'hugeicons-react';
 import { PriceRangeSlider } from './PriceRangeSlider';
@@ -50,7 +51,16 @@ export const PriceRangeFilter = ({
   );
 
   if (isMobile) {
-    return <Sheet trigger={Trigger} children={<PriceRangeFilterContent />} />;
+    return (
+      <Sheet
+        trigger={Trigger}
+        children={<PriceRangeFilterContent />}
+        triggerClassName={cn(
+          'bg-sidebar p-3 hover:bg-accent hover:text-accent-foreground rounded-full'
+        )}
+        className='max-h-[60vh] rounded-t-2xl'
+      />
+    );
   }
   return (
     <NavigationMenuComp

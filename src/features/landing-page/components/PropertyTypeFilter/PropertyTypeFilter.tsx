@@ -2,6 +2,7 @@ import { ListingTypes } from '@/features/listings/constants';
 import { Sheet } from '@/shared/components';
 import { NavigationMenuComp } from '@/shared/components/NavigationMenu';
 import { useMobile } from '@/shared/hooks';
+import { cn } from '@/shared/lib/utils';
 import { convertUnderscoreToSpace } from '@/shared/utils';
 import {
   Building06Icon,
@@ -66,7 +67,16 @@ export const PropertyTypeFilter = ({
   );
 
   if (isMobile) {
-    return <Sheet children={<PropertyTypeContent />} trigger={Trigger} />;
+    return (
+      <Sheet
+        children={<PropertyTypeContent />}
+        trigger={Trigger}
+        triggerClassName={cn(
+          'bg-sidebar p-3 hover:bg-accent hover:text-accent-foreground rounded-full'
+        )}
+        className="max-h-[60vh] rounded-t-2xl"
+      />
+    );
   }
   return (
     <NavigationMenuComp trigger={Trigger} children={<PropertyTypeContent />} />

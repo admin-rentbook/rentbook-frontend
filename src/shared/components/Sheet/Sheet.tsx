@@ -19,19 +19,23 @@ interface SheetProps {
   onOpenChange?: (open: boolean) => void;
   className?: string;
   side?: 'bottom' | 'top' | 'right' | 'left' | undefined;
+  triggerClassName?: string;
 }
 export const Sheet = (props: SheetProps) => {
   const { side = 'bottom' } = props;
   return (
     <ShadCnSheet open={props.open} onOpenChange={props.onOpenChange}>
-      {props.trigger && <SheetTrigger asChild>{props.trigger}</SheetTrigger>}
+      {props.trigger && (
+        <SheetTrigger triggerClassName={props.triggerClassName} asChild>
+          {props.trigger}
+        </SheetTrigger>
+      )}
       <SheetContent
         side={side}
         className={cn(
           'h-screen w-screen p-0  flex border-0 max-sm:w-full max-sm:h-full',
           props.className
         )}
-        onInteractOutside={(e) => e.preventDefault()}
       >
         <SheetHeader className="sr-only">
           <SheetTitle className="sr-only">{props.title}</SheetTitle>

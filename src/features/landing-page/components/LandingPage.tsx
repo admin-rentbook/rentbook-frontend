@@ -11,7 +11,7 @@ export const LandingPage = () => {
       <AuthStoreProvider>
         <Auth />
       </AuthStoreProvider>
-      <div className="h-screen px-8 flex flex-col py-5 gap-6">
+      <div className="h-screen px-4 lg:px-8 flex flex-col py-5 gap-6">
         <Header />
         <Listings />
       </div>

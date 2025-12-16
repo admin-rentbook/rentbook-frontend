@@ -5,11 +5,13 @@ import type z from 'zod';
 import { createPropertySchema, LISTING_TYPE } from '../constants';
 import { useCreatePropertyStore } from '../store';
 import type { CreatePropertyData, PropertyDataDTO } from '../types/property';
+import type { LocationResult } from '@/shared/types';
 
 export const useCreateProperty = () => {
   const propertyData = useCreatePropertyStore(
     (s) => s.propertyData
   ) as PropertyDataDTO;
+  const [locationResult, setLocationResult] = useState<LocationResult | null>(null);
 
   const form = useForm<CreatePropertyData>({
     resolver: zodResolver(createPropertySchema),
@@ -60,5 +62,7 @@ export const useCreateProperty = () => {
     listingType,
     isOpen,
     setIsOpen,
+    locationResult,
+    setLocationResult
   };
 };
