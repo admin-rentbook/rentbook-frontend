@@ -56,7 +56,6 @@ export const MapPicker = (props: MapPickerProps) => {
  
   "
         >
-          {/* MAP (fills whole area) */}
           <div className="col-start-1 row-start-1 col-end-1 row-end-1 z-0">
             <Map
               defaultCenter={props.selectedPosition}

@@ -12,8 +12,16 @@ function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
 
 function SheetTrigger({
   ...props
-}: React.ComponentProps<typeof SheetPrimitive.Trigger>) {
-  return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />;
+}: React.ComponentProps<typeof SheetPrimitive.Trigger> & {
+  triggerClassName?: string;
+}) {
+  return (
+    <SheetPrimitive.Trigger
+      data-slot="sheet-trigger"
+      className={cn(props.triggerClassName)}
+      {...props}
+    />
+  );
 }
 
 function SheetClose({
@@ -54,7 +62,7 @@ function SheetContent({
 }) {
   return (
     <SheetPortal>
-      {/* <SheetOverlay /> */}
+      <SheetOverlay />
       <SheetPrimitive.Content
         data-slot="sheet-content"
         className={cn(

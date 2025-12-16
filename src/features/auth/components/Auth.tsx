@@ -20,7 +20,7 @@ export const Auth = () => {
     <>
       {isMobile ? (
         <Sheet
-          open={false}
+          open={isOpenAuth}
           onOpenChange={onOpenAuth}
           children={<Onboarding />}
         />
