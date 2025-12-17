@@ -1,7 +1,12 @@
-
-import { RentalPayType, RentAvailabilityTypes } from "@/features/listings/constants";
-import type { RentalPriceFormValues, RentAvailabilityFormValues } from "@/features/listings/types";
-
+import {
+  RentalPayType,
+  RentAvailabilityTypes,
+} from '@/features/listings/constants';
+import type {
+  RentalPriceFormValues,
+  RentAvailabilityFormValues,
+} from '@/features/listings/types';
+import type { CreatePropertyData } from '@/features/property-owners/types';
 
 export function isFixedPrice(
   data: RentalPriceFormValues
@@ -17,13 +22,24 @@ export function isTimedAuction(
 
 export function isAvailableNow(
   data: RentAvailabilityFormValues
-): data is Extract<RentAvailabilityFormValues, { rentAvailability: 'AVAILABLE_NOW' }> {
+): data is Extract<
+  RentAvailabilityFormValues,
+  { rentAvailability: 'AVAILABLE_NOW' }
+> {
   return data.rentAvailability === RentAvailabilityTypes.AVAILABLE_NOW;
 }
 
 export function isAvailableLater(
   data: RentAvailabilityFormValues
-): data is Extract<RentAvailabilityFormValues, { rentAvailability: 'AVAILABLE_LATER' }> {
+): data is Extract<
+  RentAvailabilityFormValues,
+  { rentAvailability: 'AVAILABLE_LATER' }
+> {
   return data.rentAvailability === RentAvailabilityTypes.AVAILABLE_LATER;
 }
 
+export function isAgentListed(
+  data: CreatePropertyData
+): data is Extract<CreatePropertyData, { listedBy: 'agent' }> {
+  return data.listedBy === 'agent';
+}

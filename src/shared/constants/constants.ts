@@ -8,9 +8,9 @@ export const UserRole = {
 export type UserType = (typeof UserRole)[keyof typeof UserRole];
 
 export const STATUS = {
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE',
-  PENDING: 'PENDING',
+  ACTIVE: 'active',
+  INACTIVE: 'inactive',
+  PENDING: 'pending',
 } as const
 export type Status = (typeof STATUS)[keyof typeof STATUS];
 

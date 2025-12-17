@@ -25,9 +25,8 @@ export interface GenericResponse {
 export interface ApiResponse<TData> extends GenericResponse {
   data: TData;
 }
-export interface PaginatedResponse<T> extends GenericResponse {
-  data: T;
-}
+export type PaginateApiResponse<T> = ApiResponse<Paginate<T>>;
+
 type Sort = {
   sorted: boolean;
   unsorted: boolean;
@@ -43,7 +42,6 @@ type PageAble = {
 };
 export interface Paginate<T> {
   pageAble: PageAble;
-  totalPages: number;
   totalElements: number;
   last: boolean;
   sort: Sort;
@@ -52,7 +50,13 @@ export interface Paginate<T> {
   size: number;
   number: number;
   empty: boolean;
-  content: T[];
+  count: number;
+  page_size: number;
+  total_pages: number;
+  current_page: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
 }
 
 export interface LocationResult {

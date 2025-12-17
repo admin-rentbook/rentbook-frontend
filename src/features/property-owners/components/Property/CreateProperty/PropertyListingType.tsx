@@ -18,7 +18,7 @@ type PropertyListingTypeProps = {
 };
 
 export const PropertyListingType = ({ form }: PropertyListingTypeProps) => {
-  const listingType = form.watch('listingType');
+  const listingType = form.watch('listedBy');
   return (
     <div>
       <div className="flex items-center lg:justify-center">
@@ -35,7 +35,7 @@ export const PropertyListingType = ({ form }: PropertyListingTypeProps) => {
             <p className="text-body-medium text-black-500">Listed by</p>
             <FormField
               control={form.control}
-              name="listingType"
+              name="listedBy"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>

@@ -12,18 +12,18 @@ export const propertyInfoSchema = z.object({
 });
 
 export const ownerListingSchema = z.object({
-  listingType: z.literal(LISTING_TYPE.OWNER),
+  listedBy: z.literal(LISTING_TYPE.OWNER),
 });
 
 export const agentListingSchema = z.object({
-  listingType: z.literal(LISTING_TYPE.AGENT),
+  listedBy: z.literal(LISTING_TYPE.AGENT),
   ownerName: z.string().min(2, 'Owner name must be at least 2 characters'),
   ownerEmail: z.email('Please enter a valid email address'),
   ownerPhone: z.string().min(10, 'Please enter a valid phone number'),
   agentCommission: z.number().min(0).max(100).optional(),
 });
 
-export const listingTypeSchema = z.discriminatedUnion('listingType', [
+export const listingTypeSchema = z.discriminatedUnion('listedBy', [
   //discriminatedUnion handles the check for matching listing type
   ownerListingSchema,
   agentListingSchema,

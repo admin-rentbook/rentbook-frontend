@@ -1,6 +1,6 @@
 import { env } from '@/config';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from '@tanstack/react-router';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -11,6 +11,8 @@ import type { LoginDTO } from '../types';
 
 export const useLogin = () => {
   const navigate = useNavigate({ from: '/' });
+  const search = useSearch({ from: '/' });
+
   const loginMutation = useLoginMutation();
   const googleAuthMutation = useGoogleAuth();
 
@@ -29,7 +31,7 @@ export const useLogin = () => {
       redirect_uri: env.REDIRECT_URL,
       response_type: 'id_token',
       scope: 'email profile openid',
-      nonce: crypto.randomUUID(), 
+      nonce: crypto.randomUUID(),
       prompt: 'select_account',
     }
   )}`;
@@ -66,7 +68,7 @@ export const useLogin = () => {
       googleAuthMutation.mutate(idToken);
       //Clean up the URL
       window.location.hash = '';
-      navigate({ to: '/', replace: true });
+      navigate({ to: search.redirectTo ?? '/', replace: true });
     }
   }, [navigate, googleAuthMutation]);
 

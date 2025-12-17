@@ -47,6 +47,7 @@ export const SignupForm = () => {
               onFocus={handlePasswordFocus}
               onBlur={handlePasswordBlur}
               type="password"
+              showErrorMessage
             />
             <PasswordRequirements
               password={form.watch('password')}

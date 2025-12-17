@@ -126,7 +126,7 @@ export const FormInput = <TFieldValues extends FieldValues>(
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           if (formatter && isFocused) {
             // While focused, allow raw input
-            setInputValue(e.target.value)
+            setInputValue(e.target.value);
           } else if (type === 'number') {
             const value = e.target.value;
             if (value === '') {
@@ -213,8 +213,20 @@ export const FormInput = <TFieldValues extends FieldValues>(
                   onChange={handleChange}
                   value={displayValue}
                   className={props.className}
-                  onFocus={formatter ? handleFocus : undefined}
-                  onBlur={formatter ? handleBlur : field.onBlur}
+                  onFocus={(e) => {
+                    inputProps.onFocus?.(e); 
+                    if (formatter) {
+                      handleFocus(e);
+                    }
+                  }}
+                  onBlur={(e) => {
+                    inputProps.onBlur?.(e); 
+                    if (formatter) {
+                      handleBlur(e);
+                    } else {
+                      field.onBlur(); 
+                    }
+                  }}
                 />
               )}
             </FormControl>

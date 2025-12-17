@@ -1,17 +1,26 @@
+import type { LocationResult } from '@/shared/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type z from 'zod';
-import { createPropertySchema, LISTING_TYPE } from '../constants';
+import { useCreatePropertyMutation } from '../apis';
+import {
+  createPropertySchema,
+  LISTING_TYPE,
+  type ListingTypes,
+} from '../constants';
 import { useCreatePropertyStore } from '../store';
 import type { CreatePropertyData, PropertyDataDTO } from '../types/property';
-import type { LocationResult } from '@/shared/types';
 
 export const useCreateProperty = () => {
   const propertyData = useCreatePropertyStore(
     (s) => s.propertyData
   ) as PropertyDataDTO;
-  const [locationResult, setLocationResult] = useState<LocationResult | null>(null);
+  const [locationResult, setLocationResult] = useState<LocationResult | null>(
+    null
+  );
+
+  const createPropertyMutation = useCreatePropertyMutation();
 
   const form = useForm<CreatePropertyData>({
     resolver: zodResolver(createPropertySchema),
@@ -23,9 +32,9 @@ export const useCreateProperty = () => {
       lng: propertyData.lng || 3.3792,
       placeId: propertyData.placeId || '',
 
-      listingType: propertyData.listingType || LISTING_TYPE.OWNER,
+      listedBy: (propertyData.listedBy || LISTING_TYPE.OWNER) as ListingTypes,
 
-      ...(propertyData.listingType === LISTING_TYPE.AGENT && {
+      ...(propertyData.listedBy === LISTING_TYPE.AGENT && {
         ownerName: propertyData.ownerName || '',
         ownerEmail: propertyData.ownerEmail || '',
         ownerPhone: propertyData.ownerPhone || '',
@@ -33,10 +42,10 @@ export const useCreateProperty = () => {
       }),
     },
   });
-  const listingType = form.watch('listingType');
+  const listedBy = form.watch('listedBy');
 
   useEffect(() => {
-    if (listingType === LISTING_TYPE.OWNER) {
+    if (listedBy === LISTING_TYPE.OWNER) {
       form.unregister([
         'ownerName',
         'ownerEmail',
@@ -44,13 +53,23 @@ export const useCreateProperty = () => {
         'agentCommission',
       ]);
     }
-  }, [listingType, form]);
+  }, [listedBy, form]);
 
   const [isOpen, setIsOpen] = useState(false);
 
   function onSubmit(data: z.infer<typeof createPropertySchema>) {
-    console.log(data);
-    setIsOpen(true);
+
+    if (!locationResult) {
+      return;
+    }
+    createPropertyMutation.mutate(
+      { data, locationResult },
+      {
+        onSuccess: () => {
+          setIsOpen(true);
+        },
+      }
+    );
   }
 
   const isButtonDisabled = !form.formState.isValid;
@@ -59,10 +78,11 @@ export const useCreateProperty = () => {
     form,
     onSubmit,
     isButtonDisabled,
-    listingType,
+    listedBy,
     isOpen,
     setIsOpen,
     locationResult,
-    setLocationResult
+    setLocationResult,
+    isLoading: createPropertyMutation.isPending,
   };
 };

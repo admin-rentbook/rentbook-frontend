@@ -19,6 +19,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/shared/components/ui/table';
+import { cn } from '@/shared/lib/utils';
+import { Loading01Icon } from 'hugeicons-react';
+import { DataTableSkeleton } from '../Skeletons';
 import { DataCard } from './DataCard';
 import { DataTablePagination } from './DataTablePagination';
 
@@ -30,10 +33,14 @@ interface DataTableProps<TData, TValue> {
   pageCount?: number;
   totalItems?: number;
   isServerSide?: boolean;
+  isLoading?: boolean;
+  isFetching?: boolean;
+  emptyState?: React.ReactNode;
   mobileCardRender?: (row: Row<TData>) => React.ReactNode;
 }
 
 export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
+  const { isLoading = false, isFetching = false } = props;
   const table = useReactTable({
     data: props.data,
     columns: props.columns,
@@ -51,9 +58,41 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
 
   const actualTotalItems = props.totalItems ?? props.data.length;
 
+  if (isLoading) {
+    return (
+      <DataTableSkeleton
+        rows={props.pagination.pageSize}
+        columns={props.columns.length}
+      />
+    );
+  }
+
+  if (props.data.length === 0 && !isFetching) {
+    return (
+      props.emptyState || (
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <p className="text-body text-muted-foreground">No data available</p>
+        </div>
+      )
+    );
+  }
+
   return (
-    <div>
-      <div className="hidden lg:block overflow-hidden rounded-md">
+    <div className="relative">
+      {isFetching && (
+        <div className="absolute top-2 right-2 z-10">
+          <div className="flex items-center gap-2 bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
+            <Loading01Icon className="h-3 w-3 animate-spin text-primary" />
+            <span className="text-body-xs text-primary">Updating...</span>
+          </div>
+        </div>
+      )}
+      <div
+        className={cn(
+          'hidden lg:block overflow-hidden rounded-md',
+          isFetching && 'opacity-70 pointer-events-none'
+        )}
+      >
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -74,51 +113,36 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={props.columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && 'selected'}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id} className="max-w-[150px] truncate">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
               </TableRow>
-            )}
+            ))}
           </TableBody>
         </Table>
       </div>
-      <div className="lg:hidden space-y-4">
-        {table.getRowModel().rows?.length ? (
-          table
-            .getRowModel()
-            .rows.map((row) => (
-              <div key={row.id}>
-                {props.mobileCardRender ? (
-                  props.mobileCardRender(row)
-                ) : (
-                  <DataCard row={row} columns={props.columns} />
-                )}
-              </div>
-            ))
-        ) : (
-          <div className="text-center py-12 text-gray-500">No results.</div>
+      <div
+        className={cn(
+          'lg:hidden space-y-4',
+          isFetching && 'opacity-70 pointer-events-none'
         )}
+      >
+        {table.getRowModel().rows.map((row) => (
+          <div key={row.id}>
+            {props.mobileCardRender ? (
+              props.mobileCardRender(row)
+            ) : (
+              <DataCard row={row} columns={props.columns} />
+            )}
+          </div>
+        ))}
       </div>
       <DataTablePagination
         table={table}

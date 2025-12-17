@@ -41,8 +41,8 @@ export const Links = {
 export type LinkType = (typeof Links)[keyof typeof Links];
 
 export const PROPERTY_STATUS = {
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE',
+  ACTIVE: 'active',
+  INACTIVE: 'inactive',
 } as const;
 export type PropertyStatusType =
   (typeof PROPERTY_STATUS)[keyof typeof PROPERTY_STATUS];
@@ -66,9 +66,9 @@ export const unitFilterOptions = Object.values(UNIT_FILTER).map(
   })
 );
 export const LISTING_TYPE = {
-  OWNER: 'OWNER',
-  AGENT: 'AGENT',
-};
+  OWNER: 'owner',
+  AGENT: 'agent',
+} as const;
 export type ListingTypes = (typeof LISTING_TYPE)[keyof typeof LISTING_TYPE];
 
 export const sidebarItems = [

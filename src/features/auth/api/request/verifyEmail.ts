@@ -18,7 +18,7 @@ export const verifyEmail = async (data: VerifyEmailDTO) => {
     );
     return response.data;
   } catch (err) {
-    throw Error(formatError(err));
+    throw (formatError(err));
   }
 };
 

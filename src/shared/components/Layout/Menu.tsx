@@ -18,6 +18,7 @@ export const Menu = () => {
   const onOpenAuth = useAppStore((s) => s.onOpenAuth);
   const authUser = useAppStore((s) => s.authUser);
   const isAuthUser = authUser?.tokens.access;
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

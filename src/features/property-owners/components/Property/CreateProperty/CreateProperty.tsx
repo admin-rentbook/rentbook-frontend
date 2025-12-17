@@ -12,8 +12,15 @@ import { PropertyCreateInfo } from './PropertyCreateInfo';
 import { PropertyListingType } from './PropertyListingType';
 
 export const CreateProperty = () => {
-  const { form, isButtonDisabled, onSubmit, isOpen, setIsOpen } =
-    useCreateProperty();
+  const {
+    form,
+    isButtonDisabled,
+    onSubmit,
+    isOpen,
+    setIsOpen,
+    setLocationResult,
+    isLoading,
+  } = useCreateProperty();
   const navigate = useNavigate();
   return (
     <>
@@ -34,7 +41,12 @@ export const CreateProperty = () => {
             </Button>
             <Button
               onClick={() =>
-                navigate({ to: ListingLinks.LISTINGS_GET_STARTED })
+                navigate({
+                  to: ListingLinks.LISTINGS_GET_STARTED,
+                  search: (prev) => ({
+                    propertyId: prev.propertyId!
+                  }),
+                })
               }
               className="w-1/2 lg:w-auto h-11 lg:h-8"
             >
@@ -61,7 +73,10 @@ export const CreateProperty = () => {
             <div className="col-span-3 lg:col-span-2 order-1">
               <Form form={form} onSubmit={onSubmit}>
                 <div className="flex-grow">
-                  <PropertyCreateInfo form={form} />
+                  <PropertyCreateInfo
+                    form={form}
+                    setLocationResult={setLocationResult}
+                  />
                   <PropertyListingType form={form} />
                 </div>
               </Form>
@@ -102,7 +117,8 @@ export const CreateProperty = () => {
                     disabled={isButtonDisabled}
                     onClick={form.handleSubmit(onSubmit)}
                     size="lg"
-                    className='w-full lg:w-auto'
+                    className="w-full lg:w-auto"
+                    isLoading={isLoading}
                   >
                     Create property
                   </Button>

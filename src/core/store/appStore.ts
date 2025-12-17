@@ -53,8 +53,8 @@ export const useAppStore = create<AppStore>((set) => ({
     set({ authUser: null, userType: null });
     clearDataFromSessStorage('auth_user');
     clearDataFromLocalStorage('userType');
-    clearDataFromSessStorage('verify-timer')
-    clearDataFromSessStorage('email')
-    clearDataFromLocalStorage('CREATE_PROPERTY')
+    clearDataFromSessStorage('verify-timer');
+    clearDataFromSessStorage('email');
+    clearDataFromLocalStorage('CREATE_PROPERTY');
   },
 }));

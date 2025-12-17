@@ -91,7 +91,7 @@ export const Address = ({ form, setLocationResult }: AddressProps) => {
     >
       <div className="flex gap-3 items-center overflow-hidden">
         <GlobalSearchIcon className="size-6" />
-        <p className="text-body text-black-400 truncate">
+        <p className="text-body text-black-400">
           {finalAddress?.address ?? propertyData.address}
         </p>
       </div>

@@ -14,6 +14,7 @@ export const PasswordRequirements: React.FC<PasswordRequirementsProps> = ({
   password,
   isVisible,
 }) => {
+  console.log('isVidi', isVisible)
   const requirements: PasswordRequirement[] = [
     {
       label: 'Lowercase letters',

@@ -8,11 +8,16 @@ import { ListingGetStartedView } from './listing-get-started';
 
 const listingPageSearchSchema = z.object({
   blockName: z.string().optional(),
+  propertyId: z.number().int().min(1).optional(),
 });
 
+const listingGetStartedSearchSchema = z.object({
+  propertyId: z.number().int().min(1).optional(),
+});
 export const listingGetStartedRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: ListingLinks.LISTINGS_GET_STARTED,
+  validateSearch: listingGetStartedSearchSchema,
   component: () => <ListingGetStartedView />,
 });
 

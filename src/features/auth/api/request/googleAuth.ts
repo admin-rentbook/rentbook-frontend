@@ -13,7 +13,7 @@ export const googleAuth = async (token: string) => {
     });
     return response.data;
   } catch (err) {
-    throw Error(formatError(err));
+    throw (formatError(err));
   }
 };
 

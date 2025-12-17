@@ -3,6 +3,7 @@ import type { PaginationState, Table } from '@tanstack/react-table';
 export const usePagination = <TData>(
   isServerSide: boolean,
   pagination: PaginationState,
+  setPagination: React.Dispatch<React.SetStateAction<PaginationState>>,
   actualTotalItems: number,
   table: Table<TData>,
   pageCount: number
@@ -15,7 +16,7 @@ export const usePagination = <TData>(
   let totalPages: number;
 
   if (isServerSide) {
-    startItem = currentPage * pageSize + 1;
+    startItem = (currentPage - 1) * pageSize + 1;
     endItem = Math.min(startItem + pageSize - 1, actualTotalItems);
     totalPages = pageCount || Math.ceil(actualTotalItems / pageSize);
   } else {
@@ -33,5 +34,39 @@ export const usePagination = <TData>(
       endItem = 0;
     }
   }
-  return { startItem, endItem, totalPages };
+
+  const goToFirstPage = () => {
+    if (pagination.pageIndex > 1) {
+      setPagination((prev) => ({ ...prev, pageIndex: 1 }));
+    }
+  };
+
+  const goToPreviousPage = () => {
+    setPagination((prev) => ({
+      ...prev,
+      pageIndex: Math.max(prev.pageIndex - 1, 1),
+    }));
+  };
+
+  const goToNextPage = () => {
+    setPagination((prev) => ({
+      ...prev,
+      pageIndex: Math.min(prev.pageIndex + 1, pageCount),
+    }));
+  };
+
+  const goToLastPage = () => {
+    if (pagination.pageIndex < pageCount) {
+      setPagination((prev) => ({ ...prev, pageIndex: pageCount }));
+    }
+  };
+  return {
+    startItem,
+    endItem,
+    totalPages,
+    goToFirstPage,
+    goToLastPage,
+    goToNextPage,
+    goToPreviousPage,
+  };
 };
