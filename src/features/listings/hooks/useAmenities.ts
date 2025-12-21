@@ -1,19 +1,54 @@
-import { useMemo, useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
+import { useAddAmenities, useGetAmenities } from '../apis';
+import { ListingLinks } from '../constants';
 import { useListingDraft } from '../providers';
 import { useAutoSaveValue } from './useAutoSave';
 
 export const useAmenities = (
   initialAmenities: string[],
-  onNext: (() => void) | undefined
+  onNext: (() => void) | undefined,
+  onPrev: (() => void) | undefined,
+  listingId: number
 ) => {
-  const { updateStepData, markStepComplete, getStepData } = useListingDraft();
-  const savedData = useMemo(() => getStepData('amenities'), []);
+  const navigate = useNavigate({ from: '/listings-start' });
+
+  const {
+    updateStepData,
+    updateFromApiResponse,
+    isStepSyncedWithApi,
+    syncFromApiData,
+  } = useListingDraft();
+
+  const {
+    data: amenities,
+    isPending,
+    isFetching,
+    isError,
+    error,
+  } = useGetAmenities(listingId);
+  const addAmenitiesMutation = useAddAmenities();
 
   const [availableAmenities, setAvailableAmenities] =
     useState<string[]>(initialAmenities);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>(
-    savedData?.selectedAmenities || []
+    amenities?.data || []
   );
+
+  useEffect(() => {
+    if (amenities && listingId) {
+      const apiStepName = amenities || 'rentals';
+
+      if (!isStepSyncedWithApi(apiStepName)) {
+        syncFromApiData({
+          listing_id: amenities.id as number,
+          current_step: apiStepName,
+          listingDescription: amenities,
+        });
+      }
+    }
+  }, [amenities, listingId, syncFromApiData, isStepSyncedWithApi]);
+
   const [inputValue, setInputValue] = useState('');
 
   useAutoSaveValue(selectedAmenities, (current) => {
@@ -55,10 +90,30 @@ export const useAmenities = (
     }
   };
 
+  const handleBack = () => {
+    navigate({
+      to: ListingLinks.LISTINGS,
+      search: (prev) => ({
+        ...prev,
+        propertyId: prev.propertyId,
+      }),
+    });
+    onPrev?.();
+  };
+
   const handleSubmit = () => {
-    updateStepData('amenities', { selectedAmenities: selectedAmenities });
-    markStepComplete(0, 1);
-    onNext?.();
+    addAmenitiesMutation.mutate(
+      {
+        data: selectedAmenities,
+        listingId: listingId as number,
+      },
+      {
+        onSuccess: (res) => {
+          updateFromApiResponse(res.data)
+          onNext?.();
+        },
+      }
+    );
   };
 
   return {
@@ -72,5 +127,11 @@ export const useAmenities = (
     handleKeyPress,
     isButtonDisabled,
     handleSubmit,
+    handleBack,
+    isAddAmeLoading: addAmenitiesMutation.isPending,
+    isPending,
+    isFetching: isFetching && !amenities,
+    isError,
+    error,
   };
 };

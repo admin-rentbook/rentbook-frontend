@@ -37,6 +37,7 @@ interface DataTableProps<TData, TValue> {
   isFetching?: boolean;
   emptyState?: React.ReactNode;
   mobileCardRender?: (row: Row<TData>) => React.ReactNode;
+  onRowAction?: (row: TData) => void;
 }
 
 export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
@@ -117,6 +118,8 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
+                className="hover:cursor-pointer"
+                onClick={() => props.onRowAction?.(row.original)}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="max-w-[150px] truncate">
@@ -135,7 +138,7 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
         )}
       >
         {table.getRowModel().rows.map((row) => (
-          <div key={row.id}>
+          <div key={row.id} onClick={() => props.onRowAction?.(row.original)}>
             {props.mobileCardRender ? (
               props.mobileCardRender(row)
             ) : (
@@ -144,14 +147,16 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
           </div>
         ))}
       </div>
-      <DataTablePagination
-        table={table}
-        actualTotalItems={actualTotalItems}
-        pageCount={props.pageCount ?? 0}
-        isServerSide={props.isServerSide ?? false}
-        pagination={props.pagination}
-        setPagination={props.setPagination}
-      />
+      {actualTotalItems > props.pagination.pageSize && (
+        <DataTablePagination
+          table={table}
+          actualTotalItems={actualTotalItems}
+          pageCount={props.pageCount ?? 0}
+          isServerSide={props.isServerSide ?? false}
+          pagination={props.pagination}
+          setPagination={props.setPagination}
+        />
+      )}
     </div>
   );
 }

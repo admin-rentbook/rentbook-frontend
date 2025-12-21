@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import type { Step } from '../types';
 
+export type StepperInitialState = {
+  initialMainStep?: number;
+  initialSubStep?: Record<number, number>;
+  initialCompletedSteps?: Record<string, boolean>;
+};
+
 export type UseStepper = {
   currentMainStep: number;
   currentSubStep: number;
@@ -19,16 +25,25 @@ export type UseStepper = {
   goForward: () => void;
 };
 
-export const useStepper = (steps: Step[]): UseStepper => {
-  const [currentMainStep, setCurrentMainStep] = useState(0);
+export const useStepper = (
+  steps: Step[],
+  initialState?: StepperInitialState
+): UseStepper => {
+  // Initialize from draft state or default to 0
+  const [currentMainStep, setCurrentMainStep] = useState(
+    initialState?.initialMainStep ?? 0
+  );
   const [currentSubStep, setCurrentSubStep] = useState<Record<number, number>>(
-    {}
+    initialState?.initialSubStep ?? {}
   );
   const [completedSteps, setCompletedSteps] = useState<Record<string, boolean>>(
-    {}
+    initialState?.initialCompletedSteps ?? {}
   );
+
+  // Expand the current main step and the first step by default
   const [expandedSteps, setExpandedSteps] = useState<Record<number, boolean>>({
     0: true,
+    [initialState?.initialMainStep ?? 0]: true,
   });
 
   const toggleExpand = (stepId: number) => {

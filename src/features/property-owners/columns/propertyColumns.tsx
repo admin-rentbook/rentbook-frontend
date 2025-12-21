@@ -1,9 +1,7 @@
-import { Badge } from '@/shared/components';
-import { cn } from '@/shared/lib/utils';
+import { Badge, StatusBox } from '@/shared/components';
 import { convertUnderscoreToSpace } from '@/shared/utils';
 import { returnStatus } from '@/shared/utils/helpers';
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
-import { CircleIcon } from 'hugeicons-react';
 import type { PropertyDTO } from '../types/property';
 
 const tableColumnHelper = createColumnHelper<PropertyDTO>();
@@ -39,13 +37,14 @@ export const propertyColumns: ColumnDef<PropertyDTO, any>[] = [
     cell: (info) => {
       const { bgColor, textColor, fillColor } = returnStatus(info.getValue());
       return (
-        <Badge className={`${bgColor} ${textColor}`}>
-          <CircleIcon
-            className={cn(`size-[7px] ${fillColor}`)}
-            style={{ height: '7px', width: '7px' }}
+        <>
+          <StatusBox
+            bgColor={bgColor}
+            textColor={textColor}
+            text={convertUnderscoreToSpace(info.getValue())}
+            fillColor={fillColor}
           />
-          {<span>{convertUnderscoreToSpace(info.getValue())}</span>}
-        </Badge>
+        </>
       );
     },
     header: 'Status',

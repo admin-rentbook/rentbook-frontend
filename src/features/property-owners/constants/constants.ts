@@ -6,7 +6,7 @@ import property6Img from '@/assets/images/property-6.jpg';
 import propertyImg from '@/assets/images/property-image.jpg';
 
 import type {
-  BlockDTO,
+  Complex,
   ListingDescriptionDTO,
 } from '@/features/listings/types';
 import { convertUnderscoreToSpace } from '@/shared/utils';
@@ -149,7 +149,7 @@ export const getStartedItems = [
   },
 ];
 
-export const blockItems: BlockDTO[] = [
+export const complexItems: Complex[] = [
   {
     id: 1,
     blockName: 'Sample complex',
@@ -197,7 +197,7 @@ export const blockItems: BlockDTO[] = [
 ];
 
 export const blockOptions = transformDataToOptions(
-  blockItems,
-  (item) => item.blockName,
-  (item) => item.blockName
+  complexItems,
+  (item) => item.complexName,
+  (item) => item.complexName
 );

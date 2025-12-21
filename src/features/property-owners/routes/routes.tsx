@@ -1,5 +1,5 @@
 import { rootRoute } from '@/core/router/rootRoute';
-import { Layout } from '@/shared/components/Layout';
+import { Layout, LayoutWithoutHeader } from '@/shared/components/Layout';
 import { createRoute } from '@tanstack/react-router';
 import z from 'zod';
 import { Property } from '../components';
@@ -28,9 +28,9 @@ export const propertiesRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: Links.PROPERTIES,
   component: () => (
-    <Layout sidebarItems={sidebarItems}>
+    <LayoutWithoutHeader sidebarItems={sidebarItems}>
       <Property />
-    </Layout>
+    </LayoutWithoutHeader>
   ),
 });
 

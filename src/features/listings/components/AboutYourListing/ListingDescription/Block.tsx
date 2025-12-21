@@ -1,8 +1,8 @@
 import { GuestHouseIcon } from 'hugeicons-react';
-import type { BlockDTO } from '../../../types';
+import type { ComplexDTO } from '../../../types';
 
 type BlockProps = {
-  block: BlockDTO;
+  complex: ComplexDTO;
   onBlockClick: (blockId: number, blockName: string) => void;
   
 };
@@ -25,10 +25,10 @@ export const Block = (props: BlockProps) => {
   return (
     <div
       className="flex flex-col gap-2 bg-white border border-custom-neutral-50 cursor-pointer hover:opacity-90 transition-opacity rounded-[1.25em] p-1"
-      onClick={() => props.onBlockClick(props.block.id, props.block.blockName)}
+      onClick={() => props.onBlockClick(props.complex?.complex_id as number, props.complex.new_complex_name)}
     >
-      <div className="relative w-full rounded-[1.25em] overflow-hidden aspect-[4/4]">
-        {props.block.listings.length > 0 ? (
+      {/* <div className="relative w-full rounded-[1.25em] overflow-hidden aspect-[4/4]">
+        {props.complex.listings.length > 0 ? (
           <div
             className={`grid ${getGridLayout(props.block.listings.length)} ${getGridRows(props.block.listings.length)} h-full gap-1 rounded-[15px]`}
           >
@@ -53,10 +53,10 @@ export const Block = (props: BlockProps) => {
       </div>
       <div className="flex flex-col p-2">
         <h3 className="text-body text-black-500 truncate">
-          {props.block.blockName}
+          {props.complex.blockName}
         </h3>
         <p className="text-body-xs text-black-400">{`${props.block.listings.length} listings`}</p>
-      </div>
+      </div> */}
     </div>
   );
 };

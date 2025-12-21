@@ -114,6 +114,7 @@ export type SubStepType = {
   id: number;
   title: string;
   component: React.ComponentType<{ onNext?: () => void; onPrev?: () => void }>;
+  apiStepName?: string;
 };
 
 export type Step = {
@@ -125,30 +126,12 @@ export type Step = {
 
 export type StepProgress = {
   currentMainStep: number;
-  currentSubStep: number;
+  currentSubStep: Record<number, number>;
   completedSteps: Record<string, boolean>;
   lastUpdated: string;
+  apiSyncedSteps: Record<string, boolean>;
 };
 
-export type BaseFilter = {
-  id: string;
-  label: string;
-};
-
-export type ListFilter = BaseFilter & {
-  type: 'list';
-  items: { value: string; label: string }[];
-};
-
-export type CustomFilter = BaseFilter & {
-  type: 'custom';
-  renderCustom: (params: {
-    selectedValue: any;
-    onChange: (value: any) => void;
-  }) => React.ReactNode;
-};
-
-export type FilterConfig = ListFilter | CustomFilter;
 
 export type SelectCardType = {
   icon: React.FC<

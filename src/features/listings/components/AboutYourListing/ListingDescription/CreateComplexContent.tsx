@@ -1,27 +1,28 @@
+import type { ComplexFormData } from '@/features/listings/hooks';
 import { Button } from '@/shared/components';
 import { Form, FormInput } from '@/shared/components/Form';
 import type { UseFormReturn } from 'react-hook-form';
 
 type CreateBlockContentProps = {
-  form: UseFormReturn<{
-    blockName: string;
-  }>;
-  onSubmit: (data: { blockName: string }) => void;
+  form: UseFormReturn<ComplexFormData>;
+  onSubmit: (data: ComplexFormData) => void;
   onClose: () => void;
   isDisabled: boolean;
+  isLoading: boolean;
 };
-export const CreateBlockContent = ({
+export const CreateComplexContent = ({
   form,
   onSubmit,
   onClose,
   isDisabled,
+  isLoading,
 }: CreateBlockContentProps) => (
   <>
     <Form form={form} onSubmit={onSubmit}>
       <FormInput
         label="Complex name"
         control={form.control}
-        name="blockName"
+        name="complexName"
         placeholder="Enter complex name"
       />
     </Form>
@@ -30,7 +31,11 @@ export const CreateBlockContent = ({
       <Button variant="tertiary" onClick={onClose}>
         Cancel
       </Button>
-      <Button disabled={isDisabled} onClick={form.handleSubmit(onSubmit)}>
+      <Button
+        disabled={isDisabled}
+        isLoading={isLoading}
+        onClick={form.handleSubmit(onSubmit)}
+      >
         Create complex
       </Button>
     </div>

@@ -2,6 +2,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { ArrowReloadHorizontalIcon } from 'hugeicons-react';
 import { Button } from '../ui';
 import { Menu } from './Menu';
+import { Links } from '@/features/property-owners/constants';
 
 type NavbarProps = {
   showHeaderText?: string;
@@ -18,7 +19,7 @@ export const Navbar = ({ showHeaderText }: NavbarProps) => {
       <div className="flex gap-[20px] items-center">
         <Button
           variant="tertiary"
-          onClick={() => navigate({ to: '/properties/create' })}
+          onClick={() => navigate({ to: Links.PROPERTY_GET_STARTED })}
           className='rounded-full'
           size='lg'
         >

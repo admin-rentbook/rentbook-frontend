@@ -1,6 +1,7 @@
 import { DEFAULT_AMENITIES } from '@/features/listings/constants';
 import { useAmenities } from '@/features/listings/hooks';
 import { Button, Input, Label } from '@/shared/components';
+import { useSearch } from '@tanstack/react-router';
 import { Add01Icon } from 'hugeicons-react';
 import { ListingTitle, NavigateButtons } from '../../shared';
 import { AmenityTag } from './AmenityTag';
@@ -11,6 +12,7 @@ type AmenitiesProps = {
 };
 
 export const Amenities = ({ onNext, onPrev }: AmenitiesProps) => {
+  const { listingId } = useSearch({ from: '/listings-start' });
   const {
     availableAmenities,
     inputValue,
@@ -20,8 +22,14 @@ export const Amenities = ({ onNext, onPrev }: AmenitiesProps) => {
     isSelected,
     handleKeyPress,
     handleSubmit,
+    handleBack,
     isButtonDisabled,
-  } = useAmenities(DEFAULT_AMENITIES, onNext);
+    isAddAmeLoading,
+    // isPending,
+    // isFetching,
+    // isError,
+    // error,
+  } = useAmenities(DEFAULT_AMENITIES, onNext, onPrev, listingId as number);
   return (
     <div className="flex flex-col gap-10 h-full">
       <ListingTitle
@@ -68,8 +76,9 @@ export const Amenities = ({ onNext, onPrev }: AmenitiesProps) => {
       </div>
       <NavigateButtons
         isButtonDisabled={isButtonDisabled}
-        onBack={() => onPrev?.()}
+        onBack={handleBack}
         onContinue={handleSubmit}
+        isLoading={isAddAmeLoading}
       />
     </div>
   );

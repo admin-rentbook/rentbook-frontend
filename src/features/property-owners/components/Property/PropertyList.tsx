@@ -1,7 +1,9 @@
+import { PropertyDetailsLinks } from '@/features/property-details';
 import { DataTable, SearchBox } from '@/shared/components';
 import { EmptyState } from '@/shared/components/EmptyState';
 import { ErrorState } from '@/shared/components/ErrorState';
 import { FilterHeaderSkeleton } from '@/shared/components/Skeletons';
+import { useNavigate } from '@tanstack/react-router';
 import { useGetProperties } from '../../apis';
 import { propertyColumns } from '../../columns';
 import type { PropertyStatusType } from '../../constants';
@@ -17,7 +19,7 @@ export const PropertyList = () => {
     setPagination,
     filters,
     setFilters,
-    reset
+    reset,
   } = usePropertyList();
   const {
     data: properties,
@@ -31,7 +33,7 @@ export const PropertyList = () => {
     pagination.pageIndex,
     pagination.pageSize
   );
-
+  const navigate = useNavigate();
   if (isError) {
     return (
       <div className="p-6">
@@ -71,6 +73,12 @@ export const PropertyList = () => {
         isFetching={isFetching}
         isServerSide
         mobileCardRender={(row) => <PropertyListMobile row={row} />}
+        onRowAction={(property) => {
+          navigate({
+            to: PropertyDetailsLinks.PROPERTY_DETAILS,
+            search: { propertyId: property.id },
+          });
+        }}
         emptyState={
           <EmptyState
             title="No properties found"

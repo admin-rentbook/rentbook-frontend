@@ -13,11 +13,13 @@ export const steps: Step[] = [
       {
         id: 0,
         title: 'Listing description',
+        apiStepName: 'listings',
         component: ({ onNext }) => <ListingDescription onNext={onNext} />,
       },
       {
         id: 1,
         title: 'Amenities',
+        apiStepName:'amenities',
         component: ({ onNext, onPrev }) => (
           <Amenities onNext={onNext} onPrev={onPrev} />
         ),
@@ -25,6 +27,7 @@ export const steps: Step[] = [
       {
         id: 2,
         title: 'Add media',
+        apiStepName: 'media',
         component: ({ onNext, onPrev }) => (
           <AddImages onNext={onNext} onPrev={onPrev} />
         ),
@@ -38,6 +41,7 @@ export const steps: Step[] = [
       {
         id: 0,
         title: 'Set your price',
+        apiStepName: 'pricing',
         component: ({ onNext, onPrev }) => (
           <CostAndFees onNext={onNext} onPrev={onPrev} />
         ),
@@ -51,6 +55,7 @@ export const steps: Step[] = [
       {
         id: 0,
         title: 'Set viewing',
+        apiStepName: 'viewing',
         component: ({ onNext, onPrev }) => (
           <Viewing onNext={onNext} onPrev={onPrev} />
         ),
@@ -64,6 +69,7 @@ export const steps: Step[] = [
       {
         id: 0,
         title: 'Set final details',
+        apiStepName: 'availability',
         component: ({ onNext, onPrev }) => (
           <RentAvailability onNext={onNext} onPrev={onPrev} />
         ),
@@ -71,6 +77,7 @@ export const steps: Step[] = [
       {
         id: 1,
         title: 'Additional details',
+        apiStepName: 'additional_details',
         component: ({ onNext, onPrev }) => (
           <AdditionalDetails onNext={onNext} onPrev={onPrev} />
         ),
@@ -84,6 +91,7 @@ export const steps: Step[] = [
       {
         id: 0,
         title: 'Review listing',
+        apiStepName: 'review',
         component: ({ onNext, onPrev }) => (
           <ReviewListing onNext={onNext} onPrev={onPrev} />
         ),

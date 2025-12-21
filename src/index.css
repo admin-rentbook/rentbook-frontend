@@ -94,6 +94,8 @@
   --color-warning-500: var(--warning-500);
   --color-warning-600: var(--warning-600);
 
+  --color-custom-blue-100: var(--custom-blue-100);
+  --color-custom-blue-300: var(--custom-blue-300);
   --color-custom-blue-400: var(--custom-blue-400);
 
   --color-icons-black: var(--icons-black);
@@ -105,6 +107,7 @@
   --shadow-pri: var(--shadow-pri);
   --shadow-ter: var(--shadow-ter);
   --shadow-custom-md: var(--shadow-custom-md);
+  --shadow-custom-sm: var(--shadow-custom-sm);
   --radius-10: 10px;
 
   --font-sans: 'Inter Variable', 'Inter', system-ui, sans-serif;
@@ -217,6 +220,8 @@
   --orange-500: oklch(0.6483 0.1937 42.52); /*#EA5A00*/
   --orange-100: oklch(0.981 0.010882 54.5012); /*#fff7f2*/
 
+  --custom-blue-100: oklch(0.9558 0.020851 271.195); /*#ebfoff*/
+  --custom-blue-300: oklch(0.5151 0.2274 264.14); /*#1f55e7*/
   --custom-blue-400: oklch(0.5726 0.233752 265.2836); /*#3366FF*/
 
   --shadow-custom-md: 8px 8px 32px 0px oklch(0 0 0 / 10.2%) /*#0000001A*/;
@@ -228,6 +233,9 @@
     -3px 10px 20px 0px oklch(0 0 0 / 3.14%),
     -6px 20px 30px 0px oklch(0 0 0 / 3.14%),
     0px 12.52px 10.02px 0px oklch(0 0 0 / 0%);
+  --shadow-custom-sm:
+    0px 0px 0px 1px oklch(0.3405 0.097 257.15 / 7.84%),
+    0px 1px 2px 0px oklch(0.3478 0.0447 255.17 / 12.16%);
 }
 
 .dark {

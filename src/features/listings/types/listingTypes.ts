@@ -59,10 +59,10 @@ export type ListingDescriptionDTO = ListingDescriptionFormValues &
     images: string[];
     blockName?: string;
   };
-export type BlockDTO = {
+export type Complex = {
   id: number;
-  blockName: string;
-  listings: ListingDescriptionDTO[];
+  complexName: string;
+  listings?: ListingDescriptionDTO[];
 };
 
 export type RentalPaymentType = {

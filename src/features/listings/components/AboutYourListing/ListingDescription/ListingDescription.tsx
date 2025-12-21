@@ -1,4 +1,4 @@
-import { blockItems } from '@/features/property-owners/constants';
+import { complexItems } from '@/features/property-owners/constants';
 import { Button, DialogComponent, Switch } from '@/shared/components';
 import {
   Form,
@@ -7,43 +7,52 @@ import {
   FormTextarea,
 } from '@/shared/components/Form';
 import { numberFormatter } from '@/shared/utils';
-import { useNavigate } from '@tanstack/react-router';
-import {
-  ArrowDown01Icon,
-  ArrowLeft01Icon,
-  Cancel01Icon,
-} from 'hugeicons-react';
-import { ListingLinks, listingTypeOptions } from '../../../constants';
-import { useBlock, useListingDescription } from '../../../hooks';
+import { useNavigate, useSearch } from '@tanstack/react-router';
+import { ArrowDown01Icon } from 'hugeicons-react';
+import { Loader2 } from 'lucide-react';
+import { listingTypeOptions } from '../../../constants';
+import { useComplex, useListingDescription } from '../../../hooks';
 import { ListingTitle, NavigateButtons } from '../../shared';
-import { AddToBlockContent } from './AddToBlockContent';
-import { CreateBlockContent } from './CreateBlockContent';
+import { ComplexDialogContent } from './ComplexDialogContent';
 
 type ListingDescriptionProps = {
   onNext: (() => void) | undefined;
 };
 
 export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
+  const { listingId, propertyId } = useSearch({ from: '/listings-start' });
   const {
     isButtonDisabled,
     form,
     onSubmit,
     openBlock,
     setOpenBlock,
-    isAddListingToBlock,
-    setIsAddListingToBlock,
+    isAddListingToComplex,
     handleToggleChange,
     selectedBlock,
     handleBlockSelect,
-  } = useListingDescription(onNext);
+    isListingDescLoading,
+    isPending,
+    isFetching,
+  } = useListingDescription(onNext, propertyId as number, listingId as number);
   const {
-    blockState,
-    setBlockState,
-    formBlock,
-    isBlockBtnDisabled,
-    onBlockSubmit,
-  } = useBlock(setOpenBlock);
+    complexState,
+    setComplexState,
+    formComplex,
+    isComplexBtnDisabled,
+    onComplexSubmit,
+    isLoading,
+  } = useComplex(setOpenBlock, propertyId);
   const navigate = useNavigate();
+
+  if (isFetching || isPending) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-primary-500" />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-10 h-full">
       <ListingTitle
@@ -58,13 +67,12 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
               <p>Add listing to a complex</p>
               <Switch
                 onCheckedChange={(checked) => {
-                  setIsAddListingToBlock(checked);
                   handleToggleChange(checked);
                 }}
-                checked={isAddListingToBlock}
+                checked={isAddListingToComplex}
               />
             </div>
-            {isAddListingToBlock && (
+            {isAddListingToComplex && (
               <div>
                 <Button
                   variant="outline"
@@ -145,57 +153,34 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
       </Form>
       <NavigateButtons
         isButtonDisabled={isButtonDisabled}
-        onBack={() => navigate({ to: ListingLinks.LISTINGS_GET_STARTED })}
+        onBack={() =>
+          navigate({
+            to: '/property-details',
+            search: (prev) => ({
+              propertyId: prev.propertyId,
+            }),
+          })
+        }
         onContinue={form.handleSubmit(onSubmit)}
+        isLoading={isListingDescLoading}
       />
       <DialogComponent
         open={openBlock}
         onOpenChange={setOpenBlock}
         className="w-full lg:w-2/3 xl:w-1/3"
-        children={
-          <div className="flex flex-col p-6 gap-10">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                {blockState === 'CREATE_BLOCK' && (
-                  <button
-                    onClick={() => setBlockState('ADD_TO_BLOCK')}
-                    className="hover:opacity-70 transition-opacity"
-                  >
-                    <ArrowLeft01Icon className="size-5" />
-                  </button>
-                )}
-                <h1 className="text-heading-5 text-black-500">
-                  {blockState === 'ADD_TO_BLOCK'
-                    ? 'Add to block'
-                    : 'Create block'}
-                </h1>
-              </div>
-
-              <button
-                onClick={() => setOpenBlock(false)}
-                className="hover:opacity-70 transition-opacity"
-              >
-                <Cancel01Icon className="size-6 text-black-400" />
-              </button>
-            </div>
-            {blockState === 'ADD_TO_BLOCK' ? (
-              <AddToBlockContent
-                blockItems={blockItems}
-                onBlockClick={handleBlockSelect}
-                onCreateNew={() => setBlockState('CREATE_BLOCK')}
-                onClose={() => setOpenBlock(false)}
-              />
-            ) : (
-              <CreateBlockContent
-                form={formBlock}
-                onSubmit={onBlockSubmit}
-                onClose={() => setOpenBlock(false)}
-                isDisabled={isBlockBtnDisabled}
-              />
-            )}
-          </div>
-        }
-      />
+      >
+        <ComplexDialogContent
+          complexState={complexState}
+          setComplexState={setComplexState}
+          onClose={() => setOpenBlock(false)}
+          complexItems={complexItems}
+          onBlockClick={handleBlockSelect}
+          formComplex={formComplex}
+          onComplexSubmit={onComplexSubmit}
+          isComplexBtnDisabled={isComplexBtnDisabled}
+          isLoading={isLoading}
+        />
+      </DialogComponent>
     </div>
   );
 };

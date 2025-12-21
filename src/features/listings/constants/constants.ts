@@ -17,10 +17,10 @@ export const ListingLinks = {
 export type ListingLinkType = (typeof ListingLinks)[keyof typeof ListingLinks];
 
 export const ListingTypes = {
-  HOUSE: 'HOUSE',
-  APARTMENT: 'APARTMENT',
-  TOWNHOUSE: 'TOWNHOUSE',
-};
+  HOUSE: 'house',
+  APARTMENT: 'apartment',
+  TOWNHOUSE: 'townhouse',
+} as const;
 export type ListingType = (typeof ListingTypes)[keyof typeof ListingTypes];
 export const listingTypeOptions = Object.values(ListingTypes).map(
   (listing) => ({

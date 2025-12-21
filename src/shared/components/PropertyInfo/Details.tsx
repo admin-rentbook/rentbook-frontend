@@ -1,6 +1,6 @@
 import { useExpandableText } from '@/shared/hooks';
 import type { PropertyDTO } from '@/shared/types';
-import { convertUnderscoreToSpace } from '@/shared/utils';
+import { convertUnderscoreToSpace, squareMeterFormatter } from '@/shared/utils';
 import {
   Bathtub01Icon,
   BedSingle02Icon,
@@ -30,7 +30,7 @@ export const Details = ({ property }: DetailsProps) => {
       icon: Bathtub01Icon,
     },
     {
-      name: `${property?.square} sq.m`,
+      name: squareMeterFormatter.format(property?.square),
       icon: DashedLine02Icon,
     },
   ];

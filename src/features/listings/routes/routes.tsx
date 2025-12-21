@@ -9,6 +9,7 @@ import { ListingGetStartedView } from './listing-get-started';
 const listingPageSearchSchema = z.object({
   blockName: z.string().optional(),
   propertyId: z.number().int().min(1).optional(),
+  listingId: z.number().int().min(1).optional(),
 });
 
 const listingGetStartedSearchSchema = z.object({

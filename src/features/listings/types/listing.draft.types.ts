@@ -10,14 +10,18 @@ import type {
 
 export type ListingDraft = {
   draftId: string;
+  listingId?:number;
+  apiCurrentStep?:string;
   createAt: string;
   lastUpdated: string;
-  progress: StepProgress;
+
   listingDescription?: ListingDescriptionFormValues;
   amenities?: AmenitiesData;
   media?: MediaData;
   rentalPrice?: RentalPriceData;
   viewingTimes?: ViewTimesData;
   finalDetails?: FinalDetailsData;
+  
+  progress: StepProgress;
   isComplete: boolean;
 };

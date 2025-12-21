@@ -3,8 +3,8 @@ export type Formatter = {
   parse: (value: string) => any;
 };
 
-export const currencyFormatter: Formatter = {
-  format: (value: number | string | undefined): string => {
+export const currencyFormatter = {
+  format: (value: number | string | undefined, includeDecimals: boolean = true): string => {
     if (value === undefined || value === null || value === '') return '';
     const numValue = typeof value === 'string' ? parseFloat(value) : value;
     if (isNaN(numValue)) return '';
@@ -12,8 +12,8 @@ export const currencyFormatter: Formatter = {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      minimumFractionDigits: includeDecimals ? 2 : 0,
+      maximumFractionDigits: includeDecimals ? 2 : 0,
     })
       .format(numValue)
       .replace('$', 'N$');
@@ -72,7 +72,6 @@ export const phoneFormatter: Formatter = {
   },
 };
 
-// Add more formatters as needed
 export const dateFormatter: Formatter = {
   format: (value: Date | string): string => {
     const date = typeof value === 'string' ? new Date(value) : value;
@@ -81,5 +80,21 @@ export const dateFormatter: Formatter = {
   },
   parse: (value: string): Date => {
     return new Date(value);
+  },
+};
+
+export const squareMeterFormatter: Formatter = {
+  format: (value: number | string | undefined): string => {
+    if (value === undefined || value === null || value === '') return '';
+    const numValue = typeof value === 'string' ? parseFloat(value) : value;
+    if (isNaN(numValue)) return '';
+
+    return `${new Intl.NumberFormat('en-US').format(numValue)} m²`;
+  },
+  parse: (value: string): number | undefined => {
+    if (!value || value.trim() === '') return undefined;
+    const cleaned = value.replace(/[^0-9.]/g, '');
+    const parsed = parseFloat(cleaned);
+    return isNaN(parsed) ? undefined : parsed;
   },
 };

@@ -8,10 +8,21 @@ import { listingDraftStorage } from '../utils';
 import { steps } from './Steps';
 
 export const Listings = () => {
-  const stepper = useStepper(steps);
-  const currentStep = steps[stepper.currentMainStep];
   const navigate = useNavigate();
   const { isMobile } = useMobile();
+  const { draft } = useListingDraft();
+
+  // Get initial step state from draft (which is synced with API)
+  const initialStepState = listingDraftStorage.getCurrentStepCoordinates();
+
+  // Initialize stepper with API-synced state
+  const stepper = useStepper(steps, {
+    initialMainStep: initialStepState.mainStep,
+    initialSubStep: { [initialStepState.mainStep]: initialStepState.subStep },
+    initialCompletedSteps: initialStepState.completedSteps,
+  });
+
+  const currentStep = steps[stepper.currentMainStep];
 
   const getCurrentComponent = () => {
     if (currentStep.subSteps?.length > 0) {
@@ -29,7 +40,7 @@ export const Listings = () => {
     }
   };
 
-  const { setDraft, draft } = useListingDraft();
+  const { setDraft } = useListingDraft();
   const isEmpty = (obj: object | null | undefined): boolean =>
     !!obj && Object.keys(obj).length === 0;
   const existingDraft = listingDraftStorage.getDraft();
@@ -42,7 +53,15 @@ export const Listings = () => {
       <div className="flex justify-between items-center pr-5">
         <Header
           title="Create listing"
-          onCancel={() => navigate({ to: Links.CREATE_PROPERTY })}
+          onCancel={() =>
+            navigate({
+              to: '/property-details',
+              search: (prev) => ({
+                ...prev,
+                propertyId: prev.propertyId,
+              }),
+            })
+          }
         />
         <Button
           variant="tertiary"
