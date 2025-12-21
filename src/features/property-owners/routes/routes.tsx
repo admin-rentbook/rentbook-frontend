@@ -43,22 +43,11 @@ export const createPropertyRoute = createRoute({
   validateSearch: createPropertySearchSchema,
   component: () => <CreatePropertyView />,
 });
-export const calendarRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: Links.CALENDAR,
-  component: () => <div>Calendar Page - Coming Soon</div>,
-});
 
 export const notificationRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: Links.NOTIFICATIONS,
-  component: () => <div>Messages Page - Coming Soon</div>,
-});
-
-export const messagesRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: Links.MESSAGES,
-  component: () => <div>Messages Page - Coming Soon</div>,
+  component: () => <div>Notifications Page - Coming Soon</div>,
 });
 
 export const leasesRoute = createRoute({

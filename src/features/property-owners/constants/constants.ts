@@ -5,13 +5,15 @@ import property5Img from '@/assets/images/property-5.jpg';
 import property6Img from '@/assets/images/property-6.jpg';
 import propertyImg from '@/assets/images/property-image.jpg';
 
-import type { ComplexDTO, ListingDescriptionDTO } from '@/features/listings/types';
+import type {
+  ComplexDTO,
+  ListingDescriptionDTO,
+} from '@/features/listings/types';
 import { convertUnderscoreToSpace } from '@/shared/utils';
 import { transformDataToOptions } from '@/shared/utils/helpers';
 import {
   Calendar04Icon,
   ChartIncreaseIcon,
-  Comment02Icon,
   GuestHouseIcon,
   HelpCircleIcon,
   Home01Icon,
@@ -25,8 +27,7 @@ import {
 export const Links = {
   OVERVIEW: '/overview',
   NOTIFICATIONS: '/notifications',
-  CALENDAR: '/calendar',
-  MESSAGES: '/messages',
+  VIEWING: '/viewing',
   PROPERTIES: '/properties',
   LEASES: '/leases',
   PAYMENT: '/payment',
@@ -81,13 +82,8 @@ export const sidebarItems = [
   },
   {
     icon: Calendar04Icon,
-    name: 'Calendar',
-    link: Links.CALENDAR,
-  },
-  {
-    icon: Comment02Icon,
-    name: 'Messages',
-    link: Links.MESSAGES,
+    name: 'Viewing',
+    link: Links.VIEWING,
   },
   {
     icon: GuestHouseIcon,
