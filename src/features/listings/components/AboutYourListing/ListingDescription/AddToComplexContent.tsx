@@ -1,8 +1,8 @@
 import { Button } from '@/shared/components';
-import type { Complex } from '../../../types';
+import type { ComplexDTO } from '../../../types';
 
 type AddToComplexContentProps = {
-  complexItems?: Complex[];
+  complexItems?: ComplexDTO[];
   onBlockClick: (blockId: number, blockName: string) => void;
   onCreateNew: () => void;
   onClose: () => void;

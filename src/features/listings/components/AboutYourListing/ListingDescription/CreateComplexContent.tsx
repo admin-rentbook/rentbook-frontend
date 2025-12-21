@@ -1,11 +1,12 @@
-import type { ComplexFormData } from '@/features/listings/hooks';
 import { Button } from '@/shared/components';
 import { Form, FormInput } from '@/shared/components/Form';
 import type { UseFormReturn } from 'react-hook-form';
 
 type CreateBlockContentProps = {
-  form: UseFormReturn<ComplexFormData>;
-  onSubmit: (data: ComplexFormData) => void;
+  form: UseFormReturn<{complexName: string}>;
+  onSubmit: (data: {
+    complexName: string;
+}) => void;
   onClose: () => void;
   isDisabled: boolean;
   isLoading: boolean;

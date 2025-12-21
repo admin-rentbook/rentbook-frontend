@@ -12,7 +12,7 @@ type ListingStoreProviderProps = {
 };
 type ListingState = {
   currentMainStep: number;
-  currentSubStep: number;
+  currentSubStep:  number | Record<number, number>;
   completedSteps: Record<string, boolean>;
 
   updateProgress: (progress: Partial<StepProgress>) => void;

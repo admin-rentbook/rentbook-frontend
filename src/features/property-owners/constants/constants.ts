@@ -5,10 +5,7 @@ import property5Img from '@/assets/images/property-5.jpg';
 import property6Img from '@/assets/images/property-6.jpg';
 import propertyImg from '@/assets/images/property-image.jpg';
 
-import type {
-  Complex,
-  ListingDescriptionDTO,
-} from '@/features/listings/types';
+import type { ComplexDTO, ListingDescriptionDTO } from '@/features/listings/types';
 import { convertUnderscoreToSpace } from '@/shared/utils';
 import { transformDataToOptions } from '@/shared/utils/helpers';
 import {
@@ -149,15 +146,15 @@ export const getStartedItems = [
   },
 ];
 
-export const complexItems: Complex[] = [
+export const complexItems: ComplexDTO[] = [
   {
-    id: 1,
-    blockName: 'Sample complex',
+    complex_id: 1,
+    new_complex_name: 'Sample complex',
     listings: [
-      {
-        listingTitle: 'Sample Listing',
-        images: [propertyImg, propertyImg, propertyImg, propertyImg],
-      },
+      // {
+      //   listingTitle: 'Sample Listing',
+      //   images: [propertyImg, propertyImg, propertyImg, propertyImg],
+      // },
       {
         listingTitle: 'Sample Listing 2',
         images: [property2Img],
@@ -170,11 +167,11 @@ export const complexItems: Complex[] = [
         listingTitle: 'Sample Listing 4',
         images: [property2Img],
       },
-    ] as ListingDescriptionDTO[],
+    ] as unknown as ListingDescriptionDTO[],
   },
   {
-    id: 2,
-    blockName: 'Sample complex 2',
+    complex_id: 2,
+    new_complex_name: 'Sample complex 2',
     listings: [
       {
         listingTitle: 'Sample Listing',
@@ -192,12 +189,12 @@ export const complexItems: Complex[] = [
         listingTitle: 'Sample Listing 4',
         images: [property6Img],
       },
-    ] as ListingDescriptionDTO[],
+    ] as unknown as ListingDescriptionDTO[],
   },
 ];
 
 export const blockOptions = transformDataToOptions(
   complexItems,
-  (item) => item.complexName,
-  (item) => item.complexName
+  (item) => item.new_complex_name,
+  (item) => item.new_complex_name
 );

@@ -1,4 +1,3 @@
-import { complexItems } from '@/features/property-owners/constants';
 import { Button, DialogComponent, Switch } from '@/shared/components';
 import {
   Form,
@@ -173,7 +172,7 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
           complexState={complexState}
           setComplexState={setComplexState}
           onClose={() => setOpenBlock(false)}
-          complexItems={complexItems}
+          // complexItems={complexItems}
           onBlockClick={handleBlockSelect}
           formComplex={formComplex}
           onComplexSubmit={onComplexSubmit}

@@ -75,7 +75,7 @@ export const ListingListMobile = ({ row }: ListingsListMobileProps) => {
         <StatusBox
           bgColor={bgColor}
           textColor={textColor}
-          text={convertUnderscoreToSpace(values.status)}
+          text={convertUnderscoreToSpace(values.status as string)}
           fillColor={fillColor}
         />
       </div>

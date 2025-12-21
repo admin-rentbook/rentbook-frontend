@@ -1,4 +1,3 @@
-import type { StepProgress } from '@/shared/types';
 import type { HugeiconsProps } from 'hugeicons-react';
 import type z from 'zod';
 import type {
@@ -52,17 +51,6 @@ export type ViewTimesData = {
 };
 export type NotesData = {
   notes: Note[];
-};
-
-export type ListingDescriptionDTO = ListingDescriptionFormValues &
-  StepProgress & {
-    images: string[];
-    blockName?: string;
-  };
-export type Complex = {
-  id: number;
-  complexName: string;
-  listings?: ListingDescriptionDTO[];
 };
 
 export type RentalPaymentType = {

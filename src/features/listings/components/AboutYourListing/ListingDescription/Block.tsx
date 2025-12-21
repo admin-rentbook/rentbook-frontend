@@ -1,4 +1,4 @@
-import { GuestHouseIcon } from 'hugeicons-react';
+// import { GuestHouseIcon } from 'hugeicons-react';
 import type { ComplexDTO } from '../../../types';
 
 type BlockProps = {
@@ -8,20 +8,20 @@ type BlockProps = {
 };
 
 export const Block = (props: BlockProps) => {
-  const getGridLayout = (count: number) => {
-    if (count === 0) return 'grid-cols-1';
-    if (count === 1) return 'grid-cols-1';
-    if (count === 2) return 'grid-cols-2';
-    if (count === 3) return 'grid-cols-2';
-    return 'grid-cols-2';
-  };
-  const getGridRows = (count: number) => {
-    if (count <= 2) return 'grid-rows-1';
-    if (count <= 4) return 'grid-rows-2';
-    if (count <= 6) return 'grid-rows-3';
-    if (count <= 8) return 'grid-rows-4';
-    return 'auto-rows-fr';
-  };
+  // const getGridLayout = (count: number) => {
+  //   if (count === 0) return 'grid-cols-1';
+  //   if (count === 1) return 'grid-cols-1';
+  //   if (count === 2) return 'grid-cols-2';
+  //   if (count === 3) return 'grid-cols-2';
+  //   return 'grid-cols-2';
+  // };
+  // const getGridRows = (count: number) => {
+  //   if (count <= 2) return 'grid-rows-1';
+  //   if (count <= 4) return 'grid-rows-2';
+  //   if (count <= 6) return 'grid-rows-3';
+  //   if (count <= 8) return 'grid-rows-4';
+  //   return 'auto-rows-fr';
+  // };
   return (
     <div
       className="flex flex-col gap-2 bg-white border border-custom-neutral-50 cursor-pointer hover:opacity-90 transition-opacity rounded-[1.25em] p-1"

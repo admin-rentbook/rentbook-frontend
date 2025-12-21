@@ -1,11 +1,7 @@
 import propImage from '@/assets/images/property-2.jpg';
 import type { ListingDescriptionDTO } from '@/features/listings/types';
 import { StatusBox } from '@/shared/components';
-import {
-  convertUnderscoreToSpace,
-  currencyFormatter,
-  squareMeterFormatter,
-} from '@/shared/utils';
+import { convertUnderscoreToSpace, squareMeterFormatter } from '@/shared/utils';
 import { returnStatus } from '@/shared/utils/helpers';
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import {

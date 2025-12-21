@@ -39,9 +39,9 @@ export const useAmenities = (
     if (amenities && listingId) {
       const apiStepName = amenities || 'rentals';
 
-      if (!isStepSyncedWithApi(apiStepName)) {
+      if (!isStepSyncedWithApi('amenities')) {
         syncFromApiData({
-          listing_id: amenities.id as number,
+          listing_id: 1,
           current_step: apiStepName,
           listingDescription: amenities,
         });
@@ -109,7 +109,7 @@ export const useAmenities = (
       },
       {
         onSuccess: (res) => {
-          updateFromApiResponse(res.data)
+          updateFromApiResponse(res.data);
           onNext?.();
         },
       }

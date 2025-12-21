@@ -1,4 +1,4 @@
-export type PropertyType = 'apartment' | 'house' | 'townhouse';
+export type PropertyType = 'apartment' | 'house' | 'townhouse' | null;
 
 export type SearchFilters = {
   propertyType: PropertyType;
