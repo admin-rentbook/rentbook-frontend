@@ -13,12 +13,8 @@ export const useAmenities = (
 ) => {
   const navigate = useNavigate({ from: '/listings-start' });
 
-  const {
-    updateStepData,
-    updateFromApiResponse,
-    isStepSyncedWithApi,
-    syncFromApiData,
-  } = useListingDraft();
+  const { updateStepData, isStepSyncedWithApi, syncFromApiData } =
+    useListingDraft();
 
   const {
     data: amenities,
@@ -26,24 +22,31 @@ export const useAmenities = (
     isFetching,
     isError,
     error,
+    refetch,
   } = useGetAmenities(listingId);
   const addAmenitiesMutation = useAddAmenities();
+  console.log('amenities', amenities?.data);
 
   const [availableAmenities, setAvailableAmenities] =
     useState<string[]>(initialAmenities);
-  const [selectedAmenities, setSelectedAmenities] = useState<string[]>(
-    amenities?.data || []
-  );
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
 
   useEffect(() => {
-    if (amenities && listingId) {
-      const apiStepName = amenities || 'rentals';
+    if (amenities?.data.amenities && amenities.data.amenities.length > 0) {
+      setSelectedAmenities(amenities.data.amenities);
+    }
+  }, [amenities?.data.amenities]);
 
-      if (!isStepSyncedWithApi('amenities')) {
+  useEffect(() => {
+    if (amenities?.data.amenities && listingId) {
+      const apiStepName = amenities.data.current_step ?? 'media';
+      console.log('a', apiStepName);
+      if (!isStepSyncedWithApi(apiStepName)) {
+        console.log('b', { listingId, apiStepName });
         syncFromApiData({
-          listing_id: 1,
+          listing_id: listingId,
           current_step: apiStepName,
-          listingDescription: amenities,
+          amenities: amenities.data.amenities,
         });
       }
     }
@@ -108,8 +111,7 @@ export const useAmenities = (
         listingId: listingId as number,
       },
       {
-        onSuccess: (res) => {
-          updateFromApiResponse(res.data);
+        onSuccess: () => {
           onNext?.();
         },
       }
@@ -133,5 +135,6 @@ export const useAmenities = (
     isFetching: isFetching && !amenities,
     isError,
     error,
+    refetch,
   };
 };

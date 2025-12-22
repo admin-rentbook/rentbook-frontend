@@ -1,10 +1,15 @@
-import { axios, useMutation, useQuery, type ExtractFnReturnType, type MutationConfig, type QueryConfig } from '@/core/lib';
+import {
+  axios,
+  useMutation,
+  useQuery,
+  type ExtractFnReturnType,
+  type MutationConfig,
+  type QueryConfig,
+} from '@/core/lib';
 import type { ApiResponse } from '@/shared/types';
 import { formatError } from '@/shared/utils/helpers';
-import { useNavigate } from '@tanstack/react-router';
 import { toast } from 'sonner';
-import { ListingLinks } from '../../constants';
-import type { ListingStepResponse } from '../../types';
+import type { AmenitiesDTO } from '../../types';
 import { queryKey, url } from '../url-query';
 
 type AddAmenitiesDataVariables = {
@@ -16,7 +21,7 @@ const addAmenities = async ({ data, listingId }: AddAmenitiesDataVariables) => {
     amenities: data,
   };
   try {
-    const response = await axios.patch<ApiResponse<ListingStepResponse>>(
+    const response = await axios.patch<ApiResponse<any>>(
       `${url.listing}/${listingId}/amenities/`,
       payload
     );
@@ -30,20 +35,12 @@ type UseAddAmenitiesOptions = {
   config?: MutationConfig<typeof addAmenities>;
 };
 export const useAddAmenities = ({ config }: UseAddAmenitiesOptions = {}) => {
-  const navigate = useNavigate({ from: '/listings-start' });
   return useMutation({
     onError: (err) => {
       toast.error(err.message, { id: 'amenities-err' });
     },
     onSuccess: () => {
       toast.success('Amenities added successfully', { id: 'amenities-suc' });
-      navigate({
-        to: ListingLinks.LISTINGS,
-        search: (prev) => ({
-          ...prev,
-          listingId: prev.listingId,
-        }),
-      });
     },
     mutationFn: addAmenities,
     ...config,
@@ -52,7 +49,7 @@ export const useAddAmenities = ({ config }: UseAddAmenitiesOptions = {}) => {
 
 const getAmenities = async (listingId: number) => {
   try {
-    const response = await axios.get<ApiResponse<string[]>>(
+    const response = await axios.get<ApiResponse<AmenitiesDTO>>(
       `${url.listing}/${listingId}/amenities`
     );
     return response.data;
@@ -60,7 +57,7 @@ const getAmenities = async (listingId: number) => {
     throw formatError(err);
   }
 };
-type QueryFnType = () => Promise<ApiResponse<string[]>>;
+type QueryFnType = () => Promise<ApiResponse<AmenitiesDTO>>;
 type UseGetAmenitiesOptions = QueryConfig<QueryFnType>;
 
 export const useGetAmenities = (

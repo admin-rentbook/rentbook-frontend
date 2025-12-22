@@ -1,6 +1,7 @@
 export * from './DataTable';
 export * from './Dialog';
 export * from './Head';
+export * from './ImageCarousel';
 export * from './MapPicker';
 export * from './Popover';
 export * from './PropertyImage';

@@ -5,6 +5,8 @@ import { useSearch } from '@tanstack/react-router';
 import { Add01Icon } from 'hugeicons-react';
 import { ListingTitle, NavigateButtons } from '../../shared';
 import { AmenityTag } from './AmenityTag';
+import { Loader2 } from 'lucide-react';
+import { ErrorState } from '@/shared/components/ErrorState';
 
 type AmenitiesProps = {
   onNext: (() => void) | undefined;
@@ -25,11 +27,30 @@ export const Amenities = ({ onNext, onPrev }: AmenitiesProps) => {
     handleBack,
     isButtonDisabled,
     isAddAmeLoading,
-    // isPending,
-    // isFetching,
-    // isError,
-    // error,
+    isPending,
+    isFetching,
+    isError,
+    error,
+    refetch
   } = useAmenities(DEFAULT_AMENITIES, onNext, onPrev, listingId as number);
+
+    if (isFetching || isPending) {
+      return (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-primary-500" />
+        </div>
+      );
+    }
+
+     if (isError) {
+        return (
+          <div className="p-6">
+            <ErrorState error={error} onRetry={refetch} />
+          </div>
+        );
+      }
+    
+  
   return (
     <div className="flex flex-col gap-10 h-full">
       <ListingTitle

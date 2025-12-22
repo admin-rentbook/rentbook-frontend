@@ -20,7 +20,7 @@ const createComplex = async ({
   };
   try {
     const response = await axios.patch<ApiResponse<ListingDescriptionDTO>>(
-      `${url.listing}${propertyId}/complex/`,
+      `${url.listing}/${propertyId}/complex/`,
       payload
     );
     return response.data;

@@ -345,6 +345,9 @@
   .text-heading-xl-semibold {
     @apply text-xl font-semibold font-sans;
   }
+   .text-heading-lg {
+    @apply text-lg font-medium font-sans;
+  }
   .text-body-large {
     @apply text-lg font-normal leading-relaxed;
   }
