@@ -22,7 +22,7 @@ export const resetPassword = async (data: ResetPasswordDTO) => {
     );
     return response.data;
   } catch (err) {
-    throw Error(formatError(err));
+    throw (formatError(err));
   }
 };
 

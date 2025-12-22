@@ -28,6 +28,17 @@ const LayoutContent = (props: LayoutProps) => {
   );
 };
 
+const LayoutContentWithoutHeader = (props: LayoutProps) => {
+  return (
+    <>
+      <AppSidebar sidebarItems={props.sidebarItems} />
+      <SidebarInset className="flex flex-col min-h-screen">
+        <main className="flex-1">{props.children}</main>
+      </SidebarInset>
+    </>
+  );
+};
+
 const LayoutContentWithFooter = (props: LayoutProps) => {
   return (
     <>
@@ -59,6 +70,13 @@ export const LayoutWithFooter = (props: LayoutProps) => {
   return (
     <SidebarProvider>
       <LayoutContentWithFooter {...props} />
+    </SidebarProvider>
+  );
+};
+export const LayoutWithoutHeader = (props: LayoutProps) => {
+  return (
+    <SidebarProvider>
+      <LayoutContentWithoutHeader {...props} />
     </SidebarProvider>
   );
 };

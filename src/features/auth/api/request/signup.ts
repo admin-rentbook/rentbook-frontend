@@ -21,7 +21,7 @@ export const signup = async (data: SignupDTO) => {
     );
     return response.data;
   } catch (err) {
-    throw Error(formatError(err));
+    throw (formatError(err));
   }
 };
 

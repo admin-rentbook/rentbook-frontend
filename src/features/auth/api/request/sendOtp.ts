@@ -8,7 +8,7 @@ export const sendOtp = async (email: string) => {
     const response = await axios.post<any>(url.sendOtp, { email });
     return response.data;
   } catch (err) {
-    throw Error(formatError(err));
+    throw (formatError(err));
   }
 };
 

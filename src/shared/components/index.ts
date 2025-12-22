@@ -1,7 +1,7 @@
 export * from './DataTable';
 export * from './Dialog';
-export * from './Filter';
 export * from './Head';
+export * from './ImageCarousel';
 export * from './MapPicker';
 export * from './Popover';
 export * from './PropertyImage';
@@ -9,5 +9,7 @@ export * from './ResponsiveModal';
 export * from './SearchBox';
 export * from './SelectCard';
 export * from './Sheet';
+export * from './StatusBox';
+export * from './StatusSelector';
 export * from './Stepper';
 export * from './ui';

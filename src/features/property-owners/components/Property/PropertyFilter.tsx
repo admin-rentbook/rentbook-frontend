@@ -12,10 +12,8 @@ import {
   SheetTitle,
 } from '@/shared/components/ui/sheet';
 import { useMobile } from '@/shared/hooks';
-import { cn } from '@/shared/lib/utils';
-import { convertUnderscoreToSpace } from '@/shared/utils';
-import { returnStatus } from '@/shared/utils/helpers';
-import { CircleIcon, FilterVerticalIcon, Tick02Icon } from 'hugeicons-react';
+import { StatusSelector } from '@/shared/components';
+import { FilterVerticalIcon } from 'hugeicons-react';
 import { useState } from 'react';
 import { propertyStatusOptions } from '../../constants';
 import type { PropertyFilters } from '../../types/property';
@@ -27,39 +25,6 @@ type PropertyFilterProps = {
 export function PropertyFilter({ filters, onChange }: PropertyFilterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { isMobile } = useMobile();
-
-  const StatusView = () => {
-    return (
-      <div className="flex flex-col">
-        {propertyStatusOptions.map((status) => {
-          const { bgColor, fillColor, textColor } = returnStatus(status.value);
-          const isSelected = filters.status === status.value;
-
-          return (
-            <div
-              key={status.value}
-              className={`py-2 px-3 cursor-pointer flex justify-between items-center rounded-lg transition-color`}
-              onClick={() => {
-                onChange({ status: status.value });
-                setIsOpen(false);
-              }}
-            >
-              <Badge className={`${bgColor} ${textColor}`}>
-                <CircleIcon
-                  className={cn(`size-[7px] ${fillColor}`)}
-                  style={{ width: '7px', height: '7px' }}
-                />
-                {<span>{convertUnderscoreToSpace(status.value)}</span>}
-              </Badge>
-              {isSelected && (
-                <Tick02Icon className="size-5 text-primary-500" />
-              )}
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
 
   const filterButton = (
     <Button
@@ -92,7 +57,12 @@ export function PropertyFilter({ filters, onChange }: PropertyFilterProps) {
             <SheetHeader className="mb-4">
               <SheetTitle className="text-body">Filter by Status</SheetTitle>
             </SheetHeader>
-            <StatusView />
+            <StatusSelector
+              options={propertyStatusOptions}
+              selectedValue={filters.status}
+              onSelect={(value) => onChange({ status: value })}
+              onClose={() => setIsOpen(false)}
+            />
           </SheetContent>
         </Sheet>
       </>
@@ -107,7 +77,12 @@ export function PropertyFilter({ filters, onChange }: PropertyFilterProps) {
         align="end"
         style={{ width: 'var(--radix-dropdown-menu-trigger-width)' }}
       >
-        <StatusView />
+        <StatusSelector
+          options={propertyStatusOptions}
+          selectedValue={filters.status}
+          onSelect={(value) => onChange({ status: value })}
+          onClose={() => setIsOpen(false)}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );

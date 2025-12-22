@@ -1,3 +1,4 @@
+import { Links } from '@/features/property-owners/constants';
 import { Button, PropertyImage } from '@/shared/components';
 import { Header } from '@/shared/components/Header';
 import { useNavigate } from '@tanstack/react-router';
@@ -7,7 +8,10 @@ export const ListingsGetStarted = () => {
   const navigate = useNavigate();
   return (
     <div className="h-screen">
-      <Header title="Create listing" onCancel={() => ({})} />
+      <Header
+        title="Create listing"
+        onCancel={() => navigate({ to: Links.CREATE_PROPERTY })}
+      />
 
       <div className="flex flex-col justify-center items-center h-[calc(100%-68px)]">
         <div className="flex flex-col gap-10 justify-center lg:gap-20 items-center h-full lg:h-auto">
@@ -28,12 +32,18 @@ export const ListingsGetStarted = () => {
         <div className="flex justify-center py-6 w-full lg:w-auto px-4">
           <Button
             className="px-8 w-full"
-            onClick={() => navigate({ to: ListingLinks.LISTINGS })}
+            onClick={() =>
+              navigate({
+                to: ListingLinks.LISTINGS,
+                search: (prev) => ({
+                  propertyId: prev.propertyId,
+                }),
+              })
+            }
           >
             Get started
           </Button>
         </div>
-        
       </div>
     </div>
   );

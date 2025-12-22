@@ -1,6 +1,6 @@
 import type { StepProgress } from '@/shared/types';
 import { useCallback, useEffect, useState } from 'react';
-import type { ListingDraft } from '../types';
+import type { ListingDraft, ListingStepResponse } from '../types';
 import { listingDraftStorage } from '../utils';
 
 export const useListingDraftState = () => {
@@ -19,6 +19,15 @@ export const useListingDraftState = () => {
     setIsLoading(false);
   }, []);
 
+  const syncFromApiData = useCallback((apiData: any) => {
+    listingDraftStorage.syncProgressFromApiData(apiData);
+    setDraft(listingDraftStorage.getDraft());
+  }, []);
+
+  const getFurthestCompletedStep = useCallback(() => {
+    return listingDraftStorage.getFurthestCompletedStep();
+  }, []);
+
   type OmitK = Omit<
     ListingDraft,
     'draftId' | 'createdAt' | 'lastUpdated' | 'progress' | 'isComplete'
@@ -30,6 +39,21 @@ export const useListingDraftState = () => {
     },
     []
   );
+  const updateFromApiResponse = useCallback((response: ListingStepResponse) => {
+    listingDraftStorage.updateFromApiResponse(response);
+    setDraft(listingDraftStorage.getDraft());
+  }, []);
+
+  // ⭐ NEW: Check if step is synced with API
+  const isStepSyncedWithApi = useCallback((apiStepName: string): boolean => {
+    return listingDraftStorage.isStepSyncedWithApi(apiStepName);
+  }, []);
+
+  // ⭐ NEW: Mark step as synced
+  const markStepSynced = useCallback((apiStepName: string) => {
+    listingDraftStorage.markStepSynced(apiStepName);
+    setDraft(listingDraftStorage.getDraft());
+  }, []);
 
   const updateProgress = useCallback((progress: Partial<StepProgress>) => {
     listingDraftStorage.updateProgress(progress);
@@ -80,6 +104,7 @@ export const useListingDraftState = () => {
     draft,
     isLoading,
     updateStepData,
+    updateFromApiResponse,
     updateProgress,
     markStepComplete,
     isStepComplete,
@@ -88,6 +113,12 @@ export const useListingDraftState = () => {
     getStepData,
     markMainStepComplete,
     isMainStepComplete,
-    setDraft
+    isStepSyncedWithApi,
+    markStepSynced,
+    setDraft,
+    syncFromApiData,
+    getFurthestCompletedStep,
+    listingId: draft?.listingId,
+    apiCurrentStep: draft?.apiCurrentStep,
   };
 };

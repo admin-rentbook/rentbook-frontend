@@ -6,6 +6,7 @@ type NavigateButtonsProps = {
   onContinue?: () => void;
   btnText?: string;
   saveBtnText?: string;
+  isLoading?:boolean
 };
 
 export const NavigateButtons = ({
@@ -14,6 +15,7 @@ export const NavigateButtons = ({
   onBack,
   btnText = 'Back',
   saveBtnText = 'Continue',
+  isLoading = false
 }: NavigateButtonsProps) => {
   return (
     <div className="flex w-full lg:w-auto gap-4 h-full px-2 align-baseline items-end justify-end">
@@ -24,6 +26,7 @@ export const NavigateButtons = ({
         disabled={isButtonDisabled}
         className="w-1/2 lg:w-auto"
         onClick={onContinue}
+        isLoading={isLoading}
       >
         {saveBtnText}
       </Button>

@@ -25,9 +25,8 @@ export interface GenericResponse {
 export interface ApiResponse<TData> extends GenericResponse {
   data: TData;
 }
-export interface PaginatedResponse<T> extends GenericResponse {
-  data: T;
-}
+export type PaginateApiResponse<T> = ApiResponse<Paginate<T>>;
+
 type Sort = {
   sorted: boolean;
   unsorted: boolean;
@@ -43,7 +42,6 @@ type PageAble = {
 };
 export interface Paginate<T> {
   pageAble: PageAble;
-  totalPages: number;
   totalElements: number;
   last: boolean;
   sort: Sort;
@@ -52,7 +50,13 @@ export interface Paginate<T> {
   size: number;
   number: number;
   empty: boolean;
-  content: T[];
+  count: number;
+  page_size: number;
+  total_pages: number;
+  current_page: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
 }
 
 export interface LocationResult {
@@ -110,6 +114,7 @@ export type SubStepType = {
   id: number;
   title: string;
   component: React.ComponentType<{ onNext?: () => void; onPrev?: () => void }>;
+  apiStepName?: string;
 };
 
 export type Step = {
@@ -121,30 +126,12 @@ export type Step = {
 
 export type StepProgress = {
   currentMainStep: number;
-  currentSubStep: number;
+  currentSubStep: Record<number, number>;
   completedSteps: Record<string, boolean>;
   lastUpdated: string;
+  apiSyncedSteps: Record<string, boolean>;
 };
 
-export type BaseFilter = {
-  id: string;
-  label: string;
-};
-
-export type ListFilter = BaseFilter & {
-  type: 'list';
-  items: { value: string; label: string }[];
-};
-
-export type CustomFilter = BaseFilter & {
-  type: 'custom';
-  renderCustom: (params: {
-    selectedValue: any;
-    onChange: (value: any) => void;
-  }) => React.ReactNode;
-};
-
-export type FilterConfig = ListFilter | CustomFilter;
 
 export type SelectCardType = {
   icon: React.FC<

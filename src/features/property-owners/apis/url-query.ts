@@ -1,0 +1,15 @@
+import { env } from '@/config';
+import type { PropertyStatusType } from '../constants';
+
+export const url = {
+  createProperty: env.API_BASE_URL + '/properties/create/',
+  getProperties: env.API_BASE_URL + '/properties/my-properties/',
+  getPropertyDetails: env.API_BASE_URL + '/',
+};
+
+export const queryKey = {
+  all: ['property'] as const,
+  lists: () => [...queryKey.all, 'list'] as const,
+  list: (filter: PropertyStatusType, page: number, pageSize: number) =>
+    [...queryKey.lists(), filter, page, pageSize] as const,
+};

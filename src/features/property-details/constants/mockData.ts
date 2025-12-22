@@ -1,0 +1,40 @@
+import type { ListingTableDTO } from '../types';
+
+export const listings: ListingTableDTO[] = [
+  {
+    id: '1',
+    images: ['https://via.placeholder.com/300x200?text=Apartment+1'],
+    propertyName: 'BA-12',
+    amount: 200000,
+    bedrooms: 2,
+    bathrooms: 2,
+    square: 850,
+    description: 'Modern apartment with open living space.',
+    propertyType: 'apartment',
+    status: 'available',
+  },
+  {
+    id: '2',
+    images: ['https://via.placeholder.com/300x200?text=House+1'],
+    propertyName: 'BA-13',
+    amount: 350000,
+    bedrooms: 4,
+    bathrooms: 3,
+    square: 1600,
+    description: 'Spacious family house with a garden.',
+    propertyType: 'house',
+    status: 'unavailable',
+  },
+  {
+    id: '3',
+    images: ['https://via.placeholder.com/300x200?text=Townhouse+1'],
+    propertyName: 'BA-14',
+    amount: 275000,
+    bedrooms: 3,
+    bathrooms: 2,
+    square: 1200,
+    description: 'Cozy townhouse in a quiet neighborhood.',
+    propertyType: 'townhouse',
+    status: 'draft',
+  },
+];

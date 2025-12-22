@@ -179,7 +179,7 @@ export const propertyCards: PropertyDTO[] = [
     propertyType: 'HOUSE',
   },
   {
-    propertyName: 'Skye View Estate',
+    propertyName: 'Skye View Estates',
     location: 'Rundu, Kavango East',
     images: [propertyImage, propertyImage, propertyImage],
     amenities: ['BASKETBALL_COURT', 'PLAYGROUND'],

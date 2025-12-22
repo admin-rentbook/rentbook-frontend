@@ -7,7 +7,8 @@ import z from 'zod';
 
 const landingPageSearchSchema = z.object({
   step: z.number().int().min(1).default(1),
-  email: z.email().min(1).optional()
+  email: z.email().min(1).optional(),
+  redirectTo: z.string().optional()
 });
 
 export const landingPageRoute = createRoute({

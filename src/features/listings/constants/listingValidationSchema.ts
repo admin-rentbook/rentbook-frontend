@@ -21,17 +21,21 @@ export const listingDescriptionSchema = z
       .int()
       .min(1, 'Number of baths must be at least 1')
       .optional(),
-    sizeSqFt: z.number().min(1, 'Size must be at least 1 sq.ft').optional(),
+    sizeSqFt: z
+      .number()
+      .int()
+      .min(1, 'Size must be at least 1 sq.ft')
+      .optional(),
     listingDescription: z
       .string()
       .min(5, 'Description must be at least 5 characters'),
-    isAddListingToBlock: z.boolean(),
+    isAddListingToComplex: z.boolean(),
     blockId: z.number().optional(),
     blockName: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     // If adding to block, blockId must be selected
-    if (data.isAddListingToBlock && !data.blockId) {
+    if (data.isAddListingToComplex && !data.blockId) {
       ctx.addIssue({
         code: 'custom',
         message: 'Please select a block',
@@ -39,8 +43,9 @@ export const listingDescriptionSchema = z
       });
     }
   });
-export const createBlockSchema = z.object({
-  blockName: z.string().min(1),
+
+export const createComplexSchema = z.object({
+  complexName: z.string().min(1),
 });
 
 export const fixedPriceSchema = z.object({

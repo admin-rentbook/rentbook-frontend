@@ -1,136 +1,97 @@
+import { PropertyDetailsLinks } from '@/features/property-details';
 import { DataTable, SearchBox } from '@/shared/components';
-import { useState } from 'react';
+import { EmptyState } from '@/shared/components/EmptyState';
+import { ErrorState } from '@/shared/components/ErrorState';
+import { FilterHeaderSkeleton } from '@/shared/components/Skeletons';
+import { useNavigate } from '@tanstack/react-router';
+import { useGetProperties } from '../../apis';
 import { propertyColumns } from '../../columns';
-import { usePropertyStore } from '../../store/usePropertyStore';
-import type { PropertyDTO, PropertyFilters } from '../../types/property';
+import type { PropertyStatusType } from '../../constants';
+import { usePropertyList } from '../../hooks';
 import { PropertyListMobile } from './Mobile';
 import { PropertyFilter } from './PropertyFilter';
 
 export const PropertyList = () => {
-  const searchTerm = usePropertyStore((s) => s.searchTerm);
-  const setSearchTerm = usePropertyStore((s) => s.setSearchTerm);
-  const pagination = usePropertyStore((s) => s.pagination);
-  const setPagination = usePropertyStore((s) => s.setPagination);
-
-  const [filters, setFilters] = useState<PropertyFilters>({
-    status: null,
-  });
+  const {
+    searchTerm,
+    setSearchTerm,
+    pagination,
+    setPagination,
+    filters,
+    setFilters,
+    reset,
+  } = usePropertyList();
+  const {
+    data: properties,
+    isPending,
+    isFetching,
+    isError = true,
+    error,
+    refetch,
+  } = useGetProperties(
+    filters.status as PropertyStatusType,
+    pagination.pageIndex,
+    pagination.pageSize
+  );
+  const navigate = useNavigate();
+  if (isError) {
+    return (
+      <div className="p-6">
+        <ErrorState error={error} onRetry={refetch} />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 flex flex-col gap-5">
-      <div className="flex items-center justify-between">
-        <div className="w-2/3 lg:w-1/5">
-          <SearchBox
-            placeholder="Filter by property name"
-            inputValue={searchTerm}
-            setInputValue={setSearchTerm}
-            name="propertySearch"
-          />
+      {isPending || (isFetching && !properties) ? (
+        <FilterHeaderSkeleton />
+      ) : (
+        <div className="flex items-center justify-between">
+          <div className="w-2/3 lg:w-auto">
+            <SearchBox
+              placeholder="Filter by property name"
+              inputValue={searchTerm}
+              setInputValue={setSearchTerm}
+              name="propertySearch"
+            />
+          </div>
+          <div>
+            <PropertyFilter filters={filters} onChange={setFilters} />
+          </div>
         </div>
-        <div>
-          <PropertyFilter filters={filters} onChange={setFilters} />
-        </div>
-      </div>
+      )}
+
       <DataTable
         columns={propertyColumns}
-        data={propertyList}
+        data={properties?.results || []}
+        totalItems={properties?.count}
         pagination={pagination}
         setPagination={setPagination}
+        pageCount={properties?.total_pages}
+        isLoading={isPending}
+        isFetching={isFetching}
+        isServerSide
         mobileCardRender={(row) => <PropertyListMobile row={row} />}
+        onRowAction={(property) => {
+          navigate({
+            to: PropertyDetailsLinks.PROPERTY_DETAILS,
+            search: { propertyId: property.id },
+          });
+        }}
+        emptyState={
+          <EmptyState
+            title="No properties found"
+            description={
+              searchTerm
+                ? `No properties matching "${searchTerm}"`
+                : `No ${filters?.status} properties at the moment`
+            }
+            actionLabel="Clear Search"
+            onAction={reset}
+          />
+        }
       />
     </div>
   );
 };
-const propertyList: PropertyDTO[] = [
-  {
-    name: 'Sunset Villas',
-    address: '123 Sunset Blvd, Los Angeles, CA',
-    unit: 10,
-    totalUnits: 50,
-    status: 'ACTIVE',
-  },
-  {
-    name: 'Oceanview Apartments',
-    address: '456 Ocean Dr, Miami, FL',
-    unit: 8,
-    totalUnits: 30,
-    status: 'INACTIVE',
-  },
-  {
-    name: 'Mountain Retreat',
-    address: '789 Mountain Rd, Denver, CO',
-    unit: 5,
-    totalUnits: 20,
-    status: 'INACTIVE',
-  },
-  {
-    name: 'Sunset Villas',
-    address: '123 Sunset Blvd, Los Angeles, CA',
-    unit: 10,
-    totalUnits: 50,
-    status: 'ACTIVE',
-  },
-  {
-    name: 'Oceanview Apartments',
-    address: '456 Ocean Dr, Miami, FL',
-    unit: 8,
-    totalUnits: 30,
-    status: 'INACTIVE',
-  },
-  {
-    name: 'Mountain Retreat',
-    address: '789 Mountain Rd, Denver, CO',
-    unit: 5,
-    totalUnits: 20,
-    status: 'INACTIVE',
-  },
-  {
-    name: 'Oceanview Apartments',
-    address: '456 Ocean Dr, Miami, FL',
-    unit: 8,
-    totalUnits: 30,
-    status: 'INACTIVE',
-  },
-  {
-    name: 'Mountain Retreat',
-    address: '789 Mountain Rd, Denver, CO',
-    unit: 5,
-    totalUnits: 20,
-    status: 'INACTIVE',
-  },
-  {
-    name: 'Sunset Villas',
-    address: '123 Sunset Blvd, Los Angeles, CA',
-    unit: 10,
-    totalUnits: 50,
-    status: 'ACTIVE',
-  },
-  {
-    name: 'Oceanview Apartments',
-    address: '456 Ocean Dr, Miami, FL',
-    unit: 8,
-    totalUnits: 30,
-    status: 'INACTIVE',
-  },
-  {
-    name: 'Mountain Retreat',
-    address: '789 Mountain Rd, Denver, CO',
-    unit: 5,
-    totalUnits: 20,
-    status: 'INACTIVE',
-  },
-  {
-    name: 'Oceanview Apartments',
-    address: '456 Ocean Dr, Miami, FL',
-    unit: 8,
-    totalUnits: 30,
-    status: 'INACTIVE',
-  },
-  {
-    name: 'Mountain Retreat',
-    address: '789 Mountain Rd, Denver, CO',
-    unit: 5,
-    totalUnits: 20,
-    status: 'INACTIVE',
-  },
-];

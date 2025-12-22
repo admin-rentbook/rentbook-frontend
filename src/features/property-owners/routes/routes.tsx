@@ -1,6 +1,7 @@
 import { rootRoute } from '@/core/router/rootRoute';
-import { Layout } from '@/shared/components/Layout';
+import { Layout, LayoutWithoutHeader } from '@/shared/components/Layout';
 import { createRoute } from '@tanstack/react-router';
+import z from 'zod';
 import { Property } from '../components';
 import { Links, sidebarItems } from '../constants';
 import { CreatePropertyView } from './create-property';
@@ -27,33 +28,26 @@ export const propertiesRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: Links.PROPERTIES,
   component: () => (
-    <Layout sidebarItems={sidebarItems}>
+    <LayoutWithoutHeader sidebarItems={sidebarItems}>
       <Property />
-    </Layout>
+    </LayoutWithoutHeader>
   ),
 });
 
+const createPropertySearchSchema = z.object({
+  propertyId: z.number().int().min(1).optional(),
+});
 export const createPropertyRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: Links.CREATE_PROPERTY,
+  validateSearch: createPropertySearchSchema,
   component: () => <CreatePropertyView />,
-});
-export const calendarRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: Links.CALENDAR,
-  component: () => <div>Calendar Page - Coming Soon</div>,
 });
 
 export const notificationRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: Links.NOTIFICATIONS,
-  component: () => <div>Messages Page - Coming Soon</div>,
-});
-
-export const messagesRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: Links.MESSAGES,
-  component: () => <div>Messages Page - Coming Soon</div>,
+  component: () => <div>Notifications Page - Coming Soon</div>,
 });
 
 export const leasesRoute = createRoute({

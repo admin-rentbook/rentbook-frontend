@@ -23,27 +23,36 @@ interface DataTablePaginationProps<TData> {
   pagination: PaginationState;
   setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
   isServerSide: boolean;
+  isLoading?: boolean;
 }
 
 export function DataTablePagination<TData>(
   props: DataTablePaginationProps<TData>
 ) {
-  const { startItem, endItem } = usePagination(
+  const {
+    startItem,
+    endItem,
+    goToFirstPage,
+    goToLastPage,
+    goToNextPage,
+    goToPreviousPage,
+  } = usePagination(
     props.isServerSide,
     props.pagination,
+    props.setPagination,
     props.actualTotalItems,
     props.table,
     props.pageCount
   );
-
   const handlePageSizeChange = (newPageSize: number) => {
     props.setPagination({
-      pageIndex: 0,
+      pageIndex: 1,
       pageSize: newPageSize,
     });
   };
+
   return (
-  <>
+    <>
       {/* Desktop Pagination */}
       <div className="hidden md:flex items-center justify-between bg-primary-foreground px-5 py-2 rounded-xl">
         <div className="text-body text-black-500 flex-1">
@@ -81,8 +90,8 @@ export function DataTablePagination<TData>(
             <Button
               variant="outline"
               className="hidden size-8 lg:flex"
-              onClick={() => props.table.setPageIndex(0)}
-              disabled={!props.table.getCanPreviousPage()}
+              onClick={goToFirstPage}
+              disabled={props.pagination.pageIndex === 1 || props.isLoading}
             >
               <span className="sr-only">Go to first page</span>
               <ChevronsLeft />
@@ -90,8 +99,8 @@ export function DataTablePagination<TData>(
             <Button
               variant="outline"
               className="size-8"
-              onClick={() => props.table.previousPage()}
-              disabled={!props.table.getCanPreviousPage()}
+              onClick={goToPreviousPage}
+              disabled={props.pagination.pageIndex === 1 || props.isLoading}
             >
               <span className="sr-only">Go to previous page</span>
               <ChevronLeft />
@@ -99,8 +108,11 @@ export function DataTablePagination<TData>(
             <Button
               variant="outline"
               className="size-8"
-              onClick={() => props.table.nextPage()}
-              disabled={!props.table.getCanNextPage()}
+              onClick={goToNextPage}
+              disabled={
+                props.pagination.pageIndex === props.pageCount ||
+                props.isLoading
+              }
             >
               <span className="sr-only">Go to next page</span>
               <ChevronRight />
@@ -108,10 +120,11 @@ export function DataTablePagination<TData>(
             <Button
               variant="outline"
               className="hidden size-8 lg:flex"
-              onClick={() =>
-                props.table.setPageIndex(props.table.getPageCount() - 1)
+              onClick={goToLastPage}
+              disabled={
+                props.pagination.pageIndex === props.pageCount ||
+                props.isLoading
               }
-              disabled={!props.table.getCanNextPage()}
             >
               <span className="sr-only">Go to last page</span>
               <ChevronsRight />
@@ -158,22 +171,21 @@ export function DataTablePagination<TData>(
           <Button
             variant="outline"
             className="size-9"
-            onClick={() => props.table.previousPage()}
-            disabled={!props.table.getCanPreviousPage()}
+            onClick={goToPreviousPage}
+            disabled={props.pagination.pageIndex === 1 || props.isLoading}
           >
             <span className="sr-only">Go to previous page</span>
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <div className="text-sm text-black-400 min-w-[80px] text-center">
-            Page{' '}
-            {props.table.getState().pagination.pageIndex + 1} of{' '}
+            Page {props.table.getState().pagination.pageIndex} of{' '}
             {props.table.getPageCount() || 1}
           </div>
           <Button
             variant="outline"
             className="size-9"
-            onClick={() => props.table.nextPage()}
-            disabled={!props.table.getCanNextPage()}
+            onClick={goToNextPage}
+            disabled={!props.table.getCanNextPage() || props.isLoading}
           >
             <span className="sr-only">Go to next page</span>
             <ChevronRight className="h-4 w-4" />

@@ -1,7 +1,7 @@
-export type PropertyType = 'Apartment' | 'House' | 'Townhouse';
+export type PropertyType = 'apartment' | 'house' | 'townhouse' | null;
 
 export type SearchFilters = {
-  propertyType: PropertyType | null;
+  propertyType: PropertyType;
   bedrooms: number;
   bathrooms: number;
   priceRange: [number, number];

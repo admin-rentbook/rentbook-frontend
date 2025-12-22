@@ -24,6 +24,21 @@ export const returnStatus = (status: Status) => {
       textColor: 'text-yellow-500',
       fillColor: 'fill-yellow-500',
     },
+    [STATUS.AVAILABLE]: {
+      bgColor: 'bg-success-100',
+      textColor: 'text-success-500',
+      fillColor: 'fill-success-500',
+    },
+    [STATUS.DRAFT]: {
+      bgColor: 'bg-custom-neutral-50',
+      textColor: 'text-custom-neutral-900',
+      fillColor: 'fill-custom-neutral-900',
+    },
+    [STATUS.UNAVAILABLE]: {
+      bgColor: 'bg-custom-blue-100',
+      textColor: 'text-custom-blue-300',
+      fillColor: 'fill-custom-blue-300',
+    },
   };
 
   return statusColors[status];

@@ -13,7 +13,7 @@ export const forgotPassword = async (email: string) => {
     );
     return response.data;
   } catch (err) {
-    throw Error(formatError(err));
+    throw (formatError(err));
   }
 };
 

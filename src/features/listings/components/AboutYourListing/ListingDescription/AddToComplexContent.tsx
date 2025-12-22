@@ -1,29 +1,28 @@
 import { Button } from '@/shared/components';
-import type { BlockDTO } from '../../../types';
-import { Block } from './Block';
+import type { ComplexDTO } from '../../../types';
 
-type AddToBlockContentProps = {
-  blockItems: BlockDTO[];
+type AddToComplexContentProps = {
+  complexItems?: ComplexDTO[];
   onBlockClick: (blockId: number, blockName: string) => void;
   onCreateNew: () => void;
   onClose: () => void;
 };
-export const AddToBlockContent = ({
-  blockItems,
-  onBlockClick,
+export const AddToComplexContent = ({
+  // complexItems,
+  // onBlockClick,
   onCreateNew,
   onClose,
-}: AddToBlockContentProps) => (
+}: AddToComplexContentProps) => (
   <>
-    <div className="grid gap-4 grid-cols-2">
-      {blockItems.map((blockItem) => (
+    {/* <div className="grid gap-4 grid-cols-2">
+      {complexItems.map((complexItem) => (
         <Block
-          key={blockItem.blockName}
-          block={blockItem}
+          key={complexItem.complexName}
+          block={complexItem}
           onBlockClick={onBlockClick}
         />
       ))}
-    </div>
+    </div> */}
 
     <div className="flex items-center justify-end gap-4 pt-4">
       <Button variant="tertiary" onClick={onClose}>

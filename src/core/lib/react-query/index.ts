@@ -12,9 +12,14 @@ const queryConfig: DefaultOptions = {
     refetchOnWindowFocus: false,
     retry(failureCount, error: any) {
       if (error.status === 404) return false;
-      else if (failureCount < 2) return true;
+      else if (failureCount < 1) return true;
       else return false;
     },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   },
   mutations: {
     networkMode: 'always',

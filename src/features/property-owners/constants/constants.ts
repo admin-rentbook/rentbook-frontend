@@ -6,7 +6,7 @@ import property6Img from '@/assets/images/property-6.jpg';
 import propertyImg from '@/assets/images/property-image.jpg';
 
 import type {
-  BlockDTO,
+  ComplexDTO,
   ListingDescriptionDTO,
 } from '@/features/listings/types';
 import { convertUnderscoreToSpace } from '@/shared/utils';
@@ -14,7 +14,6 @@ import { transformDataToOptions } from '@/shared/utils/helpers';
 import {
   Calendar04Icon,
   ChartIncreaseIcon,
-  Comment02Icon,
   GuestHouseIcon,
   HelpCircleIcon,
   Home01Icon,
@@ -28,8 +27,7 @@ import {
 export const Links = {
   OVERVIEW: '/overview',
   NOTIFICATIONS: '/notifications',
-  CALENDAR: '/calendar',
-  MESSAGES: '/messages',
+  VIEWING: '/viewing',
   PROPERTIES: '/properties',
   LEASES: '/leases',
   PAYMENT: '/payment',
@@ -41,8 +39,8 @@ export const Links = {
 export type LinkType = (typeof Links)[keyof typeof Links];
 
 export const PROPERTY_STATUS = {
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE',
+  ACTIVE: 'active',
+  INACTIVE: 'inactive',
 } as const;
 export type PropertyStatusType =
   (typeof PROPERTY_STATUS)[keyof typeof PROPERTY_STATUS];
@@ -66,9 +64,9 @@ export const unitFilterOptions = Object.values(UNIT_FILTER).map(
   })
 );
 export const LISTING_TYPE = {
-  OWNER: 'OWNER',
-  AGENT: 'AGENT',
-};
+  OWNER: 'owner',
+  AGENT: 'agent',
+} as const;
 export type ListingTypes = (typeof LISTING_TYPE)[keyof typeof LISTING_TYPE];
 
 export const sidebarItems = [
@@ -84,13 +82,8 @@ export const sidebarItems = [
   },
   {
     icon: Calendar04Icon,
-    name: 'Calendar',
-    link: Links.CALENDAR,
-  },
-  {
-    icon: Comment02Icon,
-    name: 'Messages',
-    link: Links.MESSAGES,
+    name: 'Viewing',
+    link: Links.VIEWING,
   },
   {
     icon: GuestHouseIcon,
@@ -149,15 +142,15 @@ export const getStartedItems = [
   },
 ];
 
-export const blockItems: BlockDTO[] = [
+export const complexItems: ComplexDTO[] = [
   {
-    id: 1,
-    blockName: 'Sample complex',
+    complex_id: 1,
+    new_complex_name: 'Sample complex',
     listings: [
-      {
-        listingTitle: 'Sample Listing',
-        images: [propertyImg, propertyImg, propertyImg, propertyImg],
-      },
+      // {
+      //   listingTitle: 'Sample Listing',
+      //   images: [propertyImg, propertyImg, propertyImg, propertyImg],
+      // },
       {
         listingTitle: 'Sample Listing 2',
         images: [property2Img],
@@ -170,11 +163,11 @@ export const blockItems: BlockDTO[] = [
         listingTitle: 'Sample Listing 4',
         images: [property2Img],
       },
-    ] as ListingDescriptionDTO[],
+    ] as unknown as ListingDescriptionDTO[],
   },
   {
-    id: 2,
-    blockName: 'Sample complex 2',
+    complex_id: 2,
+    new_complex_name: 'Sample complex 2',
     listings: [
       {
         listingTitle: 'Sample Listing',
@@ -192,12 +185,12 @@ export const blockItems: BlockDTO[] = [
         listingTitle: 'Sample Listing 4',
         images: [property6Img],
       },
-    ] as ListingDescriptionDTO[],
+    ] as unknown as ListingDescriptionDTO[],
   },
 ];
 
 export const blockOptions = transformDataToOptions(
-  blockItems,
-  (item) => item.blockName,
-  (item) => item.blockName
+  complexItems,
+  (item) => item.new_complex_name,
+  (item) => item.new_complex_name
 );

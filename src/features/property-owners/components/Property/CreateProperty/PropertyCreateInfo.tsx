@@ -1,13 +1,20 @@
 import type { CreatePropertyData } from '@/features/property-owners/types/property';
 import { FormInput } from '@/shared/components/Form';
+import type { LocationResult } from '@/shared/types';
 import type { UseFormReturn } from 'react-hook-form';
 import { Address } from './Address';
 
 type PropertyCreateInfoProps = {
   form: UseFormReturn<CreatePropertyData>;
+  setLocationResult?: React.Dispatch<
+    React.SetStateAction<LocationResult | null>
+  >;
 };
 
-export const PropertyCreateInfo = ({ form }: PropertyCreateInfoProps) => {
+export const PropertyCreateInfo = ({
+  form,
+  setLocationResult,
+}: PropertyCreateInfoProps) => {
   return (
     <div>
       <div className="flex items-center lg:justify-center">
@@ -42,7 +49,7 @@ export const PropertyCreateInfo = ({ form }: PropertyCreateInfoProps) => {
               Renters will be able to see this address on your listing
             </p>
             <div className="pt-10">
-              <Address form={form} />
+              <Address form={form} setLocationResult={setLocationResult} />
             </div>
           </div>
         </div>

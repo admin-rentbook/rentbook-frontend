@@ -7,7 +7,7 @@ import {
   type PropertyStatusType,
 } from '../constants';
 
-export type PropertyDTO = {
+export type PropertyTableDTO = {
   name: string;
   address: string;
   unit: number;
@@ -19,7 +19,7 @@ export type PropertyInfoData = z.infer<typeof propertyInfoSchema>;
 export type ListingTypeData = z.infer<typeof listingTypeSchema>;
 export type CreatePropertyData = z.infer<typeof createPropertySchema>;
 export type PropertyDataDTO = PropertyInfoData & {
-  listingType: string;
+  listedBy: string;
   ownerName?: string;
   ownerEmail?: string;
   ownerPhone?: string;
@@ -30,21 +30,30 @@ export type PropertyFilters = {
   status: PropertyStatusType | null;
 };
 
-export type PropertyCreate = {
-  propertyName: string;
-  address: {
-    lat: number;
-    lng: number;
-    address: string;
-    placeId: string;
-    street?: string;
-    city?: string;
-    state?: string;
-    country?: string;
-    postalCode?: string;
-  };
-  listedBy: {
-    type: ListingTypes;//OWNER | AGENT
-    email?: string;
-  };
+export type AddressDTO = {
+  id?: string;
+  place_id?: string;
+  formatted_address: string;
+  latitude: number;
+  longitude: number;
+  street_number?: string;
+  street_name?: string;
+  city?: string;
+  state?: string;
+  state_code?: string;
+  country?: string;
+  country_code?: string;
+  postal_code?: string;
+};
+
+export type PropertyDTO = {
+  id?: number;
+  property_name: string;
+  address: AddressDTO;
+  listed_by: ListingTypes;
+  owner_email?: string;
+  approval_status?: PropertyStatusType;
+  created_at?: string;
+  updated_at?: string;
+  is_owner_verified?: boolean;
 };

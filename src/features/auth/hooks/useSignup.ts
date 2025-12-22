@@ -61,6 +61,7 @@ export const useSignup = () => {
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
   const handlePasswordFocus = () => {
+    console.log('focus', isPasswordFocused)
     setIsPasswordFocused(true);
   };
 

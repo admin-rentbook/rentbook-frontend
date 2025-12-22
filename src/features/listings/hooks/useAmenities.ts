@@ -1,19 +1,57 @@
-import { useMemo, useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
+import { useAddAmenities, useGetAmenities } from '../apis';
+import { ListingLinks } from '../constants';
 import { useListingDraft } from '../providers';
 import { useAutoSaveValue } from './useAutoSave';
 
 export const useAmenities = (
   initialAmenities: string[],
-  onNext: (() => void) | undefined
+  onNext: (() => void) | undefined,
+  onPrev: (() => void) | undefined,
+  listingId: number
 ) => {
-  const { updateStepData, markStepComplete, getStepData } = useListingDraft();
-  const savedData = useMemo(() => getStepData('amenities'), []);
+  const navigate = useNavigate({ from: '/listings-start' });
+
+  const { updateStepData, isStepSyncedWithApi, syncFromApiData } =
+    useListingDraft();
+
+  const {
+    data: amenities,
+    isPending,
+    isFetching,
+    isError,
+    error,
+    refetch,
+  } = useGetAmenities(listingId);
+  const addAmenitiesMutation = useAddAmenities();
+  console.log('amenities', amenities?.data);
 
   const [availableAmenities, setAvailableAmenities] =
     useState<string[]>(initialAmenities);
-  const [selectedAmenities, setSelectedAmenities] = useState<string[]>(
-    savedData?.selectedAmenities || []
-  );
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (amenities?.data.amenities && amenities.data.amenities.length > 0) {
+      setSelectedAmenities(amenities.data.amenities);
+    }
+  }, [amenities?.data.amenities]);
+
+  useEffect(() => {
+    if (amenities?.data.amenities && listingId) {
+      const apiStepName = amenities.data.current_step ?? 'media';
+      console.log('a', apiStepName);
+      if (!isStepSyncedWithApi(apiStepName)) {
+        console.log('b', { listingId, apiStepName });
+        syncFromApiData({
+          listing_id: listingId,
+          current_step: apiStepName,
+          amenities: amenities.data.amenities,
+        });
+      }
+    }
+  }, [amenities, listingId, syncFromApiData, isStepSyncedWithApi]);
+
   const [inputValue, setInputValue] = useState('');
 
   useAutoSaveValue(selectedAmenities, (current) => {
@@ -55,10 +93,29 @@ export const useAmenities = (
     }
   };
 
+  const handleBack = () => {
+    navigate({
+      to: ListingLinks.LISTINGS,
+      search: (prev) => ({
+        ...prev,
+        propertyId: prev.propertyId,
+      }),
+    });
+    onPrev?.();
+  };
+
   const handleSubmit = () => {
-    updateStepData('amenities', { selectedAmenities: selectedAmenities });
-    markStepComplete(0, 1);
-    onNext?.();
+    addAmenitiesMutation.mutate(
+      {
+        data: selectedAmenities,
+        listingId: listingId as number,
+      },
+      {
+        onSuccess: () => {
+          onNext?.();
+        },
+      }
+    );
   };
 
   return {
@@ -72,5 +129,12 @@ export const useAmenities = (
     handleKeyPress,
     isButtonDisabled,
     handleSubmit,
+    handleBack,
+    isAddAmeLoading: addAmenitiesMutation.isPending,
+    isPending,
+    isFetching: isFetching && !amenities,
+    isError,
+    error,
+    refetch,
   };
 };
