@@ -1,22 +1,32 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, type UseFormReturn } from 'react-hook-form';
 import type z from 'zod';
-import { useCreateComplex } from '../apis';
+import { useCreateComplex, useGetComplexes } from '../apis';
 import { createComplexSchema } from '../constants';
 
 export type ComplexState = 'ADD_TO_COMPLEX' | 'CREATE_COMPLEX';
 export type ComplexFormData = UseFormReturn<{ complexName: string }>;
 
 type SetOpenComplex = React.Dispatch<React.SetStateAction<boolean>>;
+type OnComplexSelect = (complexId: number, complexName: string) => void;
+
 export const useComplex = (
   setOpenComplex: SetOpenComplex,
-  propertyId?: number
+  propertyId?: number,
+  onComplexSelect?: OnComplexSelect
 ) => {
-  const [complexState, setComplexState] = useState<
-    'ADD_TO_COMPLEX' | 'CREATE_COMPLEX'
-  >('ADD_TO_COMPLEX');
+  const [complexState, setComplexState] = useState<ComplexState>('ADD_TO_COMPLEX');
+
+  // Fetch existing complexes
+  const {
+    data: complexesData,
+    isPending: isLoadingComplexes,
+  } = useGetComplexes(propertyId as number);
+
+  const complexes = complexesData?.data;
   const createComplexMutation = useCreateComplex();
+
   const form = useForm<{ complexName: string }>({
     resolver: zodResolver(createComplexSchema),
     mode: 'onChange',
@@ -25,11 +35,27 @@ export const useComplex = (
     },
   });
 
+  // Auto-detect: if no complexes exist, go straight to CREATE mode
+  useEffect(() => {
+    if (!isLoadingComplexes && complexes !== undefined) {
+      if (complexes.length === 0) {
+        setComplexState('CREATE_COMPLEX');
+      } else {
+        setComplexState('ADD_TO_COMPLEX');
+      }
+    }
+  }, [complexes, isLoadingComplexes]);
+
   function onSubmit(data: z.infer<typeof createComplexSchema>) {
     createComplexMutation.mutate(
       { complexName: data.complexName, propertyId: propertyId as number },
       {
-        onSuccess: () => {
+        onSuccess: (res) => {
+          // Auto-select the newly created complex
+          if (onComplexSelect && res.data.id) {
+            onComplexSelect(res.data.id as number, data.complexName);
+          }
+
           setOpenComplex(false);
           form.reset();
           setComplexState('ADD_TO_COMPLEX');
@@ -47,5 +73,7 @@ export const useComplex = (
     complexState,
     setComplexState,
     isLoading: createComplexMutation.isPending,
+    complexes,
+    isLoadingComplexes,
   };
 };

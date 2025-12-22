@@ -36,12 +36,12 @@ const addListingDescription = async ({
     size_sqft: Number(data.sizeSqFt),
   };
 
-  const payload: ListingDescriptionDTO = data.blockId
+  const payload: ListingDescriptionDTO = data.complexId
     ? {
         ...basePayload,
         complex: {
-          complex_id: data.blockId,
-          new_complex_name: data.blockName as string,
+          id: data.complexId,
+          name: data.complexName as string,
         },
       }
     : basePayload;
@@ -102,12 +102,12 @@ const updateListingDescription = async ({
     bathrooms: Number(data.noOfBathrooms),
     size_sqft: Number(data.sizeSqFt),
   };
-  const payload: ListingDescriptionDTO = data.blockId
+  const payload: ListingDescriptionDTO = data.complexId
     ? {
         ...basePayload,
         complex: {
-          complex_id: data.blockId,
-          new_complex_name: data.blockName as string,
+          id: data.complexId,
+          name: data.complexName as string,
         },
       }
     : basePayload;

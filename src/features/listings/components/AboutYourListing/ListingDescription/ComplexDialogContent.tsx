@@ -1,5 +1,6 @@
 import { ArrowLeft01Icon, Cancel01Icon } from 'hugeicons-react';
 import type { UseFormReturn } from 'react-hook-form';
+import type { ComplexDTO } from '../../../types';
 import type { ComplexState } from '../../../hooks/useComplex';
 import { AddToComplexContent } from './AddToComplexContent';
 import { CreateComplexContent } from './CreateComplexContent';
@@ -8,24 +9,26 @@ type ComplexDialogContentProps = {
   complexState: ComplexState;
   setComplexState: (state: ComplexState) => void;
   onClose: () => void;
-  complexItems?: Array<{ id: number; name: string }>;
-  onBlockClick: (blockId: number, blockName: string) => void;
+  complexItems?: ComplexDTO[];
+  onComplexClick: (complexId: number, complexName: string) => void;
   formComplex: UseFormReturn<{ complexName: string }>;
   onComplexSubmit: (data: { complexName: string }) => void;
   isComplexBtnDisabled: boolean;
   isLoading: boolean;
+  isLoadingComplexes?: boolean;
 };
 
 export const ComplexDialogContent = ({
   complexState,
   setComplexState,
   onClose,
-  // complexItems,
-  onBlockClick,
+  complexItems,
+  onComplexClick,
   formComplex,
   onComplexSubmit,
   isComplexBtnDisabled,
   isLoading,
+  isLoadingComplexes = false,
 }: ComplexDialogContentProps) => {
   return (
     <div className="flex flex-col p-6 gap-10">
@@ -56,10 +59,11 @@ export const ComplexDialogContent = ({
 
       {complexState === 'ADD_TO_COMPLEX' ? (
         <AddToComplexContent
-          // complexItems={complexItems}
-          onBlockClick={onBlockClick}
+          complexItems={complexItems}
+          onComplexClick={onComplexClick}
           onCreateNew={() => setComplexState('CREATE_COMPLEX')}
           onClose={onClose}
+          isLoading={isLoadingComplexes}
         />
       ) : (
         <CreateComplexContent

@@ -58,7 +58,7 @@ export const useListingDescription = (
   const updateListingDescriptionMutation = useUpdateListingDescription();
 
   console.log('hasExistingData:', hasExistingData, listingDescriptionData);
-  const [openBlock, setOpenBlock] = useState(false);
+  const [openComplex, setOpenComplex] = useState(false);
 
   const form = useForm<ListingDescriptionFormValues>({
     resolver: zodResolver(listingDescriptionSchema),
@@ -70,8 +70,8 @@ export const useListingDescription = (
       noOfBathrooms: undefined,
       sizeSqFt: undefined,
       listingDescription: '',
-      blockId: undefined,
-      blockName: undefined,
+      complexId: undefined,
+      complexName: undefined,
       isAddListingToComplex: false,
     },
   });
@@ -86,8 +86,8 @@ export const useListingDescription = (
         noOfBeds: listingDescriptionData.beds,
         noOfBathrooms: listingDescriptionData.bathrooms,
         sizeSqFt: listingDescriptionData.size_sqft,
-        blockId: undefined,
-        blockName: undefined,
+        complexId: undefined,
+        complexName: undefined,
         isAddListingToComplex: false,
       });
       form.trigger();
@@ -102,15 +102,15 @@ export const useListingDescription = (
     form.setValue('isAddListingToComplex', newValue, { shouldValidate: true });
 
     if (!newValue) {
-      form.setValue('blockId', undefined);
-      form.setValue('blockName', undefined);
+      form.setValue('complexId', undefined);
+      form.setValue('complexName', undefined);
     }
   };
 
-  const handleBlockSelect = (blockId: number, blockName: string) => {
-    form.setValue('blockId', blockId, { shouldValidate: true });
-    form.setValue('blockName', blockName, { shouldValidate: true });
-    setOpenBlock(false);
+  const handleComplexSelect = (complexId: number, complexName: string) => {
+    form.setValue('complexId', complexId, { shouldValidate: true });
+    form.setValue('complexName', complexName, { shouldValidate: true });
+    setOpenComplex(false);
   };
 
   function onSubmit(data: z.infer<typeof listingDescriptionSchema>) {
@@ -142,7 +142,7 @@ export const useListingDescription = (
   }
 
   const isButtonDisabled = !form.formState.isValid;
-  const selectedBlock = form.watch('blockName');
+  const selectedComplex = form.watch('complexName');
 
   // Use whichever mutation is active
   const isListingDescLoading = hasExistingData
@@ -153,12 +153,12 @@ export const useListingDescription = (
     form,
     onSubmit,
     isButtonDisabled,
-    openBlock,
-    setOpenBlock,
+    openComplex,
+    setOpenComplex,
     isAddListingToComplex,
     handleToggleChange,
-    handleBlockSelect,
-    selectedBlock,
+    handleComplexSelect,
+    selectedComplex,
     isListingDescLoading,
     isPending,
     isFetching,

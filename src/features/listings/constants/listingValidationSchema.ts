@@ -30,16 +30,16 @@ export const listingDescriptionSchema = z
       .string()
       .min(5, 'Description must be at least 5 characters'),
     isAddListingToComplex: z.boolean(),
-    blockId: z.number().optional(),
-    blockName: z.string().optional(),
+    complexId: z.number().optional(),
+    complexName: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    // If adding to block, blockId must be selected
-    if (data.isAddListingToComplex && !data.blockId) {
+    // If adding to complex, complexId must be selected
+    if (data.isAddListingToComplex && !data.complexId) {
       ctx.addIssue({
         code: 'custom',
-        message: 'Please select a block',
-        path: ['blockId'],
+        message: 'Please select a complex',
+        path: ['complexId'],
       });
     }
   });

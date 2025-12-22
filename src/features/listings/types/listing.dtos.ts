@@ -15,9 +15,9 @@ export type ListingDescriptionDTO = {
 };
 
 export type ComplexDTO = {
-  complex_id?: number;
-  new_complex_name: string;
-  new_complex_description?: string;
+  id?: number;
+  name: string;
+  description?: string;
   listings?: ListingDescriptionDTO[]
 };
 

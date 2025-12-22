@@ -12,8 +12,8 @@ export const mapListingDescriptionDtoToDraft = (
     noOfBeds: dto.beds,
     noOfBathrooms: dto.bathrooms,
     sizeSqFt: dto.size_sqft,
-    blockId: dto.complex?.complex_id,
-    blockName: dto.complex?.new_complex_name,
+    blockId: dto.complex?.id,
+    blockName: dto.complex?.name,
     isAddListingToComplex: Boolean(dto.complex),
   };
 };

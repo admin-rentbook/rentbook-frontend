@@ -24,12 +24,12 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
     isButtonDisabled,
     form,
     onSubmit,
-    openBlock,
-    setOpenBlock,
+    openComplex,
+    setOpenComplex,
     isAddListingToComplex,
     handleToggleChange,
-    selectedBlock,
-    handleBlockSelect,
+    selectedComplex,
+    handleComplexSelect,
     isListingDescLoading,
     isPending,
     isFetching,
@@ -41,7 +41,9 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
     isComplexBtnDisabled,
     onComplexSubmit,
     isLoading,
-  } = useComplex(setOpenBlock, propertyId);
+    complexes,
+    isLoadingComplexes,
+  } = useComplex(setOpenComplex, propertyId, handleComplexSelect);
   const navigate = useNavigate();
 
   if (isFetching || isPending) {
@@ -77,15 +79,15 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
                   variant="outline"
                   size="sm"
                   type="button"
-                  onClick={() => setOpenBlock(true)}
+                  onClick={() => setOpenComplex(true)}
                   className={`w-full justify-between rounded-10 py-0 text-body text-black-400`}
                 >
-                  {selectedBlock ?? 'Select complex'}
+                  {selectedComplex ?? 'Select complex'}
                   <ArrowDown01Icon />
                 </Button>
-                {form.formState.errors.blockId && (
+                {form.formState.errors.complexId && (
                   <p className="text-body-small text-red-300">
-                    {form.formState.errors.blockId.message}
+                    {form.formState.errors.complexId.message}
                   </p>
                 )}
               </div>
@@ -164,20 +166,21 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
         isLoading={isListingDescLoading}
       />
       <DialogComponent
-        open={openBlock}
-        onOpenChange={setOpenBlock}
+        open={openComplex}
+        onOpenChange={setOpenComplex}
         className="w-full lg:w-2/3 xl:w-1/3"
       >
         <ComplexDialogContent
           complexState={complexState}
           setComplexState={setComplexState}
-          onClose={() => setOpenBlock(false)}
-          // complexItems={complexItems}
-          onBlockClick={handleBlockSelect}
+          onClose={() => setOpenComplex(false)}
+          complexItems={complexes}
+          onComplexClick={handleComplexSelect}
           formComplex={formComplex}
           onComplexSubmit={onComplexSubmit}
           isComplexBtnDisabled={isComplexBtnDisabled}
           isLoading={isLoading}
+          isLoadingComplexes={isLoadingComplexes}
         />
       </DialogComponent>
     </div>
