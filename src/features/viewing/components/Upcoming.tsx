@@ -1,5 +1,6 @@
 import { useViewingDetails } from '../hooks';
 import type { Viewings } from '../types';
+import { CancelModal } from './CancelModal';
 import { RescheduleModal } from './RescheduleModal';
 import { ViewingCard } from './ViewingCard';
 
@@ -101,9 +102,9 @@ export const Upcoming = () => {
   const {
     form,
     isOpenReschedule,
-    // isOpenCancel,
+    isOpenCancel,
     setIsOpenReschedule,
-    // setIsOpenCancel,
+    setIsOpenCancel,
     onSubmit,
     isButtonDisabled,
     handleReschedule,
@@ -147,6 +148,8 @@ export const Upcoming = () => {
         isOpen={isOpenReschedule}
         setIsOpen={setIsOpenReschedule}
       />
+
+      <CancelModal isOpen={isOpenCancel} setIsOpen={setIsOpenCancel} />
     </>
   );
 };

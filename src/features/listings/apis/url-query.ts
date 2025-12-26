@@ -3,7 +3,9 @@ import { env } from '@/config';
 export const url = {
   addListingDescription: `${env.API_BASE_URL}/listing/properties/`,
   listing: `${env.API_BASE_URL}/listing/listings`,
-  properties: `${env.API_BASE_URL}/listing/properties`
+  properties: `${env.API_BASE_URL}/listing/properties`,
+  createComplex: `${env.API_BASE_URL}/properties`,
+  getComplexes: `${env.API_BASE_URL}/listing/user/complexes/`,
 };
 
 export const queryKey = {
@@ -12,4 +14,15 @@ export const queryKey = {
   listingDescription: (id: number) =>
     [...queryKey.all, id, 'listing_description'] as const,
   amenities: (id: number) => [...queryKey.all, id, 'amenities'] as const,
+  getComplexes: () => [...queryKey.all, 'complexes'] as const,
+  getMedia: (listingId: number) =>
+    [...queryKey.all, listingId] as const,
+  rentalPricing: (listingId: number) =>
+    [...queryKey.all, listingId, 'rental_pricing'] as const,
+  additionalFees: (listingId: number) =>
+    [...queryKey.all, listingId, 'additional_fees'] as const,
+  discount: (listingId: number) =>
+    [...queryKey.all, listingId, 'discount'] as const,
+  viewing: (listingId: number) =>
+    [...queryKey.all, listingId, 'viewing'] as const,
 };

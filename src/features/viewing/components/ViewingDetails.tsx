@@ -1,36 +1,23 @@
-import agentImg from '@/assets/images/avatar.jpg';
 import propertyImage from '@/assets/images/property-image.jpg';
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  Button,
-  ImageCarousel,
-  Sheet,
-} from '@/shared/components';
-import { Form, FormInput } from '@/shared/components/Form';
+import { ImageCarousel, Sheet } from '@/shared/components';
 import { useMobile } from '@/shared/hooks';
-import {
-  convertUnderscoreToSpace,
-  currencyFormatter,
-  squareMeterFormatter,
-} from '@/shared/utils';
+import { convertUnderscoreToSpace, squareMeterFormatter } from '@/shared/utils';
 import {
   Bathtub01Icon,
   BedSingle02Icon,
   Building06Icon,
-  Call02Icon,
-  Cancel01Icon,
-  CheckmarkBadge01Icon,
-  CheckmarkCircle01Icon,
+  CancelCircleIcon,
   DashedLine02Icon,
-  Flag02Icon,
-  Mail02Icon,
-  Money03Icon,
-  PencilEdit01Icon,
 } from 'hugeicons-react';
 import type { UseFormReturn } from 'react-hook-form';
 import type { ViewingType } from '../types';
+import {
+  CompletionCodeSection,
+  DateTimeSection,
+  MobileActionButtons,
+  ViewerInfoSection,
+  ViewingFeeSection,
+} from './sections';
 
 type ViewingDetailsProps = {
   viewing: ViewingType;
@@ -80,7 +67,7 @@ export const ViewingDetails = ({
   ];
 
   const Content = (
-    <div className="space-y-6 lg:space-y-8 pt-10">
+    <div className="space-y-6 lg:space-y-8 pt-10 px-6 pb-6">
       <div className="space-y-4 lg:space-y-5">
         <div>
           <ImageCarousel
@@ -118,146 +105,60 @@ export const ViewingDetails = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-        {/**part 1 */}
-        <div className="flex flex-col gap-8">
-          <div className="flex items-start space-x-3">
-            <div className="size-[54px] flex flex-col justify-center rounded-[12px] border border-custom-neutral-100/40 bg-white flex-shrink-0">
-              <div className="flex justify-center rounded-t-[12px] bg-custom-neutral-50/50 h-[30%]">
-                <p className="text-11 text-black-300/50">Nov</p>
-              </div>
-              <div className="flex items-end justify-center h-[70%]">
-                <p className="text-heading-lg">17</p>
-              </div>
-            </div>
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-2">
+          <DateTimeSection
+            startDate={viewing.startDate}
+            endDate={viewing.endDate}
+            status={viewing.status}
+            onCancel={onCancel}
+          />
 
-            <div className="flex-1">
-              <p className="text-heading-lg text-black-500">
-                17 Nov <span className="text-black-300/50">Monday</span>
-              </p>
-              <p className="text-body-medium text-black-400">
-                {`${viewing.startDate}-${viewing.endDate}`}
-              </p>
-            </div>
-          </div>
-          {(viewing.status === 'upcoming' ||
-            viewing.status === 'unconfirmed') && (
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-full shadow-custom-sm"
-              onClick={onCancel}
-            >
-              <Cancel01Icon />
-              {viewing.status === 'upcoming'
-                ? 'Cancel viewing'
-                : 'Decline viewing'}
-            </Button>
-          )}
+          <ViewingFeeSection
+            amount={200}
+            status={viewing.status}
+            onReschedule={onReschedule}
+            onAccept={onAccept}
+          />
         </div>
 
-        {/**part 2 */}
-        <div className="flex flex-col gap-8">
-          <div className="flex items-start space-x-3">
-            <div className="size-[54px] grid place-items-center rounded-[12px] border border-custom-neutral-100/40 bg-white flex-shrink-0">
-              <Money03Icon className="size-6 text-icons-black" />
-            </div>
-            <div className="flex-1">
-              <p className="text-heading-lg text-black-500">
-                {currencyFormatter.format(200, false)}/viewer
-              </p>
-              <p className="text-body-medium text-black-300">Viewing fee</p>
-            </div>
-          </div>
-          {viewing.status === 'upcoming' && (
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-full shadow-custom-sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                onReschedule?.();
-              }}
-            >
-              <PencilEdit01Icon />
-              Reschedule viewing
-            </Button>
-          )}
-          {viewing.status === 'unconfirmed' && (
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-full shadow-custom-sm"
-              onClick={onAccept}
-            >
-              <CheckmarkBadge01Icon />
-              Accept viewing
-            </Button>
-          )}
-        </div>
+        <MobileActionButtons
+          status={viewing.status}
+          onCancel={onCancel}
+          onReschedule={onReschedule}
+          onAccept={onAccept}
+        />
       </div>
 
-      <div className="flex flex-col gap-4">
-        <p className="text-body-sm-semi text-black-300">Viewer</p>
-
-        <div className="h-[1px] w-full bg-custom-neutral-100" />
-
-        <div className="flex gap-3 items-center justify-between pb-3">
-          <div className="flex gap-3 items-center">
-            <Avatar className="size-[50px]">
-              <AvatarImage className="object-cover" src={agentImg} />
-              <AvatarFallback>ER</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="text-body text-neutral-600">
-                {viewing.viewer.name}
-              </p>
-              <p className="text-body-small text-black-300">
-                {viewing.viewer.email}
-              </p>
-            </div>
+      {viewing.status === 'cancelled' && (
+        <div className="flex flex-col gap-2 p-3 bg-sidebar-accent rounded-[1.25em]">
+          <div className="flex gap-2 text-red-700">
+            <CancelCircleIcon />
+            <p className="text-body-medium">Cancelled</p>
           </div>
+          <p className="text-body-small text-black-300">
+            Viewing has been cancelled by you. Viewing fee N$200 has been
+            refunded back to the viewer
+          </p>
 
-          <div className="flex space-x-2">
-            {contactItems.map((contact) => (
-              <div
-                key={contact.name}
-                className="size-[45px] grid place-items-center rounded-full border border-custom-gray-300 hover:bg-custom-neutral-50 transition-colors cursor-pointer"
-              >
-                <contact.icon className="size-5 text-black-400" />
-              </div>
-            ))}
-          </div>
+          <p className="text-body text-black-500 pt-4">
+            Reason:{' '}
+            <span className="text-body-small text-black-300">
+              I will not be available anymore
+            </span>
+          </p>
         </div>
+      )}
 
-        {form && (
-          <Form form={form} onSubmit={onSubmit}>
-            <div className="border border-custom-gray-300 p-3 space-y-5 rounded-3xl">
-              <p className="text-body-small text-black-300">
-                Enter complete code given by the renter to indicate that viewing
-                has been completed
-              </p>
-              <FormInput
-                control={form.control}
-                name="completionCode"
-                label="Completion code"
-                showErrorMessage
-                size="sm"
-              />
-              <div className="pt-3">
-                <Button
-                  size="lg"
-                  className="w-full"
-                  disabled={isButtonDisabled}
-                >
-                  <CheckmarkCircle01Icon />
-                  Complete viewing
-                </Button>
-              </div>
-            </div>
-          </Form>
-        )}
-      </div>
+      <ViewerInfoSection viewer={viewing.viewer} />
+
+      {form && viewing.status === 'upcoming' && (
+        <CompletionCodeSection
+          form={form}
+          onSubmit={onSubmit}
+          isButtonDisabled={isButtonDisabled || false}
+        />
+      )}
     </div>
   );
   return (
@@ -267,23 +168,8 @@ export const ViewingDetails = ({
         onOpenChange={setIsOpenDetails}
         children={Content}
         side={isMobile ? 'bottom' : 'right'}
-        className="max-w-full lg:max-w-xl p-6"
+        className="max-w-full lg:max-w-xl"
       />
     </>
   );
 };
-
-const contactItems = [
-  {
-    name: 'Phone',
-    icon: Call02Icon,
-  },
-  {
-    name: 'Message',
-    icon: Mail02Icon,
-  },
-  {
-    name: 'Report',
-    icon: Flag02Icon,
-  },
-];

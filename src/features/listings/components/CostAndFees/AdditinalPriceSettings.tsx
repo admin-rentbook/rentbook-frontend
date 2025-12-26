@@ -19,6 +19,7 @@ type AdditionalPriceSettingProps = {
   form: UseFormReturn<AdditionalFeeFormValues>;
   onSubmit: (data: AdditionalFeeFormValues) => void;
   isButtonDisabled: boolean;
+  isLoadingAddFee: boolean;
 };
 export const AdditionalPriceSetting = ({
   isOpen,
@@ -26,6 +27,7 @@ export const AdditionalPriceSetting = ({
   form,
   onSubmit,
   isButtonDisabled,
+  isLoadingAddFee
 }: AdditionalPriceSettingProps) => {
   const { isMobile } = useMobile();
 
@@ -94,6 +96,7 @@ export const AdditionalPriceSetting = ({
                 onBack={() => setIsOpen(false)}
                 isButtonDisabled={isButtonDisabled}
                 btnText="Cancel"
+                isLoading={isLoadingAddFee}
               />
             )}
           </div>

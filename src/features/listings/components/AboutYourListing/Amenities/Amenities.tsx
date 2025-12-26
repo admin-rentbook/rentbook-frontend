@@ -28,13 +28,12 @@ export const Amenities = ({ onNext, onPrev }: AmenitiesProps) => {
     isButtonDisabled,
     isAddAmeLoading,
     isPending,
-    isFetching,
     isError,
     error,
     refetch
   } = useAmenities(DEFAULT_AMENITIES, onNext, onPrev, listingId as number);
 
-    if (isFetching || isPending) {
+    if (isPending) {
       return (
         <div className="flex items-center justify-center py-12">
           <Loader2 className="w-8 h-8 animate-spin text-primary-500" />

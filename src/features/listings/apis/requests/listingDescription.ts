@@ -36,12 +36,12 @@ const addListingDescription = async ({
     size_sqft: Number(data.sizeSqFt),
   };
 
-  const payload: ListingDescriptionDTO = data.blockId
+  const payload: ListingDescriptionDTO = data.complexId
     ? {
         ...basePayload,
         complex: {
-          complex_id: data.blockId,
-          new_complex_name: data.blockName as string,
+          id: data.complexId,
+          name: data.complexName as string,
         },
       }
     : basePayload;
@@ -102,12 +102,12 @@ const updateListingDescription = async ({
     bathrooms: Number(data.noOfBathrooms),
     size_sqft: Number(data.sizeSqFt),
   };
-  const payload: ListingDescriptionDTO = data.blockId
+  const payload: ListingDescriptionDTO = data.complexId
     ? {
         ...basePayload,
         complex: {
-          complex_id: data.blockId,
-          new_complex_name: data.blockName as string,
+          id: data.complexId,
+          name: data.complexName as string,
         },
       }
     : basePayload;
@@ -130,7 +130,6 @@ type UseUpdateListingDescriptionOptions = {
 export const useUpdateListingDescription = ({
   config,
 }: UseUpdateListingDescriptionOptions = {}) => {
-  const navigate = useNavigate({ from: '/listings-start' });
   return useMutation({
     onError: (err) => {
       toast.error(err.message, { id: 'update-listing-err' });
@@ -138,12 +137,6 @@ export const useUpdateListingDescription = ({
     onSuccess: (res, variable) => {
       toast.success(`${variable.data.listingTitle} updated successfully`, {
         id: 'update-add-suc',
-      });
-      navigate({
-        to: ListingLinks.LISTINGS,
-        search: (prev) => ({
-          listingId: prev.listingId,
-        }),
       });
       queryClient.invalidateQueries({
         queryKey: queryKey.listingDescription(res.data.id as number),
@@ -168,6 +161,9 @@ const getListingDescription = async (listingId: number) => {
 type QueryFnType = () => Promise<ApiResponse<ListingDescriptionDTO>>;
 type UseGetListingDescriptionOptions = QueryConfig<QueryFnType>;
 
+const STALE_TIME = 10 * 60 * 1000; // 10 minutes
+const CACHE_TIME = 15 * 60 * 1000; // 15 minutes
+
 export const useGetListingDescription = (
   listingId: number,
   config?: UseGetListingDescriptionOptions
@@ -176,7 +172,11 @@ export const useGetListingDescription = (
     ...config,
     queryFn: () => getListingDescription(listingId),
     queryKey: queryKey.listingDescription(listingId),
-    staleTime: 5 * 60 * 1000,
+    staleTime: STALE_TIME,
+    gcTime: CACHE_TIME,
     enabled: !!listingId,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });
 };

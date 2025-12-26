@@ -1,3 +1,4 @@
+import { useSearch } from '@tanstack/react-router';
 import { usePaymentTypeSelection, useRentalPrice } from '../../hooks';
 import { ListingTitle, NavigateButtons } from '../shared';
 import { AdditionalPrice } from './AdditionalPrice';
@@ -9,11 +10,14 @@ type CostAndFeesProps = {
 };
 
 export const CostAndFees = ({ onNext, onPrev }: CostAndFeesProps) => {
+    const { listingId } = useSearch({ from: '/listings-start' });
+  
   const paymentTypeSelection = usePaymentTypeSelection();
   const rentalPrice = useRentalPrice(
     paymentTypeSelection.selectedType,
     paymentTypeSelection.selectType,
-    onNext
+    onNext,
+    listingId as number
   );
 
   return (
@@ -33,6 +37,7 @@ export const CostAndFees = ({ onNext, onPrev }: CostAndFeesProps) => {
         isButtonDisabled={rentalPrice.isButtonDisabled}
         onBack={() => onPrev?.()}
         onContinue={rentalPrice.form.handleSubmit(rentalPrice.onSubmit)}
+        isLoading={rentalPrice.isUpdateLoading}
       />
     </div>
   );

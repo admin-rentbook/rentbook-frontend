@@ -2,7 +2,7 @@ import { Button } from '@/shared/components';
 import { Form, FormInput } from '@/shared/components/Form';
 import type { UseFormReturn } from 'react-hook-form';
 
-type CreateBlockContentProps = {
+type CreateComplexContentProps = {
   form: UseFormReturn<{complexName: string}>;
   onSubmit: (data: {
     complexName: string;
@@ -11,13 +11,14 @@ type CreateBlockContentProps = {
   isDisabled: boolean;
   isLoading: boolean;
 };
+
 export const CreateComplexContent = ({
   form,
   onSubmit,
   onClose,
   isDisabled,
   isLoading,
-}: CreateBlockContentProps) => (
+}: CreateComplexContentProps) => (
   <>
     <Form form={form} onSubmit={onSubmit}>
       <FormInput

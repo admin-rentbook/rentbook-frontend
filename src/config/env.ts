@@ -5,4 +5,5 @@ export const env = {
   API_BASE_URL: import.meta.env.VITE_APP_API_BASE_URL,
   GOOGLE_AUTH_API_KEY: import.meta.env.VITE_APP_GOOGLE_AUTH_API_KEY,
   REDIRECT_URL: import.meta.env.VITE_APP_REDIRECT_URL,
+  BACKBLAZE_BUCKET_NAME: import.meta.env.VITE_APP_BACKBLAZE_BUCKET_NAME,
 };

@@ -208,7 +208,7 @@
   --red-400: oklch(0.5803 0.2252 359.96); /*#d91875*/
   --red-500: oklch(0.589 0.2254 30.84); /*#e4240a*/
   --red-600: oklch(0.5758 0.2088 29.48); /*#d92d20*/
-  --red-700: oklch(35% 0.16 29);
+  --red-700: oklch(0.5773 0.2184 20.69);/*#dd1e3d*/
   --red-800: oklch(27% 0.13 29);
   --red-900: oklch(20% 0.1 29); /* deepest shade */
 
@@ -285,12 +285,12 @@
   }
   * {
     scrollbar-width: thin;
-    scrollbar-color: theme('colors.gray.300') transparent;
+    scrollbar-color: rgba(0, 0, 0, 0.05) transparent;
   }
 
   /* Scrollbar - Webkit */
   ::-webkit-scrollbar {
-    @apply w-0.5 h-2;
+    @apply w-1 h-1;
   }
 
   ::-webkit-scrollbar-track {
@@ -298,11 +298,12 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-gray-300 rounded;
+    @apply rounded;
+    background-color: rgba(0, 0, 0, 0.05);
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-900;
+    background-color: rgba(0, 0, 0, 0.1);
   }
 
   ::-webkit-scrollbar-corner {

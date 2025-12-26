@@ -30,16 +30,16 @@ export const listingDescriptionSchema = z
       .string()
       .min(5, 'Description must be at least 5 characters'),
     isAddListingToComplex: z.boolean(),
-    blockId: z.number().optional(),
-    blockName: z.string().optional(),
+    complexId: z.number().optional(),
+    complexName: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    // If adding to block, blockId must be selected
-    if (data.isAddListingToComplex && !data.blockId) {
+    // If adding to complex, complexId must be selected
+    if (data.isAddListingToComplex && !data.complexId) {
       ctx.addIssue({
         code: 'custom',
-        message: 'Please select a block',
-        path: ['blockId'],
+        message: 'Please select a complex',
+        path: ['complexId'],
       });
     }
   });
@@ -75,6 +75,16 @@ export const timedAuctionSchema = z
     bidEndDate: z.string().min(1, 'Bid end date is required'),
     autoAcceptHighestBidder: z.boolean().default(false).optional(),
     extendLastMinuteBid: z.boolean().default(false).optional(),
+  })
+  .refine((data) => {
+    // Check if bid start date is after today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset to start of day
+    const bidStart = new Date(data.bidStartDate);
+    return bidStart > today;
+  }, {
+    message: 'Bid start date must be after today',
+    path: ['bidStartDate'],
   })
   .refine((data) => data.bidEndDate > data.bidStartDate, {
     message: 'End date must be after start date',

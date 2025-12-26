@@ -1,45 +1,77 @@
-import { formatForDateInput } from '@/shared/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import type z from 'zod';
+import {
+  useGetDiscount,
+  useUpdateDiscount,
+} from '../apis';
 import { discountValidationSchema } from '../constants';
-import { useListingDraft } from '../providers';
-import type { DiscountFormValues, RentalPriceData } from '../types';
+import type { DiscountFormValues } from '../types';
+import { transformDiscountDTOToFormValues } from '../types/mappedTypes';
 
 type SetState = React.Dispatch<React.SetStateAction<boolean>>;
 
-export const useDiscount = (setIsOpen: SetState) => {
-  const { updateStepData, getStepData } = useListingDraft();
-  const savedData = getStepData('rentalPrice');
+export const useDiscount = (setIsOpen: SetState, listingId: number) => {
+  const { data: discountData, isPending, isFetching } = useGetDiscount(listingId);
+  const discountFromAPI = discountData?.data;
+
+  const updateDiscountMutation = useUpdateDiscount();
+
+  const [hasDiscount, setHasDiscount] = useState(false);
 
   const form = useForm<DiscountFormValues>({
     resolver: zodResolver(discountValidationSchema),
     mode: 'onChange',
-    defaultValues: savedData?.discount || {
+    defaultValues: {
       discount: undefined,
       duration: '',
     },
   });
+
+  // Auto-populate form with API data
+  useEffect(() => {
+    if (discountFromAPI) {
+      const formValues = transformDiscountDTOToFormValues(discountFromAPI);
+      if (formValues) {
+        form.reset(formValues);
+        setHasDiscount(true);
+      }
+    }
+  }, [discountFromAPI]);
+
   function onSubmit(data: z.input<typeof discountValidationSchema>) {
-    updateStepData('rentalPrice', {
-      ...savedData,
-      discount: {
-        discount: data.discount,
-        duration: formatForDateInput(data.duration as string),
+    updateDiscountMutation.mutate(
+      {
+        discount: data,
+        listingId: listingId as number,
       },
-    } as RentalPriceData);
-    toast.success(`Discount added successfully`, {
-      id: 'dis-succ',
-    });
-    setIsOpen(false);
-    form.reset();
+      {
+        onSuccess: (res) => {
+          // Transform the API response to form values
+          if (res.data) {
+            const formValues = transformDiscountDTOToFormValues(res.data);
+            if (formValues) {
+              form.reset(formValues);
+              setHasDiscount(true);
+            }
+          }
+
+          setIsOpen(false);
+        },
+      }
+    );
   }
+
   const isButtonDisabled = !form.formState.isValid;
 
   return {
     formDiscount: form,
     onSubmitDiscount: onSubmit,
     isButtonDisabledDiscount: isButtonDisabled,
+    hasDiscount,
+    isLoadingAddDis: updateDiscountMutation.isPending,
+    isLoadingDiscount: isPending,
+    isFetchingDiscount: isFetching,
   };
 };

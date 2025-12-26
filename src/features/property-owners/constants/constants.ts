@@ -1,16 +1,4 @@
-import property2Img from '@/assets/images/property-2.jpg';
-import property3Img from '@/assets/images/property-3.jpg';
-import property4Img from '@/assets/images/property-4.jpg';
-import property5Img from '@/assets/images/property-5.jpg';
-import property6Img from '@/assets/images/property-6.jpg';
-import propertyImg from '@/assets/images/property-image.jpg';
-
-import type {
-  ComplexDTO,
-  ListingDescriptionDTO,
-} from '@/features/listings/types';
 import { convertUnderscoreToSpace } from '@/shared/utils';
-import { transformDataToOptions } from '@/shared/utils/helpers';
 import {
   Calendar04Icon,
   ChartIncreaseIcon,
@@ -141,56 +129,3 @@ export const getStartedItems = [
     color: 'text-red-600',
   },
 ];
-
-export const complexItems: ComplexDTO[] = [
-  {
-    complex_id: 1,
-    new_complex_name: 'Sample complex',
-    listings: [
-      // {
-      //   listingTitle: 'Sample Listing',
-      //   images: [propertyImg, propertyImg, propertyImg, propertyImg],
-      // },
-      {
-        listingTitle: 'Sample Listing 2',
-        images: [property2Img],
-      },
-      {
-        listingTitle: 'Sample Listing 3',
-        images: [property3Img],
-      },
-      {
-        listingTitle: 'Sample Listing 4',
-        images: [property2Img],
-      },
-    ] as unknown as ListingDescriptionDTO[],
-  },
-  {
-    complex_id: 2,
-    new_complex_name: 'Sample complex 2',
-    listings: [
-      {
-        listingTitle: 'Sample Listing',
-        images: [propertyImg, propertyImg, propertyImg, propertyImg],
-      },
-      {
-        listingTitle: 'Sample Listing 2',
-        images: [property5Img],
-      },
-      {
-        listingTitle: 'Sample Listing 3',
-        images: [property4Img],
-      },
-      {
-        listingTitle: 'Sample Listing 4',
-        images: [property6Img],
-      },
-    ] as unknown as ListingDescriptionDTO[],
-  },
-];
-
-export const blockOptions = transformDataToOptions(
-  complexItems,
-  (item) => item.new_complex_name,
-  (item) => item.new_complex_name
-);

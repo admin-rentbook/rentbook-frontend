@@ -1,5 +1,6 @@
 import {
   axios,
+  queryClient,
   useMutation,
   useQuery,
   type ExtractFnReturnType,
@@ -39,8 +40,11 @@ export const useAddAmenities = ({ config }: UseAddAmenitiesOptions = {}) => {
     onError: (err) => {
       toast.error(err.message, { id: 'amenities-err' });
     },
-    onSuccess: () => {
+    onSuccess: (_res, variables) => {
       toast.success('Amenities added successfully', { id: 'amenities-suc' });
+      queryClient.invalidateQueries({
+        queryKey: queryKey.amenities(variables.listingId),
+      });
     },
     mutationFn: addAmenities,
     ...config,
@@ -60,6 +64,9 @@ const getAmenities = async (listingId: number) => {
 type QueryFnType = () => Promise<ApiResponse<AmenitiesDTO>>;
 type UseGetAmenitiesOptions = QueryConfig<QueryFnType>;
 
+const STALE_TIME = 10 * 60 * 1000; // 10 minutes
+const CACHE_TIME = 15 * 60 * 1000; // 15 minutes
+
 export const useGetAmenities = (
   listingId: number,
   config?: UseGetAmenitiesOptions
@@ -68,7 +75,8 @@ export const useGetAmenities = (
     ...config,
     queryFn: () => getAmenities(listingId),
     queryKey: queryKey.amenities(listingId),
-    staleTime: 5 * 60 * 1000,
+    staleTime: STALE_TIME,
+    gcTime: CACHE_TIME,
     enabled: !!listingId,
   });
 };

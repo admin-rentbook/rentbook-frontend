@@ -3,6 +3,7 @@ export * from './Dialog';
 export * from './Head';
 export * from './ImageCarousel';
 export * from './MapPicker';
+export * from './NotificationModal';
 export * from './Popover';
 export * from './PropertyImage';
 export * from './ResponsiveModal';

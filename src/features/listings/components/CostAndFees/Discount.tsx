@@ -13,6 +13,7 @@ type DiscountProps = {
   form: UseFormReturn<DiscountFormValues>;
   onSubmit: (data: DiscountFormValues) => void;
   isButtonDisabled: boolean;
+  isLoadingAddDis:boolean;
 };
 
 export const DiscountCard = (props: DiscountProps) => {
@@ -80,6 +81,7 @@ export const DiscountCard = (props: DiscountProps) => {
             <Button
               disabled={props.isButtonDisabled}
               className="w-1/2 lg:w-auto"
+              isLoading={props.isLoadingAddDis}
             >
               Add
             </Button>

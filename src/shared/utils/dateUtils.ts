@@ -4,8 +4,6 @@ export const formatTime = (seconds: number): string => {
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 };
 
-// utils/timezone.ts
-
 interface TimezoneInfo {
   abbreviation: string;
   name: string;
@@ -99,7 +97,7 @@ export const formatTimeToDisplay = (time: string): string => {
 export function formatForDateInput(date: string | Date | undefined): string {
   if (!date) return '';
   const d = typeof date === 'string' ? new Date(date) : date;
-  console.log('date', d)
+  console.log('date', d);
   if (isNaN(d.getTime())) return '';
   return d.toISOString().substring(0, 10);
 }
@@ -108,7 +106,7 @@ export const getRelativeTime = (dateString: string): string => {
   const date = new Date(dateString);
   const now = new Date();
   const diffInMs = now.getTime() - date.getTime();
-  
+
   const seconds = Math.floor(diffInMs / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
@@ -132,4 +130,9 @@ export const getRelativeTime = (dateString: string): string => {
     return minutes === 1 ? '1 minute ago' : `${minutes} minutes ago`;
   }
   return 'Just now';
+};
+
+export const formatDateForInput = (isoDate: string): string => {
+  const date = new Date(isoDate);
+  return date.toISOString().split('T')[0];
 };

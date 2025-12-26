@@ -187,7 +187,7 @@ export const feeTypes = [
 
 export const paymentFreqOptions = [
   {
-    label: 'One tme',
+    label: 'One time',
     value: PaymentFrequency.ONE_TIME,
   },
   {

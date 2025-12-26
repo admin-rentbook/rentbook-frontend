@@ -30,7 +30,7 @@ type ViewingCardProps = {
     completionCode: string;
   }>;
   onSubmit: (data: { completionCode: string }) => void;
-  isButtonDisabled?:boolean
+  isButtonDisabled?: boolean;
 };
 
 export const ViewingCard = ({
@@ -41,7 +41,7 @@ export const ViewingCard = ({
   onDecline,
   onSubmit,
   form,
-  isButtonDisabled = false
+  isButtonDisabled = false,
 }: ViewingCardProps) => {
   const [isOpenDetails, setIsOpenDetails] = useState(false);
   const items = [

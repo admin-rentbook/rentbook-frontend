@@ -1,7 +1,9 @@
+import type {
+  DaySchedule,
+  TimeSlot,
+} from '@/features/listings/types/listingTypes';
 import { useState } from 'react';
-import type { DaySchedule, TimeSlot } from '@/features/listings/types/listingTypes';
 
-// Sample data for demonstration
 const sampleScheduleData: DaySchedule = {
   '2025-09-20': [
     { id: '1', startTime: '10:00 AM', endTime: '11:00 AM' },
@@ -12,9 +14,7 @@ const sampleScheduleData: DaySchedule = {
     { id: '4', startTime: '9:00 AM', endTime: '10:00 AM' },
     { id: '5', startTime: '2:00 PM', endTime: '3:00 PM' },
   ],
-  '2025-09-25': [
-    { id: '6', startTime: '11:00 AM', endTime: '12:00 PM' },
-  ],
+  '2025-09-25': [{ id: '6', startTime: '11:00 AM', endTime: '12:00 PM' }],
   '2025-12-05': [
     { id: '7', startTime: '10:00 AM', endTime: '11:00 AM' },
     { id: '8', startTime: '2:00 PM', endTime: '3:00 PM' },
@@ -28,26 +28,37 @@ const sampleScheduleData: DaySchedule = {
     { id: '12', startTime: '11:00 AM', endTime: '12:00 PM' },
     { id: '13', startTime: '3:00 PM', endTime: '4:00 PM' },
   ],
-  '2025-12-25': [
-    { id: '14', startTime: '10:00 AM', endTime: '11:00 AM' },
-  ],
+  '2025-12-25': [{ id: '14', startTime: '10:00 AM', endTime: '11:00 AM' }],
 };
 
 export const useReschedule = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(
+    null
+  );
   const [showRescheduleView, setShowRescheduleView] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const today = new Date();
   const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
   const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
 
-  // Generate 20 years (10 before and 10 after current year)
   const years = Array.from({ length: 20 }, (_, i) => currentYear - 10 + i);
 
   const getDaysInMonth = (month: number, year: number) => {
@@ -86,7 +97,7 @@ export const useReschedule = () => {
   };
 
   const handleTimeSlotClick = (timeSlot: TimeSlot) => {
-    console.log(timeSlot)
+    setSelectedTimeSlot(timeSlot);
     setShowRescheduleView(true);
   };
 
@@ -94,7 +105,9 @@ export const useReschedule = () => {
     setCurrentYear(Number(year));
   };
 
-  const selectedTimeSlots = selectedDate ? sampleScheduleData[selectedDate] || [] : [];
+  const selectedTimeSlots = selectedDate
+    ? sampleScheduleData[selectedDate] || []
+    : [];
   const daysInMonth = getDaysInMonth(currentMonth, currentYear);
   const firstDay = getFirstDayOfMonth(currentMonth, currentYear);
 
@@ -110,11 +123,44 @@ export const useReschedule = () => {
     return dateString === todayString;
   };
 
+  const getFormattedDateForNotification = () => {
+    if (!selectedDate) return '';
+
+    const date = new Date(selectedDate);
+    const daysOfWeek = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    return `${daysOfWeek[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]}`;
+  };
+
   return {
     currentMonth,
     currentYear,
     selectedDate,
+    selectedTimeSlot,
     showRescheduleView,
+    showSuccessModal,
     todayString,
     monthNames,
     years,
@@ -127,8 +173,10 @@ export const useReschedule = () => {
     handleTimeSlotClick,
     handleYearChange,
     setShowRescheduleView,
+    setShowSuccessModal,
     getDateString,
     hasSchedule,
     isToday,
+    getFormattedDateForNotification,
   };
 };

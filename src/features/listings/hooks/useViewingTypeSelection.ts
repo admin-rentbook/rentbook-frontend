@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { type ViewingType, ViewingTypes } from '../constants';
 import { useListingDraft } from '../providers';
 
@@ -20,6 +20,13 @@ export const useViewingTypeSelection = (): SelectCardSelection => {
     draft?.viewingTimes?.viewingType || ViewingTypes.VIEWING_AVAILABLE
   );
   const [hoveredType, setHoveredType] = useState<string | null>(null);
+
+  // Update selected type when draft changes (from API)
+  useEffect(() => {
+    if (draft?.viewingTimes?.viewingType) {
+      setSelectedType(draft.viewingTimes.viewingType);
+    }
+  }, [draft?.viewingTimes?.viewingType]);
 
   const selectType = (value: ViewingType) => {
     setSelectedType(value);
