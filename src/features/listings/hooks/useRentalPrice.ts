@@ -1,12 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { useForm, type UseFormReturn } from 'react-hook-form';
 import type z from 'zod';
+import { useGetRentalPricing, useUpdateRentalPricing } from '../apis';
 import { RentalPayType, rentalPriceSchema, type RentalPay } from '../constants';
 import { useListingDraft } from '../providers';
 import type { RentalPriceFormValues } from '../types';
 import {
   formatRentalPriceForForm,
   getDefaultRentalPriceValues,
+  transformDTOToFormValues,
 } from '../utils';
 import { useAutoSave } from './useAutoSave';
 
@@ -17,20 +20,34 @@ export type RentalPrice = {
   decreaseDuration: () => void;
   handleSelectTypeChange: (newType: RentalPay) => void;
   isButtonDisabled: boolean;
+  isUpdateLoading: boolean;
+  isPending: boolean;
+  isFetching: boolean;
 };
 export const useRentalPrice = (
   selectType: RentalPay,
   setSelectType: (value: RentalPay) => void,
-  onNext: (() => void) | undefined
+  onNext: (() => void) | undefined,
+  listingId: number
 ): RentalPrice => {
-  const { updateStepData, markMainStepComplete, markStepComplete, draft } =
+  const { updateStepData, draft, updateFromApiResponse } =
     useListingDraft();
   const savedData = draft?.rentalPrice;
+
+  const {
+    data: rentalPricingData,
+    isPending,
+    isFetching,
+  } = useGetRentalPricing(listingId);
+  const rentalPricing = rentalPricingData?.data;
+
+  const updateRentalPricingMutation = useUpdateRentalPricing();
+
   const form = useForm<RentalPriceFormValues>({
     resolver: zodResolver(rentalPriceSchema),
     mode: 'onChange',
-    defaultValues: draft?.rentalPrice?.rentPriceData
-      ? formatRentalPriceForForm(draft.rentalPrice.rentPriceData)
+    defaultValues: rentalPricing
+      ? transformDTOToFormValues(rentalPricing)
       : selectType === RentalPayType.FIXED_PRICE
         ? {
             selectType: RentalPayType.FIXED_PRICE,
@@ -51,6 +68,18 @@ export const useRentalPrice = (
             extendLastMinuteBid: false,
           },
   });
+
+  // Reset form when API data is loaded
+  useEffect(() => {
+    if (rentalPricing) {
+      const formValues = transformDTOToFormValues(rentalPricing);
+      form.reset(formValues);
+
+      // Update select type to match API data
+      setSelectType(formValues.selectType);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rentalPricing]);
 
   useAutoSave(form, (value) => {
     const currentDraft = draft?.rentalPrice;
@@ -107,14 +136,33 @@ export const useRentalPrice = (
   };
 
   function onSubmit(data: z.infer<typeof rentalPriceSchema>) {
-    const currentDraft = draft?.rentalPrice || {};
-    updateStepData('rentalPrice', {
-      ...currentDraft,
-      rentPriceData: formatRentalPriceForForm(data),
-    });
-    markStepComplete(1, 0);
-    markMainStepComplete(1);
-    onNext?.();
+    updateRentalPricingMutation.mutate(
+      {
+        data,
+        listingId: listingId as number,
+      },
+      {
+        onSuccess: (res) => {
+          // Update draft with saved data
+          const currentDraft = draft?.rentalPrice || {};
+          updateStepData('rentalPrice', {
+            ...currentDraft,
+            rentPriceData: formatRentalPriceForForm(data),
+          });
+
+          // Update stepper from API response
+          if (res.data.current_step) {
+            updateFromApiResponse({
+              listing_id: listingId,
+              current_step: res.data.current_step,
+              status: 'viewing',
+            });
+          }
+
+          onNext?.();
+        },
+      }
+    );
   }
 
   const isButtonDisabled = !form.formState.isValid;
@@ -126,5 +174,8 @@ export const useRentalPrice = (
     decreaseDuration,
     handleSelectTypeChange,
     isButtonDisabled,
+    isUpdateLoading: updateRentalPricingMutation.isPending,
+    isPending: isPending && !rentalPricing,
+    isFetching,
   };
 };

@@ -16,13 +16,12 @@ export const useComplex = (
   propertyId?: number,
   onComplexSelect?: OnComplexSelect
 ) => {
-  const [complexState, setComplexState] = useState<ComplexState>('ADD_TO_COMPLEX');
+  const [complexState, setComplexState] =
+    useState<ComplexState>('ADD_TO_COMPLEX');
 
   // Fetch existing complexes
-  const {
-    data: complexesData,
-    isPending: isLoadingComplexes,
-  } = useGetComplexes(propertyId as number);
+  const { data: complexesData, isPending: isLoadingComplexes } =
+    useGetComplexes();
 
   const complexes = complexesData?.data;
   const createComplexMutation = useCreateComplex();
@@ -35,7 +34,6 @@ export const useComplex = (
     },
   });
 
-  // Auto-detect: if no complexes exist, go straight to CREATE mode
   useEffect(() => {
     if (!isLoadingComplexes && complexes !== undefined) {
       if (complexes.length === 0) {

@@ -18,7 +18,6 @@ export const useListingDescription = (
   listingId: number
 ) => {
   const {
-    draft,
     updateFromApiResponse,
     updateStepData,
     syncFromApiData,
@@ -45,12 +44,7 @@ export const useListingDescription = (
         });
       }
     }
-  }, [
-    listingDescriptionData,
-    listingId,
-    syncFromApiData,
-    isStepSyncedWithApi,
-  ]);
+  }, [listingDescriptionData, listingId, syncFromApiData, isStepSyncedWithApi]);
 
   const hasExistingData = !!listingDescriptionData;
 
@@ -63,13 +57,13 @@ export const useListingDescription = (
   const form = useForm<ListingDescriptionFormValues>({
     resolver: zodResolver(listingDescriptionSchema),
     mode: 'onChange',
-    defaultValues: draft?.listingDescription || {
-      listingTitle: '',
-      listingType: '',
-      noOfBeds: undefined,
-      noOfBathrooms: undefined,
-      sizeSqFt: undefined,
-      listingDescription: '',
+    defaultValues: {
+      listingTitle: listingDescriptionData?.title ?? '',
+      listingType: listingDescriptionData?.listing_type ?? '',
+      noOfBeds: listingDescriptionData?.beds ?? undefined,
+      noOfBathrooms: listingDescriptionData?.bathrooms ?? undefined,
+      sizeSqFt: listingDescriptionData?.size_sqft ?? undefined,
+      listingDescription: listingDescriptionData?.description ?? '',
       complexId: undefined,
       complexName: undefined,
       isAddListingToComplex: false,
@@ -85,7 +79,10 @@ export const useListingDescription = (
         listingDescription: listingDescriptionData.description,
         noOfBeds: listingDescriptionData.beds,
         noOfBathrooms: listingDescriptionData.bathrooms,
-        sizeSqFt: listingDescriptionData.size_sqft,
+        // Convert string to number (backend returns string temporarily)
+        sizeSqFt: typeof listingDescriptionData.size_sqft === 'string'
+          ? Number(listingDescriptionData.size_sqft)
+          : listingDescriptionData.size_sqft,
         complexId: undefined,
         complexName: undefined,
         isAddListingToComplex: false,
@@ -144,7 +141,6 @@ export const useListingDescription = (
   const isButtonDisabled = !form.formState.isValid;
   const selectedComplex = form.watch('complexName');
 
-  // Use whichever mutation is active
   const isListingDescLoading = hasExistingData
     ? updateListingDescriptionMutation.isPending
     : addListingDescriptionMutation.isPending;
@@ -160,7 +156,7 @@ export const useListingDescription = (
     handleComplexSelect,
     selectedComplex,
     isListingDescLoading,
-    isPending,
+    isPending: isPending && !!listingDescriptionData,
     isFetching,
   };
 };

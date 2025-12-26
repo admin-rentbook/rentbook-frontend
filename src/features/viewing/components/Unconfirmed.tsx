@@ -2,7 +2,6 @@ import { useViewingDetails } from '../hooks';
 import type { Viewings } from '../types';
 import { ViewingCard } from './ViewingCard';
 
-// Sample data for unconfirmed viewings
 const unconfirmedViewingsData: Viewings[] = [
   {
     date: '22 Nov Friday',

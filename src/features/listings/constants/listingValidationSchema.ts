@@ -76,6 +76,16 @@ export const timedAuctionSchema = z
     autoAcceptHighestBidder: z.boolean().default(false).optional(),
     extendLastMinuteBid: z.boolean().default(false).optional(),
   })
+  .refine((data) => {
+    // Check if bid start date is after today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset to start of day
+    const bidStart = new Date(data.bidStartDate);
+    return bidStart > today;
+  }, {
+    message: 'Bid start date must be after today',
+    path: ['bidStartDate'],
+  })
   .refine((data) => data.bidEndDate > data.bidStartDate, {
     message: 'End date must be after start date',
     path: ['bidEndDate'],

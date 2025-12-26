@@ -1,4 +1,6 @@
+import { useSearch } from '@tanstack/react-router';
 import {
+  useViewing,
   useViewingFee,
   useViewingTimes,
   useViewingTypeSelection,
@@ -13,13 +15,18 @@ type ViewingProps = {
   onPrev: (() => void) | undefined;
 };
 export const Viewing = ({ onNext, onPrev }: ViewingProps) => {
+  const { listingId } = useSearch({ from: '/listings-start' });
+
+  const viewingApiHook = useViewing(listingId as number, onNext);
   const viewingTypeSelection = useViewingTypeSelection();
   const viewingTimesHook = useViewingTimes();
   const viewingFeeHook = useViewingFee(
     onNext,
     viewingTimesHook.schedule,
-    viewingTypeSelection.selectedType
+    viewingTypeSelection.selectedType,
+    viewingApiHook.onSubmit
   );
+
   return (
     <div>
       <div className="flex flex-col gap-6 xl:w-3/5 pb-10">
@@ -35,6 +42,7 @@ export const Viewing = ({ onNext, onPrev }: ViewingProps) => {
         onBack={() => onPrev?.()}
         onContinue={viewingFeeHook.handleSubmit}
         isButtonDisabled={!viewingFeeHook.canSubmit}
+        isLoading={viewingApiHook.isUpdateLoading}
       />
     </div>
   );

@@ -24,7 +24,7 @@ export const NotificationModal = (props: NotificationModalProps) => {
         <Sheet
           open={props.modalOptions.open}
           onOpenChange={props.modalOptions.onOpenChange}
-          className='pt-10'
+          className="pt-10 max-h-[60vh] rounded-t-[1.25em]"
           children={
             <CommonElement
               actions={props.actions}
@@ -63,9 +63,9 @@ type CommonElementProps = {
 const CommonElement = (props: CommonElementProps) => {
   return (
     <div className="flex flex-col items-center pb-5">
-      <div className="flex flex-col gap-5 items-center py-25 px-12">
+      <div className="flex flex-col gap-5 items-center py-25">
         <props.icon />
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 px-10">
           <h5 className="text-heading-xl text-black-500 text-center">
             {props.title}
           </h5>
@@ -73,8 +73,8 @@ const CommonElement = (props: CommonElementProps) => {
             {props.description}
           </p>
         </div>
+        {props.actions}
       </div>
-      {props.actions}
     </div>
   );
 };

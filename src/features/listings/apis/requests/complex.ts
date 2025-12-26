@@ -1,4 +1,12 @@
-import { axios, queryClient, useMutation, useQuery, type ExtractFnReturnType, type MutationConfig, type QueryConfig } from '@/core/lib';
+import {
+  axios,
+  queryClient,
+  useMutation,
+  useQuery,
+  type ExtractFnReturnType,
+  type MutationConfig,
+  type QueryConfig,
+} from '@/core/lib';
 import type { ApiResponse } from '@/shared/types';
 import { formatError } from '@/shared/utils/helpers';
 import { toast } from 'sonner';
@@ -42,9 +50,8 @@ export const useCreateComplex = ({ config }: UseCreateComplexOptions = {}) => {
       toast.success(`${variables.complexName} added successfully`, {
         id: 'create-add_com-suc',
       });
-      // Invalidate complexes query so all components refetch
       queryClient.invalidateQueries({
-        queryKey: queryKey.complexes(variables.propertyId),
+        queryKey: queryKey.getComplexes(),
       });
     },
     mutationFn: createComplex,
@@ -52,11 +59,10 @@ export const useCreateComplex = ({ config }: UseCreateComplexOptions = {}) => {
   });
 };
 
-
-const getComplexes = async (propertyId: number) => {
+const getComplexes = async () => {
   try {
     const response = await axios.get<ApiResponse<ComplexDTO[]>>(
-      `${url.properties}/${propertyId}/complexes/`
+      `${url.getComplexes}`
     );
     return response.data;
   } catch (err) {
@@ -67,15 +73,11 @@ const getComplexes = async (propertyId: number) => {
 type QueryFnType = () => Promise<ApiResponse<ComplexDTO[]>>;
 type UseGetComplexesOptions = QueryConfig<QueryFnType>;
 
-export const useGetComplexes = (
-  propertyId: number,
-  config?: UseGetComplexesOptions
-) => {
+export const useGetComplexes = (config?: UseGetComplexesOptions) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
     ...config,
-    queryFn: () => getComplexes(propertyId),
-    queryKey: queryKey.complexes(propertyId),
+    queryFn: () => getComplexes(),
+    queryKey: queryKey.getComplexes(),
     staleTime: 5 * 60 * 1000,
-    enabled: !!propertyId,
   });
 };

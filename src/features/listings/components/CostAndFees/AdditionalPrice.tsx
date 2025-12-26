@@ -1,3 +1,5 @@
+import { useSearch } from '@tanstack/react-router';
+import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useAdditionalFee, useDiscount } from '../../hooks';
 import { AdditionalFeeBox } from '../shared';
@@ -8,10 +10,25 @@ import { DiscountCard } from './Discount';
 export const AdditionalPrice = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDiscount, setIsOpenDiscount] = useState(false);
-  const { form, onSubmit, isButtonDisabled, additionalFees } =
-    useAdditionalFee(setIsOpen);
-  const { formDiscount, isButtonDisabledDiscount, onSubmitDiscount } =
-    useDiscount(setIsOpenDiscount);
+  const { listingId } = useSearch({ from: '/listings-start' });
+  const {
+    form,
+    onSubmit,
+    isButtonDisabled,
+    additionalFees,
+    isLoadingAddFee,
+    isLoadingFees,
+    isFetchingFees,
+  } = useAdditionalFee(setIsOpen, listingId as number);
+  const {
+    formDiscount,
+    isButtonDisabledDiscount,
+    onSubmitDiscount,
+    isLoadingAddDis,
+    isLoadingDiscount,
+    isFetchingDiscount,
+  } = useDiscount(setIsOpenDiscount, listingId as number);
+
   return (
     <>
       <div className="flex flex-col gap-6 pt-4">
@@ -25,13 +42,23 @@ export const AdditionalPrice = () => {
           </p>
         </div>
         <AdditionalFeeCard setIsOpen={setIsOpen} />
-        <DiscountCard
-          isButtonDisabled={isButtonDisabledDiscount}
-          form={formDiscount}
-          isOpen={isOpenDiscount}
-          onSubmit={onSubmitDiscount}
-          setIsOpen={setIsOpenDiscount}
-        />
+
+        {/* Loading state for fetching discount */}
+        {isLoadingDiscount || isFetchingDiscount ? (
+          <div className="flex items-center justify-center py-8 rounded-[1.25em] bg-sidebar">
+            <Loader2 className="w-6 h-6 animate-spin text-primary-500" />
+            <p className="ml-2 text-body text-black-400">Loading discount...</p>
+          </div>
+        ) : (
+          <DiscountCard
+            isButtonDisabled={isButtonDisabledDiscount}
+            form={formDiscount}
+            isOpen={isOpenDiscount}
+            onSubmit={onSubmitDiscount}
+            setIsOpen={setIsOpenDiscount}
+            isLoadingAddDis={isLoadingAddDis}
+          />
+        )}
       </div>
       <div className="flex flex-col gap-6">
         <AdditionalPriceSetting
@@ -40,13 +67,35 @@ export const AdditionalPrice = () => {
           form={form}
           onSubmit={onSubmit}
           isButtonDisabled={isButtonDisabled}
+          isLoadingAddFee={isLoadingAddFee}
         />
         <div className="w-full h-[1px] bg-custom-gray-600" />
-        <div className="flex flex-col gap-3">
-          {additionalFees.map((fee) => (
-            <AdditionalFeeBox additionalFee={fee} key={fee.feeName} />
-          ))}
-        </div>
+
+        {isLoadingFees || isFetchingFees ? (
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="w-6 h-6 animate-spin text-primary-500" />
+            <p className="ml-2 text-body text-black-400">
+              Loading additional fees...
+            </p>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {additionalFees.length > 0 ? (
+              additionalFees.map((fee) => (
+                <AdditionalFeeBox additionalFee={fee} key={fee.feeName} />
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <p className="text-body text-black-400">
+                  No additional fees added yet
+                </p>
+                <p className="text-body-sm text-black-300">
+                  Click "Add fee" to get started
+                </p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </>
   );

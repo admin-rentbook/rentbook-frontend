@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, type UseFormReturn } from 'react-hook-form';
 import type z from 'zod';
 import {
@@ -30,7 +30,8 @@ export type UseViewingFee = {
 export const useViewingFee = (
   onNext: (() => void) | undefined,
   schedule: DaySchedule,
-  viewingType: ViewingType
+  viewingType: ViewingType,
+  onApiSubmit?: (data: any) => void
 ): UseViewingFee => {
   const { updateStepData, markMainStepComplete, markStepComplete, draft } =
     useListingDraft();
@@ -60,6 +61,15 @@ export const useViewingFee = (
       viewingFee: undefined,
     },
   });
+
+  // Update form when draft changes (from API)
+  useEffect(() => {
+    if (draft?.viewingTimes?.viewingFee) {
+      form.reset(draft.viewingTimes.viewingFee);
+      setSelectedBookViewingType(draft.viewingTimes.viewingFee.bookViewingType);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [draft?.viewingTimes?.viewingFee]);
 
   useAutoSave(form, (value) => {
     const currentDraft = draft?.viewingTimes;
@@ -93,10 +103,16 @@ export const useViewingFee = (
     !isButtonDisabled && isScheduleNotEmpty && Boolean(viewingType);
 
   const handleSubmit = () => {
-    if (canSubmit) {
-      markStepComplete(2, 0);
-      markMainStepComplete(2);
-      onNext?.();
+    if (canSubmit && draft?.viewingTimes) {
+      // Call the API submit function with complete viewing data
+      if (onApiSubmit) {
+        onApiSubmit(draft.viewingTimes);
+      } else {
+        // Fallback if no API submit provided (shouldn't happen in production)
+        markStepComplete(2, 0);
+        markMainStepComplete(2);
+        onNext?.();
+      }
     }
   };
 

@@ -32,7 +32,6 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
     handleComplexSelect,
     isListingDescLoading,
     isPending,
-    isFetching,
   } = useListingDescription(onNext, propertyId as number, listingId as number);
   const {
     complexState,
@@ -45,8 +44,7 @@ export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
     isLoadingComplexes,
   } = useComplex(setOpenComplex, propertyId, handleComplexSelect);
   const navigate = useNavigate();
-
-  if (isFetching || isPending) {
+  if (isPending) {
     return (
       <div className="flex items-center justify-center py-12">
         <Loader2 className="w-8 h-8 animate-spin text-primary-500" />

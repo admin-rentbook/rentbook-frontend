@@ -1,7 +1,7 @@
 import { Button } from '@/shared/components';
 import { Logo } from '@/shared/components/Logo';
 import { useNavigate } from '@tanstack/react-router';
-import { getStartedItems } from '../../constants';
+import { getStartedItems, Links } from '../../constants';
 
 export const GetStarted = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export const GetStarted = () => {
             </p>
           </div>
           <div className="hidden lg:block">
-            <Button onClick={() => navigate({ to: '/properties/create' })}>
+            <Button onClick={() => navigate({ to: Links.PROPERTIES})}>
               Get started
             </Button>
             <p className="text-body-medium text-black-400 pt-1">
@@ -48,7 +48,7 @@ export const GetStarted = () => {
 
       <div className="lg:hidden pt-15 pb-4 md:items-center flex flex-col">
         <Button
-          onClick={() => navigate({ to: '/properties/create' })}
+          onClick={() => navigate({ to: Links.PROPERTIES })}
           className="w-full md:w-1/2 h-11"
         >
           Get started

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { DayOfWeek } from '../constants';
 import { useListingDraft } from '../providers';
 import type { DaySchedule, TimeSlot } from '../types';
@@ -29,6 +29,13 @@ export const useViewingTimes = (): UseViewingTimes => {
   const [deleteConfirmDay, setDeleteConfirmDay] = useState<DayOfWeek | null>(
     null
   );
+
+  // Update schedule when draft changes (from API)
+  useEffect(() => {
+    if (draft?.viewingTimes?.viewingTimesData) {
+      setSchedule(draft.viewingTimes.viewingTimesData);
+    }
+  }, [draft?.viewingTimes?.viewingTimesData]);
 
   const handleDeleteAll = (day: DayOfWeek) => {
     setDeleteConfirmDay(day);

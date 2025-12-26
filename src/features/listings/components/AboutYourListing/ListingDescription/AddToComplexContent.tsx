@@ -1,4 +1,5 @@
 import { Button } from '@/shared/components';
+import { Loader2 } from 'lucide-react';
 import type { ComplexDTO } from '../../../types';
 import { ComplexCard } from './Complex';
 
@@ -20,6 +21,7 @@ export const AddToComplexContent = ({
   <>
     {isLoading ? (
       <div className="flex items-center justify-center py-8">
+        <Loader2 />
         <p className="text-body text-black-400">Loading complexes...</p>
       </div>
     ) : complexItems && complexItems.length > 0 ? (

@@ -1,10 +1,6 @@
 import { Button, SelectCard } from '@/shared/components';
 import { Form, FormInput, FormSelect } from '@/shared/components/Form';
-import {
-  currencyFormatter,
-  numberFormatter,
-  percentageFormatter,
-} from '@/shared/utils';
+import { currencyFormatter, numberFormatter } from '@/shared/utils';
 import { Add01Icon, MinusSignIcon, Settings01Icon } from 'hugeicons-react';
 import { useState } from 'react';
 import { rentalPaymentTypes, type RentalPay } from '../../constants';
@@ -175,7 +171,7 @@ export const RentalPricing = ({
                   control={rentalPricing.form.control}
                   name="securityDeposit"
                   size="sm"
-                  formatter={percentageFormatter}
+                  formatter={currencyFormatter}
                   showErrorMessage
                 />
               </div>

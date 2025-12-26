@@ -1,20 +1,33 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import type z from 'zod';
+import { useGetAdditionalFees, useUpdateAdditionalFees } from '../apis';
 import { additionalFeeValSchema } from '../constants';
-import { useListingDraft } from '../providers';
-import type { AdditionalFeeFormValues, RentalPriceData } from '../types';
+import type { AdditionalFeeFormValues } from '../types';
+import { transformAdditionalFeesDTOToFormValues } from '../types/mappedTypes';
 
 type SetState = React.Dispatch<React.SetStateAction<boolean>>;
-export const useAdditionalFee = (setIsOpen: SetState) => {
-  const { updateStepData, getStepData } = useListingDraft();
-  const savedData = getStepData('rentalPrice');
+export const useAdditionalFee = (setIsOpen: SetState, listingId: number) => {
+
+  const { data: additionalFeesData, isPending, isFetching } =
+    useGetAdditionalFees(listingId);
+  const additionalFeesFromAPI = additionalFeesData?.data;
+
+  const updateAdditionalFeesMutation = useUpdateAdditionalFees();
 
   const [additionalFees, setAdditionalFees] = useState<
     AdditionalFeeFormValues[]
-  >(savedData?.additionalPrice || []);
+  >([]);
+
+  useEffect(() => {
+    if (additionalFeesFromAPI) {
+      const formValues = transformAdditionalFeesDTOToFormValues(
+        additionalFeesFromAPI
+      );
+      setAdditionalFees(formValues);
+    }
+  }, [additionalFeesFromAPI]);
 
   const form = useForm<AdditionalFeeFormValues>({
     resolver: zodResolver(additionalFeeValSchema),
@@ -30,17 +43,24 @@ export const useAdditionalFee = (setIsOpen: SetState) => {
   function onSubmit(data: z.infer<typeof additionalFeeValSchema>) {
     const newAdditionalFees = [...additionalFees, data];
 
-    setAdditionalFees(newAdditionalFees);
-    updateStepData('rentalPrice', {
-      ...savedData,
-      additionalPrice: newAdditionalFees,
-    } as RentalPriceData);
-    toast.success(`${data.feeName} fee added successfully`, {
-      id: 'add-fee-success',
-    });
+    updateAdditionalFeesMutation.mutate(
+      {
+        fees: newAdditionalFees,
+        listingId: listingId as number,
+      },
+      {
+        onSuccess: (res) => {
+          // Transform the API response to form values
+          if (res.data) {
+            const formValues = transformAdditionalFeesDTOToFormValues(res.data);
+            setAdditionalFees(formValues);
+          }
 
-    setIsOpen(false);
-    form.reset();
+          setIsOpen(false);
+          form.reset();
+        },
+      }
+    );
   }
 
   const isButtonDisabled = !form.formState.isValid;
@@ -50,5 +70,8 @@ export const useAdditionalFee = (setIsOpen: SetState) => {
     onSubmit,
     isButtonDisabled,
     additionalFees,
+    isLoadingAddFee: updateAdditionalFeesMutation.isPending,
+    isLoadingFees: isPending,
+    isFetchingFees: isFetching,
   };
 };

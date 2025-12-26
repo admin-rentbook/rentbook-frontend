@@ -1,4 +1,10 @@
-import { Button, DialogComponent, Sheet } from '@/shared/components';
+import SuccessIcon from '@/assets/icons/success-icon.svg?react';
+import {
+  Button,
+  DialogComponent,
+  NotificationModal,
+  Sheet,
+} from '@/shared/components';
 import {
   Select,
   SelectContent,
@@ -12,6 +18,7 @@ import {
   Cancel01Icon,
 } from 'hugeicons-react';
 import { useReschedule } from '../hooks';
+import { RescheduleContent } from './RescheduleContent';
 
 type RescheduleModalProps = {
   isOpen: boolean;
@@ -27,7 +34,9 @@ export const RescheduleModal = ({
     currentMonth,
     currentYear,
     selectedDate,
+    selectedTimeSlot,
     showRescheduleView,
+    showSuccessModal,
     monthNames,
     years,
     selectedTimeSlots,
@@ -39,9 +48,11 @@ export const RescheduleModal = ({
     handleTimeSlotClick,
     handleYearChange,
     setShowRescheduleView,
+    setShowSuccessModal,
     getDateString,
     hasSchedule,
     isToday,
+    getFormattedDateForNotification,
   } = useReschedule();
 
   const generateCalendarDays = () => {
@@ -65,7 +76,7 @@ export const RescheduleModal = ({
           key={day}
           onClick={() => handleDayClick(day)}
           className={`
-            w-[66px] h-[56px] rounded-[24px]
+            lg:w-[66px] w-[46px] h-[42px] lg:h-[56px] rounded-[16px] lg:rounded-[24px]
             p-2 cursor-pointer relative
             border border-neutral-200
             ${hasScheduleForDay ? 'bg-sidebar-accent' : 'bg-white'}
@@ -78,7 +89,7 @@ export const RescheduleModal = ({
               text-body absolute top-2 left-2
               ${
                 isTodayDay
-                  ? 'bg-primary-500 text-white grid place-items-center size-[26px] rounded-full'
+                  ? 'bg-primary-500 text-white grid place-items-center size-[22px] lg:size-[26px] rounded-full'
                   : ''
               }
             `}
@@ -92,21 +103,24 @@ export const RescheduleModal = ({
     return calendarDays;
   };
 
-  const RescheduleContent = () => {
+  const handleConfirmReschedule = () => {
+    console.log('Reschedule confirmed');
+    // Handle reschedule logic here
+    setShowRescheduleView(false);
+    setIsOpen(false);
+    setShowSuccessModal(true);
+  };
+
+  const ModalContent = () => {
     if (showRescheduleView) {
       return (
-        <div className="p-6">
-          <h2 className="text-heading-5">Reschedule View</h2>
-          <p className="text-body-small text-black-400">
-            Component for rescheduling will be implemented here
-          </p>
-          <button
-            onClick={() => setShowRescheduleView(false)}
-            className="mt-4 px-4 py-2 bg-primary-500 text-white rounded-lg"
-          >
-            Back to Calendar
-          </button>
-        </div>
+        <RescheduleContent
+          selectedDate={selectedDate}
+          selectedTimeSlot={selectedTimeSlot}
+          onBack={() => setShowRescheduleView(false)}
+          onConfirm={handleConfirmReschedule}
+          onClose={() => setIsOpen(false)}
+        />
       );
     }
 
@@ -193,7 +207,7 @@ export const RescheduleModal = ({
             </div>
           </div>
 
-          {/* Time Slots Side - 30% on desktop, bottom on mobile */}
+          {/* Time Slots */}
           <div className="border-t lg:border-t-0 lg:border-l border-border/30 pt-4 lg:pt-0 lg:pl-4">
             {selectedTimeSlots.length > 0 ? (
               <div className="space-y-2">
@@ -223,21 +237,44 @@ export const RescheduleModal = ({
     );
   };
 
-  if (isMobile) {
-    return (
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <RescheduleContent />
-      </Sheet>
-    );
-  }
-
-  return (
+  const RescheduleModalWrapper = isMobile ? (
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <ModalContent />
+    </Sheet>
+  ) : (
     <DialogComponent
       open={isOpen}
       onOpenChange={setIsOpen}
       className="w-3/4 xl:w-1/2"
     >
-      <RescheduleContent />
+      <ModalContent />
     </DialogComponent>
+  );
+
+  return (
+    <>
+      {RescheduleModalWrapper}
+      <NotificationModal
+        modalOptions={{
+          open: showSuccessModal,
+          onOpenChange: setShowSuccessModal,
+        }}
+        title="Rescheduling request sent"
+        description={`You have successfully rescheduled your viewing to ${getFormattedDateForNotification()}.`}
+        icon={SuccessIcon}
+        className="w-full md:w-1/2 xl:w-1/3"
+        actions={
+          <div className="flex gap-2 w-full justify-center px-4">
+            <Button
+              onClick={() => setShowSuccessModal(false)}
+              className="w-2/3 lg:w-1/2 h-11"
+              size="lg"
+            >
+              Done
+            </Button>
+          </div>
+        }
+      />
+    </>
   );
 };

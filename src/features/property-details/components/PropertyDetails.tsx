@@ -19,6 +19,7 @@ import {
   UserIcon,
 } from 'hugeicons-react';
 
+import { ListingLinks } from '@/features/listings/constants';
 import { Agents } from './Agents';
 import { Leases } from './Leases';
 import { Listings } from './Listings';
@@ -61,7 +62,19 @@ export const PropertyDetails = () => {
           </p>
         </div>
         <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
-          <Button variant="outline" size="sm" className="w-full lg:w-auto">
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full lg:w-auto"
+            onClick={() =>
+              navigate({
+                to: ListingLinks.LISTINGS_GET_STARTED,
+                search: (prev) => ({
+                  propertyId: prev.propertyId!,
+                }),
+              })
+            }
+          >
             <Add01Icon />
             Add listing
           </Button>

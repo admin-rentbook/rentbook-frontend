@@ -13,8 +13,7 @@ export const useAmenities = (
 ) => {
   const navigate = useNavigate({ from: '/listings-start' });
 
-  const { updateStepData, isStepSyncedWithApi, syncFromApiData } =
-    useListingDraft();
+  const { updateStepData } = useListingDraft();
 
   const {
     data: amenities,
@@ -25,7 +24,6 @@ export const useAmenities = (
     refetch,
   } = useGetAmenities(listingId);
   const addAmenitiesMutation = useAddAmenities();
-  console.log('amenities', amenities?.data);
 
   const [availableAmenities, setAvailableAmenities] =
     useState<string[]>(initialAmenities);
@@ -34,23 +32,23 @@ export const useAmenities = (
   useEffect(() => {
     if (amenities?.data.amenities && amenities.data.amenities.length > 0) {
       setSelectedAmenities(amenities.data.amenities);
-    }
-  }, [amenities?.data.amenities]);
 
-  useEffect(() => {
-    if (amenities?.data.amenities && listingId) {
-      const apiStepName = amenities.data.current_step ?? 'media';
-      console.log('a', apiStepName);
-      if (!isStepSyncedWithApi(apiStepName)) {
-        console.log('b', { listingId, apiStepName });
-        syncFromApiData({
-          listing_id: listingId,
-          current_step: apiStepName,
-          amenities: amenities.data.amenities,
+      const customAmenities = amenities.data.amenities.filter(
+        (amenity) => !initialAmenities.includes(amenity)
+      );
+
+      if (customAmenities.length > 0) {
+        setAvailableAmenities((prev) => {
+          // Only add amenities that don't already exist
+          const newAmenities = customAmenities.filter(
+            (amenity) => !prev.includes(amenity)
+          );
+          return [...prev, ...newAmenities];
         });
       }
     }
-  }, [amenities, listingId, syncFromApiData, isStepSyncedWithApi]);
+  }, [amenities?.data.amenities, initialAmenities]);
+
 
   const [inputValue, setInputValue] = useState('');
 
@@ -131,7 +129,7 @@ export const useAmenities = (
     handleSubmit,
     handleBack,
     isAddAmeLoading: addAmenitiesMutation.isPending,
-    isPending,
+    isPending: isPending && !amenities,
     isFetching: isFetching && !amenities,
     isError,
     error,
