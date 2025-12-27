@@ -4,24 +4,28 @@ import {
 } from '@/shared/components/Accordion';
 import { convertUnderscoreToSpace } from '@/shared/utils';
 import React from 'react';
-import type { AmenitiesData } from '../../types';
+import type { AmenitiesDTO } from '../../types';
 import { ReviewTrigger } from '../shared';
 
 type AmenitiesDetailsProps = {
-  amenities: AmenitiesData;
+  amenities?: AmenitiesDTO;
+  onEdit?: () => void;
 };
 
-export const AmenitiesDetails = ({ amenities }: AmenitiesDetailsProps) => {
-  const { selectedAmenities } = amenities;
+export const AmenitiesDetails = ({ amenities, onEdit }: AmenitiesDetailsProps) => {
+  if (!amenities || !amenities.amenities || amenities.amenities.length === 0) {
+    return null;
+  }
+
   const items = [
     {
       name: 'Amenities',
-      value: selectedAmenities,
+      value: amenities.amenities,
     },
   ];
 
   const accordionItems: AccordionItemType = {
-    trigger: <ReviewTrigger name="Amenities" />,
+    trigger: <ReviewTrigger name="Amenities" onEdit={onEdit} />,
     value: 'amenities',
     content: (
       <div className="grid grid-cols-[35%_1fr] gap-4 pt-6">
@@ -30,7 +34,7 @@ export const AmenitiesDetails = ({ amenities }: AmenitiesDetailsProps) => {
             <div className="text-body-small text-black-400 min-w-0">
               {item.name}
             </div>
-            <div className="flex gap-2 min-w-0">
+            <div className="flex gap-2 flex-wrap min-w-0">
               {item.value.map((amenity) => (
                 <div
                   key={amenity}

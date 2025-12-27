@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { type ViewingType, ViewingTypes } from '../constants';
 import { useListingDraft } from '../providers';
+import type { ViewingDTO } from '../types/listing.dtos';
+import { transformViewingDTOToFormValues } from '../types/mappedTypes';
 
 export type SelectCardSelection = {
   selectedType: ViewingType;
@@ -13,7 +15,9 @@ export type SelectCardSelection = {
   handleSelectViewingTypeChange: (viewingType: ViewingType) => void;
 };
 
-export const useViewingTypeSelection = (): SelectCardSelection => {
+export const useViewingTypeSelection = (
+  viewingData?: ViewingDTO
+): SelectCardSelection => {
   const { updateStepData, draft } = useListingDraft();
 
   const [selectedType, setSelectedType] = useState<ViewingType>(
@@ -21,12 +25,15 @@ export const useViewingTypeSelection = (): SelectCardSelection => {
   );
   const [hoveredType, setHoveredType] = useState<string | null>(null);
 
-  // Update selected type when draft changes (from API)
   useEffect(() => {
-    if (draft?.viewingTimes?.viewingType) {
-      setSelectedType(draft.viewingTimes.viewingType);
+    if (viewingData) {
+      const formValues = transformViewingDTOToFormValues(viewingData);
+      if (formValues.viewingType) {
+        setSelectedType(formValues.viewingType);
+      }
     }
-  }, [draft?.viewingTimes?.viewingType]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewingData]);
 
   const selectType = (value: ViewingType) => {
     setSelectedType(value);

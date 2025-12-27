@@ -1,3 +1,4 @@
+import { useSearch } from '@tanstack/react-router';
 import { Button } from '@/shared/components';
 import { Form, FormInput, FormTextarea } from '@/shared/components/Form';
 import { Add01Icon } from 'hugeicons-react';
@@ -13,7 +14,8 @@ export const AdditionalDetails = ({
   onNext,
   onPrev,
 }: AdditionalDetailsProps) => {
-  const addNoteHook = useAddNote(onNext);
+  const { listingId } = useSearch({ from: '/listings-start' });
+  const addNoteHook = useAddNote(listingId as number, onNext);
   return (
     <div className="flex flex-col h-full">
       <div className="flex flex-col gap-6 xl:w-3/5 pb-10">
@@ -74,6 +76,7 @@ export const AdditionalDetails = ({
       <NavigateButtons
         onBack={() => onPrev?.()}
         onContinue={addNoteHook.handleSubmit}
+        isLoading={addNoteHook.isUpdateLoading}
       />
     </div>
   );

@@ -1,3 +1,4 @@
+import { useSearch } from '@tanstack/react-router';
 import { SelectCard } from '@/shared/components';
 import { Form, FormInput } from '@/shared/components/Form';
 import { rentAvailabilityItems, RentAvailabilityTypes } from '../../constants';
@@ -9,7 +10,8 @@ type RentAvailabilityProps = {
   onNext: (() => void) | undefined;
 };
 export const RentAvailability = ({ onPrev, onNext }: RentAvailabilityProps) => {
-  const rentAvailabilityHook = useRentAvailability(onNext);
+  const { listingId } = useSearch({ from: '/listings-start' });
+  const rentAvailabilityHook = useRentAvailability(listingId as number, onNext);
   return (
     <div className="flex flex-col h-full">
       <div className="flex flex-col gap-6 xl:w-3/5">
@@ -68,6 +70,7 @@ export const RentAvailability = ({ onPrev, onNext }: RentAvailabilityProps) => {
       </div>
       <NavigateButtons
         isButtonDisabled={rentAvailabilityHook.isButtonDisabled}
+        isLoading={rentAvailabilityHook.isUpdateLoading}
         onBack={() => onPrev?.()}
         onContinue={rentAvailabilityHook.form.handleSubmit(
           rentAvailabilityHook.onSubmit

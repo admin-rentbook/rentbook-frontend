@@ -1,8 +1,10 @@
-import { formatDateForInput } from '@/shared/utils';
-import { BookViewingTypes, ViewingTypes } from '../../constants';
+import { formatDateForInput, formatTimeForApi, formatTimeFromISO } from '@/shared/utils';
+import { BookViewingTypes, RentAvailabilityTypes, ViewingTypes } from '../../constants';
 import type {
+  AdditionalDetailsDTO,
   AdditionalFeeDTO,
   DiscountDTO,
+  FinalDetailsDTO,
   ListingDescriptionDTO,
   ViewingDTO,
 } from '../listing.dtos';
@@ -10,7 +12,9 @@ import type {
   AdditionalFeeFormValues,
   DaySchedule,
   DiscountFormValues,
+  Note,
   RentalPriceFormValues,
+  RentAvailabilityFormValues,
   TimeSlot,
   ViewFeeFormValues,
   ViewTimesData,
@@ -145,15 +149,6 @@ export const transformRentalPriceFormToDTO = (
   }
 };
 
-// Helper to convert ISO time string to HH:mm format
-const formatTimeFromISO = (isoTime: string): string => {
-  if (!isoTime) return '';
-  const date = new Date(isoTime);
-  const hours = date.getHours().toString().padStart(2, '0');
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  return `${hours}:${minutes}`;
-};
-
 // Helper to convert day abbreviation from backend to frontend format
 const mapDayFromBackend = (day: string): string => {
   const dayMap: Record<string, string> = {
@@ -232,12 +227,11 @@ export const transformViewingFormToDTO = (data: ViewTimesData): any => {
   if (data.viewingTimesData) {
     Object.entries(data.viewingTimesData).forEach(([day, slots]) => {
       slots.forEach((slot: TimeSlot) => {
-        // Convert HH:mm to ISO time string (using today's date as base)
-        const today = new Date().toISOString().split('T')[0];
+        // Convert HH:mm to HH:mm:ss format for API
         availability.push({
           day: mapDayToBackend(day),
-          start_time: `${today}T${slot.startTime}:00.000Z`,
-          end_time: `${today}T${slot.endTime}:00.000Z`,
+          start_time: formatTimeForApi(slot.startTime),
+          end_time: formatTimeForApi(slot.endTime),
         });
       });
     });
@@ -259,5 +253,84 @@ export const transformViewingFormToDTO = (data: ViewTimesData): any => {
     viewing_fee: data.viewingFee?.viewingFee || 0,
     booking_mode: bookingMode,
     availability,
+  };
+};
+
+/**
+ * Transform FinalDetailsDTO from backend to RentAvailabilityFormValues for form
+ */
+export function transformFinalDetailsDTOToFormValues(
+  dto: FinalDetailsDTO
+): RentAvailabilityFormValues {
+  // If is_available_now is true, return AVAILABLE_NOW
+  if (dto.is_available_now) {
+    return {
+      rentAvailability: RentAvailabilityTypes.AVAILABLE_NOW,
+    };
+  }
+
+  // Otherwise, it's AVAILABLE_LATER with a date
+  return {
+    rentAvailability: RentAvailabilityTypes.AVAILABLE_LATER,
+    listingDate: formatDateForInput(dto.availability_date),
+  };
+}
+
+/**
+ * Transform RentAvailabilityFormValues to FinalDetailsDTO for API
+ */
+export const transformFinalDetailsFormToDTO = (
+  data: RentAvailabilityFormValues
+): any => {
+  // If AVAILABLE_NOW
+  if (data.rentAvailability === RentAvailabilityTypes.AVAILABLE_NOW) {
+    return {
+      is_available_now: true,
+      availability_date: new Date().toISOString().split('T')[0], // Send today's date in YYYY-MM-DD format
+    };
+  }
+
+  // If AVAILABLE_LATER, include the availability_date
+  if (data.rentAvailability === RentAvailabilityTypes.AVAILABLE_LATER && 'listingDate' in data) {
+    return {
+      is_available_now: false,
+      availability_date: data.listingDate, // Already in YYYY-MM-DD format from date input
+    };
+  }
+
+  return {
+    is_available_now: true,
+    availability_date: new Date().toISOString().split('T')[0],
+  };
+};
+
+/**
+ * Transform AdditionalDetailsDTO from backend to Note array for form
+ */
+export function transformAdditionalDetailsDTOToFormValues(
+  dto: AdditionalDetailsDTO
+): Note[] {
+  if (!dto.details || dto.details.length === 0) {
+    return [];
+  }
+
+  return dto.details.map((detail, index) => ({
+    id: detail.id?.toString() || `note-${index}`,
+    noteTitle: detail.title,
+    noteDescription: detail.description,
+  }));
+}
+
+/**
+ * Transform Note array to AdditionalDetailsDTO for API
+ */
+export const transformAdditionalDetailsFormToDTO = (
+  notes: Note[]
+): any => {
+  return {
+    details: notes.map((note) => ({
+      title: note.noteTitle,
+      description: note.noteDescription,
+    })),
   };
 };

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import type { DayOfWeek } from '../constants';
 import { useListingDraft } from '../providers';
 import type { DaySchedule, TimeSlot } from '../types';
+import type { ViewingDTO } from '../types/listing.dtos';
+import { transformViewingDTOToFormValues } from '../types/mappedTypes';
 import { useAutoSaveValue } from './useAutoSave';
 
 export type UseViewingTimes = {
@@ -21,7 +23,7 @@ export type UseViewingTimes = {
   handleDeleteAll: (day: DayOfWeek) => void;
   confirmDelete: () => void;
 };
-export const useViewingTimes = (): UseViewingTimes => {
+export const useViewingTimes = (viewingData?: ViewingDTO): UseViewingTimes => {
   const { updateStepData, draft } = useListingDraft();
   const [schedule, setSchedule] = useState<DaySchedule>(
     draft?.viewingTimes?.viewingTimesData ?? {}
@@ -30,12 +32,15 @@ export const useViewingTimes = (): UseViewingTimes => {
     null
   );
 
-  // Update schedule when draft changes (from API)
   useEffect(() => {
-    if (draft?.viewingTimes?.viewingTimesData) {
-      setSchedule(draft.viewingTimes.viewingTimesData);
+    if (viewingData) {
+      const formValues = transformViewingDTOToFormValues(viewingData);
+      if (formValues.viewingTimesData) {
+        setSchedule(formValues.viewingTimesData);
+      }
     }
-  }, [draft?.viewingTimes?.viewingTimesData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewingData]);
 
   const handleDeleteAll = (day: DayOfWeek) => {
     setDeleteConfirmDay(day);

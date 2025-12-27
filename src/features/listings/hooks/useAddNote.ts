@@ -1,16 +1,49 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type z from 'zod';
+import {
+  useGetAdditionalDetails,
+  useUpdateAdditionalDetails,
+} from '../apis/requests/additionalDetails';
 import { addNoteSchema } from '../constants';
 import { useListingDraft } from '../providers';
 import type { AddNoteFormValues, Note } from '../types';
+import { transformAdditionalDetailsDTOToFormValues } from '../types/mappedTypes';
 
-export const useAddNote = (onNext: (() => void) | undefined) => {
+export const useAddNote = (
+  listingId: number,
+  onNext: (() => void) | undefined
+) => {
   const { updateStepData, markStepComplete, markMainStepComplete, draft } =
     useListingDraft();
 
   const [notes, setNotes] = useState<Note[]>(draft?.finalDetails?.notes ?? []);
+
+  const {
+    data: additionalDetailsData,
+    isPending,
+    isFetching,
+  } = useGetAdditionalDetails(listingId);
+  const additionalDetails = additionalDetailsData?.data;
+
+  const updateAdditionalDetailsMutation = useUpdateAdditionalDetails();
+
+  useEffect(() => {
+    if (additionalDetails) {
+      const formValues = transformAdditionalDetailsDTOToFormValues(additionalDetails);
+
+      const currentDraft = draft?.finalDetails || {};
+      updateStepData('finalDetails', {
+        ...currentDraft,
+        notes: formValues,
+      });
+
+      setNotes(formValues);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [additionalDetails]);
+
   const form = useForm<AddNoteFormValues>({
     resolver: zodResolver(addNoteSchema),
     mode: 'onChange',
@@ -45,11 +78,23 @@ export const useAddNote = (onNext: (() => void) | undefined) => {
   };
 
   const handleRemoveNote = (id: string) => {
-    setNotes((prev) => prev.filter((note) => note.id !== id));
+    const updatedNotes = notes.filter((note) => note.id !== id);
+    setNotes(updatedNotes);
+
+    const currentDraft = draft?.finalDetails || {};
+    updateStepData('finalDetails', {
+      ...currentDraft,
+      notes: updatedNotes,
+    });
   };
 
   const clearAllNotes = () => {
     setNotes([]);
+    const currentDraft = draft?.finalDetails || {};
+    updateStepData('finalDetails', {
+      ...currentDraft,
+      notes: [],
+    });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -70,10 +115,26 @@ export const useAddNote = (onNext: (() => void) | undefined) => {
   const isButtonDisabled = !form.formState.isValid;
 
   const handleSubmit = () => {
-      markStepComplete(3, 1);
-      markMainStepComplete(3);
-      onNext?.();
-    
+    updateAdditionalDetailsMutation.mutate(
+      {
+        data: notes,
+        listingId: listingId as number,
+      },
+      {
+        onSuccess: () => {
+          // Update draft with saved data
+          const currentDraft = draft?.finalDetails || {};
+          updateStepData('finalDetails', {
+            ...currentDraft,
+            notes: notes,
+          });
+
+          markStepComplete(3, 1);
+          markMainStepComplete(3);
+          onNext?.();
+        },
+      }
+    );
   };
 
   return {
@@ -88,5 +149,8 @@ export const useAddNote = (onNext: (() => void) | undefined) => {
     hasNotes,
     canSubmit,
     handleSubmit,
+    isUpdateLoading: updateAdditionalDetailsMutation.isPending,
+    isPending: isPending && !additionalDetails,
+    isFetching,
   };
 };

@@ -1,8 +1,12 @@
 import { formatForDateInput, isAvailableLater } from '@/shared/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, type UseFormReturn } from 'react-hook-form';
 import type z from 'zod';
+import {
+  useGetFinalDetails,
+  useUpdateFinalDetails,
+} from '../apis/requests/finalDetails';
 import {
   rentAvailabilitySchema,
   RentAvailabilityTypes,
@@ -10,6 +14,7 @@ import {
 } from '../constants';
 import { useListingDraft } from '../providers';
 import type { RentAvailabilityFormValues } from '../types';
+import { transformFinalDetailsDTOToFormValues } from '../types/mappedTypes';
 import { useAutoSave } from './useAutoSave';
 
 export type UseRentAvailability = {
@@ -26,9 +31,13 @@ export type UseRentAvailability = {
   isHovered: (value: string) => boolean;
   handleMouseEnter: (value: string) => void;
   handleMouseLeave: () => void;
+  isUpdateLoading: boolean;
+  isPending: boolean;
+  isFetching: boolean;
 };
 
 export const useRentAvailability = (
+  listingId: number,
   onNext: (() => void) | undefined
 ): UseRentAvailability => {
   const { updateStepData, markStepComplete, draft } = useListingDraft();
@@ -38,6 +47,31 @@ export const useRentAvailability = (
         RentAvailabilityTypes.AVAILABLE_NOW
     );
   const [hoveredType, setHoveredType] = useState<string | null>(null);
+
+  const {
+    data: finalDetailsData,
+    isPending,
+    isFetching,
+  } = useGetFinalDetails(listingId);
+  const finalDetails = finalDetailsData?.data;
+
+  const updateFinalDetailsMutation = useUpdateFinalDetails();
+
+  useEffect(() => {
+    if (finalDetails) {
+      const formValues = transformFinalDetailsDTOToFormValues(finalDetails);
+
+      const currentDraft = draft?.finalDetails || {};
+      updateStepData('finalDetails', {
+        ...currentDraft,
+        rentAvailability: formValues,
+      });
+
+      form.reset(formValues);
+      setSelectedRentAvailabilityType(formValues.rentAvailability);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [finalDetails]);
 
   const selectRentAvailabilityType = (value: RentAvailabilityType) => {
     setSelectedRentAvailabilityType(value);
@@ -103,13 +137,29 @@ export const useRentAvailability = (
       rentAvailability: newFormData,
     });
   };
-  function onSubmit(data: z.infer<typeof rentAvailabilitySchema>) {
-    const currentDraft = draft?.finalDetails || {};
 
-    updateStepData('finalDetails', { ...currentDraft, rentAvailability: data });
-    markStepComplete(3, 0);
-    onNext?.();
+  function onSubmit(data: z.infer<typeof rentAvailabilitySchema>) {
+    updateFinalDetailsMutation.mutate(
+      {
+        data,
+        listingId: listingId as number,
+      },
+      {
+        onSuccess: () => {
+          // Update draft with saved data
+          const currentDraft = draft?.finalDetails || {};
+          updateStepData('finalDetails', {
+            ...currentDraft,
+            rentAvailability: data,
+          });
+
+          markStepComplete(3, 0);
+          onNext?.();
+        },
+      }
+    );
   }
+
   const isButtonDisabled = !form.formState.isValid;
 
   return {
@@ -124,5 +174,8 @@ export const useRentAvailability = (
     handleMouseEnter,
     handleMouseLeave,
     isButtonDisabled,
+    isUpdateLoading: updateFinalDetailsMutation.isPending,
+    isPending: isPending && !finalDetails,
+    isFetching,
   };
 };

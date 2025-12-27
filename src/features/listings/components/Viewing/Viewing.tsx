@@ -18,13 +18,14 @@ export const Viewing = ({ onNext, onPrev }: ViewingProps) => {
   const { listingId } = useSearch({ from: '/listings-start' });
 
   const viewingApiHook = useViewing(listingId as number, onNext);
-  const viewingTypeSelection = useViewingTypeSelection();
-  const viewingTimesHook = useViewingTimes();
+  const viewingTypeSelection = useViewingTypeSelection(viewingApiHook.viewingData);
+  const viewingTimesHook = useViewingTimes(viewingApiHook.viewingData);
   const viewingFeeHook = useViewingFee(
     onNext,
     viewingTimesHook.schedule,
     viewingTypeSelection.selectedType,
-    viewingApiHook.onSubmit
+    viewingApiHook.onSubmit,
+    viewingApiHook.viewingData
   );
 
   return (

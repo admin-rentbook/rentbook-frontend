@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type z from 'zod';
-import { useGetAdditionalFees, useUpdateAdditionalFees } from '../apis';
+import { useDeleteAdditionalFees, useGetAdditionalFees, useUpdateAdditionalFees } from '../apis';
 import { additionalFeeValSchema } from '../constants';
 import type { AdditionalFeeFormValues } from '../types';
 import { transformAdditionalFeesDTOToFormValues } from '../types/mappedTypes';
@@ -15,6 +15,7 @@ export const useAdditionalFee = (setIsOpen: SetState, listingId: number) => {
   const additionalFeesFromAPI = additionalFeesData?.data;
 
   const updateAdditionalFeesMutation = useUpdateAdditionalFees();
+  const deleteAdditionalFeesMutation = useDeleteAdditionalFees();
 
   const [additionalFees, setAdditionalFees] = useState<
     AdditionalFeeFormValues[]
@@ -63,6 +64,19 @@ export const useAdditionalFee = (setIsOpen: SetState, listingId: number) => {
     );
   }
 
+  const handleDeleteAllFees = () => {
+    deleteAdditionalFeesMutation.mutate(
+      {
+        listingId: listingId as number,
+      },
+      {
+        onSuccess: () => {
+          setAdditionalFees([]);
+        },
+      }
+    );
+  };
+
   const isButtonDisabled = !form.formState.isValid;
 
   return {
@@ -73,5 +87,7 @@ export const useAdditionalFee = (setIsOpen: SetState, listingId: number) => {
     isLoadingAddFee: updateAdditionalFeesMutation.isPending,
     isLoadingFees: isPending,
     isFetchingFees: isFetching,
+    handleDeleteAllFees,
+    isDeleting: deleteAdditionalFeesMutation.isPending,
   };
 };

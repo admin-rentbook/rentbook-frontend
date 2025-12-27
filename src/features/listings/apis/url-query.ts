@@ -25,4 +25,8 @@ export const queryKey = {
     [...queryKey.all, listingId, 'discount'] as const,
   viewing: (listingId: number) =>
     [...queryKey.all, listingId, 'viewing'] as const,
+  finalDetails: (listingId: number) =>
+    [...queryKey.all, listingId, 'final_details'] as const,
+  additionalDetails: (listingId: number) =>
+    [...queryKey.all, listingId, 'additional_details'] as const,
 };
