@@ -7,6 +7,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { env } from './config';
 import { queryClient } from './core/lib';
 import router from './core/router';
+import { ErrorBoundary } from './shared/components/ErrorBoundary';
 
 const ReactQueryDevtoolsProduction = lazy(() =>
   import('@tanstack/react-query-devtools').then((d) => ({
@@ -24,19 +25,21 @@ function App() {
 
   const handleQueryClient = queryClient;
   return (
-    <APIProvider apiKey={env.GOOGLE_MAPS_API_KEY} libraries={['places']}>
-      <HelmetProvider>
-        <QueryClientProvider client={handleQueryClient}>
-          <ReactQueryDevtools initialIsOpen={false} />
-          {showDevtools && (
-            <Suspense fallback={null}>
-              <ReactQueryDevtoolsProduction />
-            </Suspense>
-          )}
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </HelmetProvider>
-    </APIProvider>
+    <ErrorBoundary>
+      <APIProvider apiKey={env.GOOGLE_MAPS_API_KEY} libraries={['places']}>
+        <HelmetProvider>
+          <QueryClientProvider client={handleQueryClient}>
+            <ReactQueryDevtools initialIsOpen={false} />
+            {showDevtools && (
+              <Suspense fallback={null}>
+                <ReactQueryDevtoolsProduction />
+              </Suspense>
+            )}
+            <RouterProvider router={router} />
+          </QueryClientProvider>
+        </HelmetProvider>
+      </APIProvider>
+    </ErrorBoundary>
   );
 }
 

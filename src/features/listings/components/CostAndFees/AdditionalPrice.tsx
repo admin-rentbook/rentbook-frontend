@@ -1,6 +1,7 @@
 import { useSearch } from '@tanstack/react-router';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { Button } from '@/shared/components';
 import { useAdditionalFee, useDiscount } from '../../hooks';
 import { AdditionalFeeBox } from '../shared';
 import { AdditionalPriceSetting } from './AdditinalPriceSettings';
@@ -19,6 +20,8 @@ export const AdditionalPrice = () => {
     isLoadingAddFee,
     isLoadingFees,
     isFetchingFees,
+    handleDeleteAllFees,
+    isDeleting,
   } = useAdditionalFee(setIsOpen, listingId as number);
   const {
     formDiscount,
@@ -81,9 +84,34 @@ export const AdditionalPrice = () => {
         ) : (
           <div className="flex flex-col gap-3">
             {additionalFees.length > 0 ? (
-              additionalFees.map((fee) => (
-                <AdditionalFeeBox additionalFee={fee} key={fee.feeName} />
-              ))
+              <>
+                <div className="flex justify-between items-center">
+                  <p className="text-body-medium text-black-500">
+                    Added Fees ({additionalFees.length})
+                  </p>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={handleDeleteAllFees}
+                    disabled={isDeleting}
+                  >
+                    {isDeleting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                        Deleting...
+                      </>
+                    ) : (
+                      <>
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete All Fees
+                      </>
+                    )}
+                  </Button>
+                </div>
+                {additionalFees.map((fee) => (
+                  <AdditionalFeeBox additionalFee={fee} key={fee.feeName} />
+                ))}
+              </>
             ) : (
               <div className="flex flex-col items-center justify-center py-8 text-center">
                 <p className="text-body text-black-400">

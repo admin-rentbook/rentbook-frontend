@@ -1,5 +1,4 @@
 import { useAppStore } from '@/core/store';
-import { clearDataFromSessStorage } from '@/shared/utils/helpers';
 import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 export const rejectErrorInterceptor = (error: any) => {
@@ -18,7 +17,11 @@ export const authRequestInterceptor = (config: InternalAxiosRequestConfig) => {
 
 export const authResponseInterceptor = (error: AxiosError) => {
   if (error.response?.status === 401) {
-    clearDataFromSessStorage('auth_user');
+    const { logout } = useAppStore.getState();
+    logout();
+
+    // Redirect to landing page
+    window.location.href = '/';
   }
   return Promise.reject(error);
 };

@@ -1,48 +1,53 @@
-import type { ListingDescriptionFormValues } from '@/features/listings/types';
 import {
   AccordionComponent,
   type AccordionItemType,
 } from '@/shared/components/Accordion';
 import { convertUnderscoreToSpace } from '@/shared/utils';
 import React from 'react';
+import type { ListingDescriptionDTO } from '../../types';
 import { ReviewTrigger } from '../shared';
 
 type ListingDetailsProps = {
-  listingDetails: ListingDescriptionFormValues;
+  listingDetails?: ListingDescriptionDTO;
+  onEdit?: () => void;
 };
 
 export const ListingDescriptionDetails = ({
   listingDetails,
+  onEdit,
 }: ListingDetailsProps) => {
+  if (!listingDetails) return null;
+
   const {
-    noOfBeds,
-    noOfBathrooms,
-    sizeSqFt,
-    listingDescription,
-    listingTitle,
-    listingType,
+    title,
+    listing_type,
+    beds,
+    bathrooms,
+    size_sqft,
+    description,
   } = listingDetails;
+
   const items = [
     {
       name: 'Listing title',
-      value: listingTitle,
+      value: title,
     },
     {
       name: 'Listing type',
-      value: convertUnderscoreToSpace(listingType),
+      value: convertUnderscoreToSpace(listing_type),
     },
     {
       name: 'Bed, baths & size',
-      value: `${noOfBeds}, ${noOfBathrooms}, ${sizeSqFt}`,
+      value: `${beds}, ${bathrooms}, ${size_sqft}`,
     },
     {
       name: 'Description',
-      value: listingDescription,
+      value: description,
     },
   ];
 
   const accordionItems: AccordionItemType = {
-    trigger: <ReviewTrigger name="Listing description" />,
+    trigger: <ReviewTrigger name="Listing description" onEdit={onEdit} />,
     value: 'listingDescription',
     content: (
       <div className="grid grid-cols-[35%_1fr] gap-4 pt-6">

@@ -104,3 +104,23 @@ export type ViewingDTO = {
   }>;
   current_step?: string;
 };
+
+// DTO type for final details (rent availability) from backend
+export type FinalDetailsDTO = {
+  id?: number;
+  is_available: boolean;
+  is_available_now: boolean;
+  availability_date: string; // ISO date string
+  current_step?: string;
+};
+
+// DTO type for additional details (notes) from backend
+export type AdditionalDetailsDTO = {
+  id?: number;
+  details: Array<{
+    id?: number;
+    title: string;
+    description: string;
+  }>;
+  current_step?: string;
+};

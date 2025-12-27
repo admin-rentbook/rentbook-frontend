@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useGetViewing, useUpdateViewing } from '../apis/requests/viewing';
 import { useListingDraft } from '../providers';
 import type { ViewTimesData } from '../types';
+import type { ViewingDTO } from '../types/listing.dtos';
 import { transformViewingDTOToFormValues } from '../types/mappedTypes';
 
 export type UseViewing = {
@@ -9,13 +10,14 @@ export type UseViewing = {
   isUpdateLoading: boolean;
   isPending: boolean;
   isFetching: boolean;
+  viewingData: ViewingDTO | undefined;
 };
 
 export const useViewing = (
   listingId: number,
   onNext: (() => void) | undefined
 ): UseViewing => {
-  const { updateStepData, updateFromApiResponse } = useListingDraft();
+  const { updateStepData } = useListingDraft();
 
   const {
     data: viewingData,
@@ -43,18 +45,18 @@ export const useViewing = (
         listingId: listingId as number,
       },
       {
-        onSuccess: (res) => {
+        onSuccess: (_res) => {
           // Update draft with saved data
           updateStepData('viewingTimes', data);
 
           // Update stepper from API response
-          if (res.data.current_step) {
-            updateFromApiResponse({
-              listing_id: listingId,
-              current_step: res.data.current_step,
-              status: 'viewing',
-            });
-          }
+          // if (res.data.current_step) {
+          //   updateFromApiResponse({
+          //     listing_id: listingId,
+          //     current_step: res?.data.current_step || '',
+          //     status: 'viewing',
+          //   });
+          // }
 
           onNext?.();
         },
@@ -67,5 +69,6 @@ export const useViewing = (
     isUpdateLoading: updateViewingMutation.isPending,
     isPending: isPending && !viewing,
     isFetching,
+    viewingData: viewing,
   };
 };

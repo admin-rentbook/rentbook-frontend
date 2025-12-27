@@ -76,7 +76,7 @@ export const Listings = () => {
       );
       const Component = currentStep.subSteps[currentSubStepIndex].component;
 
-      return <Component onNext={stepper.goForward} onPrev={stepper.goBack} />;
+      return <Component onNext={stepper.goForward} onPrev={stepper.goBack} goToStep={stepper.goToStep} />;
     } else {
       const Component = currentStep.component;
       return Component ? (

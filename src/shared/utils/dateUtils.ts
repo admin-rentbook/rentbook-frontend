@@ -136,3 +136,38 @@ export const formatDateForInput = (isoDate: string): string => {
   const date = new Date(isoDate);
   return date.toISOString().split('T')[0];
 };
+
+/**
+ * Converts HH:mm format to HH:mm:ss format for API requests
+ * @param time - Time string in HH:mm format (e.g., "09:30")
+ * @returns Time string in HH:mm:ss format (e.g., "09:30:00")
+ */
+export const formatTimeForApi = (time: string): string => {
+  if (!time) return '';
+  // If already has seconds, return as is
+  if (time.split(':').length === 3) return time;
+  // Add :00 seconds
+  return `${time}:00`;
+};
+
+/**
+ * Extracts HH:mm from ISO datetime string or HH:mm:ss format
+ * @param isoTime - ISO datetime string or time string with seconds
+ * @returns Time string in HH:mm format
+ */
+export const formatTimeFromISO = (isoTime: string): string => {
+  if (!isoTime) return '';
+  const date = new Date(isoTime);
+  // Check if valid date
+  if (!isNaN(date.getTime())) {
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+  // If not a valid date, try to extract HH:mm from time string
+  const parts = isoTime.split(':');
+  if (parts.length >= 2) {
+    return `${parts[0]}:${parts[1]}`;
+  }
+  return '';
+};

@@ -3,14 +3,18 @@ import {
   type AccordionItemType,
 } from '@/shared/components/Accordion';
 import React from 'react';
-import type { MediaData } from '../../types';
+import type { MediaDTO } from '../../types';
 import { ReviewTrigger } from '../shared';
 
 type MediaDetailsProps = {
-  images: MediaData;
+  images?: MediaDTO[];
+  onEdit?: () => void;
 };
-export const MediaDetails = (props: MediaDetailsProps) => {
-  const { images } = props;
+export const MediaDetails = ({ images, onEdit }: MediaDetailsProps) => {
+  if (!images || images.length === 0) {
+    return null;
+  }
+
   const items = [
     {
       name: 'Media',
@@ -19,8 +23,8 @@ export const MediaDetails = (props: MediaDetailsProps) => {
   ];
 
   const accordionItems: AccordionItemType = {
-    trigger: <ReviewTrigger name="Media" />,
-    value: 'amenities',
+    trigger: <ReviewTrigger name="Media" onEdit={onEdit} />,
+    value: 'media',
     content: (
       <div className="grid grid-cols-[35%_1fr] gap-4 pt-6">
         {items.map((item) => (
@@ -28,12 +32,12 @@ export const MediaDetails = (props: MediaDetailsProps) => {
             <div className="text-body-small text-black-400 min-w-0">
               {item.name}
             </div>
-            <div className="flex gap-2 min-w-0">
-              {item.value.images.map((image, index) => (
-                <div className=" h-auto w-[100px] rounded-[1.25em] border-none min-w-0">
+            <div className="flex gap-2 flex-wrap min-w-0">
+              {item.value.map((image, idx) => (
+                <div key={image.id || idx} className="h-auto w-[100px] rounded-[1.25em] border-none min-w-0">
                   <img
-                    src={image.url}
-                    alt={`Upload ${index + 1}`}
+                    src={image.signed_url || image.file_url || ''}
+                    alt={'Upload ' + (idx + 1)}
                     className="w-full h-full object-contain"
                   />
                 </div>

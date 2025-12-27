@@ -113,7 +113,11 @@ export type Review = {
 export type SubStepType = {
   id: number;
   title: string;
-  component: React.ComponentType<{ onNext?: () => void; onPrev?: () => void }>;
+  component: React.ComponentType<{
+    onNext?: () => void;
+    onPrev?: () => void;
+    goToStep?: (mainStepId: number, subStepId?: number) => void;
+  }>;
   apiStepName?: string;
 };
 

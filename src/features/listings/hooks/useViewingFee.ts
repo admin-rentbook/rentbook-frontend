@@ -10,6 +10,8 @@ import {
 } from '../constants';
 import { useListingDraft } from '../providers';
 import type { DaySchedule, ViewFeeFormValues } from '../types';
+import type { ViewingDTO } from '../types/listing.dtos';
+import { transformViewingDTOToFormValues } from '../types/mappedTypes';
 import { useAutoSave } from './useAutoSave';
 
 export type UseViewingFee = {
@@ -31,7 +33,8 @@ export const useViewingFee = (
   onNext: (() => void) | undefined,
   schedule: DaySchedule,
   viewingType: ViewingType,
-  onApiSubmit?: (data: any) => void
+  onApiSubmit?: (data: any) => void,
+  viewingData?: ViewingDTO
 ): UseViewingFee => {
   const { updateStepData, markMainStepComplete, markStepComplete, draft } =
     useListingDraft();
@@ -62,14 +65,17 @@ export const useViewingFee = (
     },
   });
 
-  // Update form when draft changes (from API)
+  // Update form when API data loads
   useEffect(() => {
-    if (draft?.viewingTimes?.viewingFee) {
-      form.reset(draft.viewingTimes.viewingFee);
-      setSelectedBookViewingType(draft.viewingTimes.viewingFee.bookViewingType);
+    if (viewingData) {
+      const formValues = transformViewingDTOToFormValues(viewingData);
+      if (formValues.viewingFee) {
+        form.reset(formValues.viewingFee);
+        setSelectedBookViewingType(formValues.viewingFee.bookViewingType);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [draft?.viewingTimes?.viewingFee]);
+  }, [viewingData]);
 
   useAutoSave(form, (value) => {
     const currentDraft = draft?.viewingTimes;

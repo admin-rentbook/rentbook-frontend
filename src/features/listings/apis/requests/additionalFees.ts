@@ -95,3 +95,44 @@ export const useUpdateAdditionalFees = ({
     ...config,
   });
 };
+
+type DeleteAdditionalFeesVariables = {
+  listingId: number;
+};
+
+const deleteAdditionalFees = async ({
+  listingId,
+}: DeleteAdditionalFeesVariables): Promise<ApiResponse<null>> => {
+  try {
+    const response = await axios.delete<ApiResponse<null>>(
+      `${url.listing}/${listingId}/additional-fees/`
+    );
+    return response.data;
+  } catch (err) {
+    throw formatError(err);
+  }
+};
+
+type UseDeleteAdditionalFeesOptions = {
+  config?: MutationConfig<typeof deleteAdditionalFees>;
+};
+
+export const useDeleteAdditionalFees = ({
+  config,
+}: UseDeleteAdditionalFeesOptions = {}) => {
+  return useMutation({
+    onError: (err) => {
+      toast.error(err.message, { id: 'delete-fees-err' });
+    },
+    onSuccess: (_res, variables) => {
+      toast.success('Additional fees deleted successfully', {
+        id: 'delete-fees-succ',
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKey.additionalFees(variables.listingId),
+      });
+    },
+    mutationFn: deleteAdditionalFees,
+    ...config,
+  });
+};

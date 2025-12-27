@@ -4,35 +4,49 @@ import {
 } from '@/shared/components/Accordion';
 import { convertUnderscoreToSpace, currencyFormatter } from '@/shared/utils';
 import React from 'react';
-import type { ViewTimesData } from '../../types';
+import type { ViewingDTO } from '../../types';
 import { ReviewTrigger } from '../shared';
 
 type ViewingTimesDetailsProps = {
-  viewingTimes: ViewTimesData;
+  viewingTimes?: ViewingDTO;
+  onEdit?: () => void;
 };
 
 export const ViewingTimesDetails = ({
   viewingTimes,
+  onEdit,
 }: ViewingTimesDetailsProps) => {
-  const { viewingFee, viewingTimesData, viewingType } = viewingTimes;
+  if (!viewingTimes) return null;
+
+  const { viewing_fee, booking_mode, availability } = viewingTimes;
 
   const items = [
     {
-      name: 'Viewing type',
-      value: viewingType,
-    },
-    {
       name: 'Booking type',
-      value: convertUnderscoreToSpace(viewingFee?.bookViewingType),
+      value: convertUnderscoreToSpace(booking_mode),
     },
     {
       name: 'Viewing fee',
-      value: currencyFormatter.format(viewingFee?.viewingFee),
+      value: currencyFormatter.format(Number(viewing_fee)),
     },
   ];
 
+  const groupedByDay: Record<
+    string,
+    Array<{ start_time: string; end_time: string }>
+  > = {};
+  availability.forEach((slot) => {
+    if (!groupedByDay[slot.day]) {
+      groupedByDay[slot.day] = [];
+    }
+    groupedByDay[slot.day].push({
+      start_time: slot.start_time,
+      end_time: slot.end_time,
+    });
+  });
+
   const accordionItems: AccordionItemType = {
-    trigger: <ReviewTrigger name="Viewings" />,
+    trigger: <ReviewTrigger name="Viewings" onEdit={onEdit} />,
     value: 'paymentDetails',
     content: (
       <>
@@ -53,19 +67,19 @@ export const ViewingTimesDetails = ({
             Time slots:
           </div>
           <div className="space-y-4">
-            {Object.entries(viewingTimesData || {}).map(([day, timeSlots]) => (
+            {Object.entries(groupedByDay).map(([day, timeSlots]) => (
               <div key={day} className="space-y-2">
                 <h3 className="text-body text-black-500">{day}</h3>
 
                 <div className="space-y-1">
-                  {timeSlots.map((slot) => (
+                  {timeSlots.map((slot, idx) => (
                     <div
-                      key={slot.id}
+                      key={idx}
                       className="flex items-center text-body text-black-400 gap-2 text-sm"
                     >
-                      <span>{slot.startTime}</span>
+                      <span>{slot.start_time}</span>
                       <span>-</span>
-                      <span>{slot.endTime}</span>
+                      <span>{slot.end_time}</span>
                     </div>
                   ))}
                 </div>
