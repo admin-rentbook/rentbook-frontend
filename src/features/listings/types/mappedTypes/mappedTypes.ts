@@ -176,11 +176,14 @@ export function transformViewingDTOToFormValues(
     return typeof value === 'string' ? parseFloat(value) : value;
   };
 
-  // Transform availability array to DaySchedule object
+  // Transform availabilities array to DaySchedule object
   const viewingTimesData: DaySchedule = {};
 
-  if (dto.availability && Array.isArray(dto.availability)) {
-    dto.availability.forEach((slot, index) => {
+  // Check both 'availabilities' (API response) and 'availability' (fallback)
+  const availabilities = dto.availabilities || (dto as any).availability;
+
+  if (availabilities && Array.isArray(availabilities)) {
+    availabilities.forEach((slot, index) => {
       const day = mapDayFromBackend(slot.day);
       if (!viewingTimesData[day]) {
         viewingTimesData[day] = [];

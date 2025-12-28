@@ -1,5 +1,5 @@
 import { useExpandableText } from '@/shared/hooks';
-import type { PropertyDTO } from '@/shared/types';
+import type { ListingDTO } from '@/shared/types';
 import { convertUnderscoreToSpace, squareMeterFormatter } from '@/shared/utils';
 import {
   Bathtub01Icon,
@@ -10,7 +10,7 @@ import {
 import { Button } from '../ui';
 
 type DetailsProps = {
-  property: PropertyDTO | undefined;
+  property: ListingDTO | undefined;
 };
 
 export const Details = ({ property }: DetailsProps) => {
@@ -18,11 +18,11 @@ export const Details = ({ property }: DetailsProps) => {
     useExpandableText(property?.description ?? '');
   const propertyItems = [
     {
-      name: convertUnderscoreToSpace(property?.propertyType),
+      name: convertUnderscoreToSpace(property?.listing_type),
       icon: Building06Icon,
     },
     {
-      name: `${property?.bedrooms} bedrooms`,
+      name: `${property?.beds} bedrooms`,
       icon: BedSingle02Icon,
     },
     {
@@ -30,7 +30,7 @@ export const Details = ({ property }: DetailsProps) => {
       icon: Bathtub01Icon,
     },
     {
-      name: squareMeterFormatter.format(property?.square),
+      name: squareMeterFormatter.format(property?.size_sqft),
       icon: DashedLine02Icon,
     },
   ];
@@ -39,7 +39,7 @@ export const Details = ({ property }: DetailsProps) => {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
         <h2 className="text-heading text-black-500">
-          {property?.propertyName}
+          {property?.title}
         </h2>
         <div className="flex gap-4 2xl:gap-6 flex-wrap">
           {propertyItems.map((item) => (

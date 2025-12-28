@@ -41,7 +41,7 @@ export type AddressDTO = {
   city?: string;
   state?: string;
   state_code?: string;
-  country?: string;
+  country?: string; 
   country_code?: string;
   postal_code?: string;
 };

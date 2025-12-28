@@ -16,9 +16,21 @@ export const listingColumns: ColumnDef<ListingDescriptionDTO, any>[] = [
   tableColumnHelper.accessor('title', {
     id: 'title',
     cell: (info) => {
+      const row = info.row.original;
+      const imageSrc =
+        row.primary_image?.signed_url ||
+        row.primary_image?.thumb_medium ||
+        row.primary_image?.thumb_large ||
+        row.primary_image?.file_url ||
+        propImage;
+
       return (
         <div className="flex gap-2 text-neutral-600 items-center">
-          <img className="h-[40px] w-[40px] object-cover" src={propImage} />
+          <img
+            className="h-[40px] w-[40px] object-cover rounded-md"
+            src={imageSrc}
+            alt={info.getValue()}
+          />
           <p>{info.getValue()}</p>
         </div>
       );

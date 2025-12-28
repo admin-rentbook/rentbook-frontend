@@ -1,3 +1,5 @@
+import type { ListingSummaryDTO } from '@/features/listings/types';
+
 export type PropertyType = 'apartment' | 'house' | 'townhouse' | null;
 
 export type SearchFilters = {
@@ -5,4 +7,11 @@ export type SearchFilters = {
   bedrooms: number;
   bathrooms: number;
   priceRange: [number, number];
+};
+
+export type PaginatedListingsResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: ListingSummaryDTO[];
 };

@@ -1,6 +1,6 @@
 import { usePropertyInfoStore } from '@/core/store';
 import { Card, CardContent, ImageCarousel } from '@/shared/components';
-import type { PropertyDTO } from '@/shared/types';
+import type { ListingDTO } from '@/shared/types';
 import { formatNamibianDollar } from '@/shared/utils';
 import {
   Bathtub01Icon,
@@ -11,18 +11,18 @@ import {
 } from 'hugeicons-react';
 
 type PropertyCardProps = {
-  property: PropertyDTO;
-  onClick?: (property: PropertyDTO) => void;
+  property: ListingDTO;
+  onClick?: (property: ListingDTO) => void;
 };
 
 export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
   const { symbol, amount } = formatNamibianDollar(property.amount);
   const toggleWishlist = usePropertyInfoStore((s) => s.toggleWishlist);
   const isWishlisted = usePropertyInfoStore((s) =>
-    s.isWishlisted(property.id ?? '')
+    s.isWishlisted(property.id ?? 0)
   );
   const isWaitlisted = usePropertyInfoStore((s) =>
-    s.isWaitlisted(property.id ?? '')
+    s.isWaitlisted(property.id ?? 0)
   );
   const handleWishlistClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -31,7 +31,7 @@ export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
 
   const propertyItems = [
     {
-      count: property.bedrooms,
+      count: property.beds,
       icon: BedSingle02Icon,
     },
     {
@@ -39,7 +39,7 @@ export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
       icon: Bathtub01Icon,
     },
     {
-      count: property.square,
+      count: property.size_sqft,
       icon: DashedLine02Icon,
     },
   ];
@@ -78,7 +78,7 @@ export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
       <CardContent className="p-1 flex flex-col h-full gap-2 rounded-[1.25em]">
         <ImageCarousel
           images={property.images}
-          alt={property.propertyName}
+          alt={property.title}
           overlay={carouselOverlay}
           showArrowsOnHover={true}
         />
@@ -86,7 +86,7 @@ export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
         <div className="flex px-2 py-1 justify-between items-end pr-5">
           <div className="space-y-0.5">
             <h5 className="text-base font-semibold text-gray-900 truncate">
-              {property.propertyName}
+              {property.title}
             </h5>
             <p className="text-sm text-gray-600 truncate">
               {property.location}

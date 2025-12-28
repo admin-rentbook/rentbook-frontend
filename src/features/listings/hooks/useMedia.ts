@@ -10,13 +10,14 @@ export const useMedia = (onNext: (() => void) | undefined) => {
 
   const { listingId } = useListingDraft();
 
-  const [images, setImages] = useState<File[]>([]);
+  const [newFiles, setNewFiles] = useState<File[]>([]); // Only new files to upload
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
-  const [mediaMetadata, setMediaMetadata] = useState<MediaDTO[]>([]); 
+  const [mediaMetadata, setMediaMetadata] = useState<MediaDTO[]>([]);
   const [deletingImageId, setDeletingImageId] = useState<number | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const hasLoadedExistingMedia = useRef(false);
 
   const {
     data: existingMedia,
@@ -29,37 +30,38 @@ export const useMedia = (onNext: (() => void) | undefined) => {
 
   const deleteMutation = useDeleteMedia({});
 
-  
+  // Load existing media only once
   useEffect(() => {
-    if (existingMedia?.data && existingMedia.data.length > 0) {
+    if (existingMedia?.data && existingMedia.data.length > 0 && !hasLoadedExistingMedia.current) {
+      hasLoadedExistingMedia.current = true;
       setMediaMetadata(existingMedia.data);
 
-      // Create placeholder File objects for existing media
-      const mediaFiles = existingMedia.data.map((media) => {
-        return new File([''], media.file_name, {
-          type: media.mime_type || 'image/jpeg',
-        });
-      });
+      // Priority: signed_url > thumb_medium > thumb_large > file_url
       const mediaPreviews = existingMedia.data.map((media, index) => {
         const url =
           media.signed_url ||
           media.thumb_medium ||
           media.thumb_large ||
-          media.file_url ||
-          '';
+          media.file_url;
+
+        if (!url) {
+          console.warn(`⚠️ No URL available for image ${index}:`, media.file_name);
+        }
+
         console.log(`🔗 Image ${index}:`, {
           signed_url: media.signed_url,
           thumb_medium: media.thumb_medium,
           thumb_large: media.thumb_large,
           file_url: media.file_url,
-          using: url,
+          using: url || 'MISSING',
           file_name: media.file_name,
         });
-        return url;
+        return url || ''; // Keep empty string to maintain array length
       });
 
-      setImages(mediaFiles);
       setPreviewUrls(mediaPreviews);
+      // Clear any new files when loading existing media (user navigated back)
+      setNewFiles([]);
     }
   }, [existingMedia]);
 
@@ -87,20 +89,23 @@ export const useMedia = (onNext: (() => void) | undefined) => {
 
     if (hasError && validFiles.length === 0) return;
 
-    const newImages = [...images, ...validFiles];
-    setImages(newImages);
+    // Add new files to state
+    setNewFiles((prev) => [...prev, ...validFiles]);
 
+    // Create blob URLs for preview
     const newPreviews = validFiles.map((file) => URL.createObjectURL(file));
     setPreviewUrls((prev) => [...prev, ...newPreviews]);
   };
 
   const removeImage = (index: number) => {
-    // Only revoke object URLs for local previews
+    // Only revoke object URLs for local previews (blob URLs)
     if (previewUrls[index].startsWith('blob:')) {
       URL.revokeObjectURL(previewUrls[index]);
+      // Remove from newFiles
+      const newFileIndex = index - mediaMetadata.length;
+      setNewFiles((prev) => prev.filter((_, i) => i !== newFileIndex));
     }
 
-    setImages((prev) => prev.filter((_, i) => i !== index));
     setPreviewUrls((prev) => prev.filter((_, i) => i !== index));
     setMediaMetadata((prev) => prev.filter((_, i) => i !== index));
   };
@@ -114,6 +119,7 @@ export const useMedia = (onNext: (() => void) | undefined) => {
       return;
     }
 
+    // If it's a server image, call delete API
     if (media?.id && listingId) {
       setDeletingImageId(media.id);
       try {
@@ -121,8 +127,11 @@ export const useMedia = (onNext: (() => void) | undefined) => {
           listingId: listingId as number,
           mediaId: media.id,
         });
+        // Remove from state after successful delete
         removeImage(index);
-      } catch (_error) {
+      } catch (error) {
+        console.error('Delete failed:', error);
+        // Error toast is already shown by the mutation
       } finally {
         setDeletingImageId(null);
       }
@@ -133,7 +142,9 @@ export const useMedia = (onNext: (() => void) | undefined) => {
     fileInputRef.current?.click();
   };
 
-  const cannotProceed = images.length < MINIMUM_IMAGE_NUMBER || isUploading;
+  // Total images = existing server images + new files
+  const totalImages = mediaMetadata.length + newFiles.length;
+  const cannotProceed = totalImages < MINIMUM_IMAGE_NUMBER || isUploading;
 
   useEffect(() => {
     return () => {
@@ -162,13 +173,20 @@ export const useMedia = (onNext: (() => void) | undefined) => {
       return;
     }
 
+    // If there are no new files to upload, just proceed to next step
+    if (newFiles.length === 0) {
+      console.log('✅ No new files to upload, proceeding to next step');
+      onNext?.();
+      return;
+    }
+
     setIsUploading(true);
     setUploadProgress(0);
 
     try {
-      // Upload files and save to database using API layer function
+      // Only upload NEW files, not existing media
       await uploadAndSaveMedia({
-        files: images,
+        files: newFiles,
         listingId: listingId as number,
         onProgress: (progress) => {
           setUploadProgress(progress);
@@ -177,6 +195,9 @@ export const useMedia = (onNext: (() => void) | undefined) => {
 
       // Refetch media to get the saved data
       await refetchMedia();
+
+      // Clear new files after successful upload
+      setNewFiles([]);
 
       // Show success message
       toast.success('Media uploaded successfully');
@@ -196,7 +217,6 @@ export const useMedia = (onNext: (() => void) | undefined) => {
   };
 
   return {
-    images,
     previewUrls,
     fileInputRef,
     handleFileSelect,
@@ -204,7 +224,7 @@ export const useMedia = (onNext: (() => void) | undefined) => {
     handleDeleteImage,
     openFilePicker,
     cannotProceed,
-    imageCount: images.length,
+    imageCount: totalImages,
     handleDragOver,
     handleDrop,
     handleSubmitImages,
@@ -214,5 +234,6 @@ export const useMedia = (onNext: (() => void) | undefined) => {
     isLoadingMedia: isLoading || isFetching,
     deletingImageId,
     mediaMetadata,
+    newFilesCount: newFiles.length,
   };
 };

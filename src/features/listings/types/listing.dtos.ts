@@ -12,6 +12,7 @@ export type ListingDescriptionDTO = {
   current_step?: string;
   complex?: ComplexDTO;
   status?: ListingStatusTypes;
+  primary_image?: MediaDTO
 };
 
 export type ComplexDTO = {
@@ -51,7 +52,7 @@ export type MediaDTO = {
   file_size?:number;
   media_type?:string;
   order?:number;
-  is_primary?:string; // Backend expects string 'true' or 'false', not boolean
+  is_primary?:string;
 }
 
 export type RentalPricingDTO = {
@@ -59,12 +60,12 @@ export type RentalPricingDTO = {
   payment_method: 'FIXED_PRICE' | 'TIMED_AUCTION';
   rent_duration: number;
   rent_period: 'YEAR' | 'MONTH';
-  security_deposit: number | string; // Backend may return string, convert to number
+  security_deposit: number | string;
   fixed_config?: {
-    rental_price: number | string; // Backend may return string, convert to number
+    rental_price: number | string;
   };
   auction_config?: {
-    minimum_bid: number | string; // Backend may return string, convert to number
+    minimum_bid: number | string;
     bid_start: string;
     bid_end: string;
   };
@@ -83,38 +84,34 @@ export type AdditionalFeeDTO = {
   condition: string;
 };
 
-// DTO type for discount from backend
 export type DiscountDTO = {
   id?: number;
   percent: string;
   end_date: string;
 };
 
-// DTO type for viewing from backend
 export type ViewingDTO = {
   id?: number;
   is_available: boolean;
   time_zone: string;
-  viewing_fee: number | string; // Backend may return string, convert to number
+  viewing_fee: number | string; 
   booking_mode: 'review' | 'instant';
-  availability: Array<{
+  availabilities: Array<{
     day: string;
-    start_time: string; // ISO format time string
-    end_time: string;   // ISO format time string
+    start_time: string;
+    end_time: string;  
   }>;
   current_step?: string;
 };
 
-// DTO type for final details (rent availability) from backend
 export type FinalDetailsDTO = {
   id?: number;
   is_available: boolean;
   is_available_now: boolean;
-  availability_date: string; // ISO date string
+  availability_date: string; 
   current_step?: string;
 };
 
-// DTO type for additional details (notes) from backend
 export type AdditionalDetailsDTO = {
   id?: number;
   details: Array<{
@@ -123,4 +120,72 @@ export type AdditionalDetailsDTO = {
     description: string;
   }>;
   current_step?: string;
+};
+
+export type ListingSummaryDTO = {
+  id: number;
+  title: string;
+  listing_type: string;
+  description: string;
+  beds: number;
+  bathrooms: number;
+  size_sqft: string;
+  is_available: boolean;
+  availability_date: string;
+  status: string;
+  current_step: string;
+  version: number;
+  last_saved_at: string;
+  property_name: string;
+  amenities: string[];
+  media_count: number;
+  primary_media?: {
+    id: number;
+    file_name: string;
+    signed_url: string;
+  };
+  discounts: DiscountDTO[];
+  additional_fees: AdditionalFeeDTO[];
+  complex?: ComplexDTO;
+  additional_details?: Array<{
+    title: string;
+    description: string;
+  }>;
+  viewing_settings?: {
+    is_available: boolean;
+    time_zone: string;
+    viewing_fee: string;
+    booking_mode: 'instant' | 'review';
+    availability: Array<{
+      day: string;
+      start_time: string;
+      end_time: string;
+    }>;
+  };
+  pricing?: {
+    payment_method: 'fixed' | 'timed_auction';
+    rent_duration: number;
+    rent_period: 'year' | 'month';
+    security_deposit: string;
+    fixed_config?: {
+      rental_price: string;
+    };
+    auction_config?: {
+      minimum_bid: string;
+      bid_start: string;
+      bid_end: string;
+      extend_if_bid_in_last_n_hours: number;
+      extend_duration_days: number;
+    };
+    bidding_rules?: {
+      auto_accept_highest: boolean;
+      extend_if_bid_in_last_24h: boolean;
+      extend_by_hours: number;
+    };
+    calculated?: {
+      base_price: string;
+      effective_price: string;
+      discount_percent: number;
+    };
+  };
 };

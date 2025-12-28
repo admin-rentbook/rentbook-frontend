@@ -17,11 +17,16 @@ export const authRequestInterceptor = (config: InternalAxiosRequestConfig) => {
 
 export const authResponseInterceptor = (error: AxiosError) => {
   if (error.response?.status === 401) {
-    const { logout } = useAppStore.getState();
-    logout();
+    // Check if this request has skipAuthRedirect flag
+    const skipRedirect = (error.config as any)?.skipAuthRedirect;
 
-    // Redirect to landing page
-    window.location.href = '/';
+    if (!skipRedirect) {
+      const { logout } = useAppStore.getState();
+      logout();
+
+      // Redirect to landing page
+      window.location.href = '/';
+    }
   }
   return Promise.reject(error);
 };

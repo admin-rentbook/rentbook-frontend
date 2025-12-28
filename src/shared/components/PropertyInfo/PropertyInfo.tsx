@@ -22,7 +22,7 @@ export const PropertyInfo = ({ actionItem, property }: PropertyInfoProps) => {
   //   const property = location.state.property;
 
   const isWishlisted = usePropertyInfoStore((s) =>
-    s.isWishlisted(property?.id ?? '')
+    s.isWishlisted(property?.id ?? 0)
   );
   const toggleWishlist = usePropertyInfoStore((s) => s.toggleWishlist);
   return (

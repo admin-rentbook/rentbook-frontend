@@ -39,6 +39,11 @@ export const returnStatus = (status: Status) => {
       textColor: 'text-custom-blue-300',
       fillColor: 'fill-custom-blue-300',
     },
+    [STATUS.SUBMITTED]: {
+      bgColor: 'bg-custom-blue-100',
+      textColor: 'text-custom-blue-300',
+      fillColor: 'fill-custom-blue-300',
+    },
   };
 
   return statusColors[status];

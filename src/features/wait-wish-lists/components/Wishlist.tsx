@@ -1,7 +1,7 @@
 import { usePropertyInfoStore } from '@/core/store';
 import { PropertyCard } from '@/features/landing-page/components/PropertyCard';
 import { ListingDetailsLinks } from '@/features/listing-details/constants';
-import type { PropertyDTO } from '@/shared/types';
+import type { ListingDTO } from '@/shared/types';
 import { useNavigate } from '@tanstack/react-router';
 import { GuestHouseIcon } from 'hugeicons-react';
 
@@ -9,7 +9,7 @@ export const Wishlist = () => {
   const wishlists = usePropertyInfoStore((s) => s.wishlist);
   const navigate = useNavigate();
 
-  const handleClick = (property: PropertyDTO) => {
+  const handleClick = (property: ListingDTO) => {
     console.log('Navigating to viewing request for property:', property);
     navigate({
       to: ListingDetailsLinks.LISTING_DETAILS,
@@ -32,7 +32,7 @@ export const Wishlist = () => {
           {wishlists.map((wishlist) => (
             <PropertyCard
               property={wishlist}
-              key={wishlist.propertyName}
+              key={wishlist.id || wishlist.title}
               onClick={handleClick}
             />
           ))}

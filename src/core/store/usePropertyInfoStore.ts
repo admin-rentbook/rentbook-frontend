@@ -1,4 +1,4 @@
-import type { PropertyDTO } from '@/shared/types';
+import type { ListingDTO } from '@/shared/types';
 import {
   clearDataFromSessStorage,
   getDataFromSessStorage,
@@ -8,21 +8,21 @@ import { toast } from 'sonner';
 import { create } from 'zustand';
 
 interface PropertyListsStore {
-  wishlist: PropertyDTO[];
-  waitlist: PropertyDTO[];
+  wishlist: ListingDTO[];
+  waitlist: ListingDTO[];
 
   initializeFromStorage: () => void;
 
-  isWishlisted: (propertyId: string) => boolean;
-  toggleWishlist: (property: PropertyDTO) => void;
-  addToWishlist: (property: PropertyDTO) => void;
-  removeFromWishlist: (propertyId: string) => void;
+  isWishlisted: (propertyId: number) => boolean;
+  toggleWishlist: (property: ListingDTO) => void;
+  addToWishlist: (property: ListingDTO) => void;
+  removeFromWishlist: (propertyId: number) => void;
   clearWishlist: () => void;
 
-  isWaitlisted: (propertyId: string) => boolean;
-  toggleWaitlist: (property: PropertyDTO) => void;
-  addToWaitlist: (property: PropertyDTO) => void;
-  removeFromWaitlist: (propertyId: string) => void;
+  isWaitlisted: (propertyId: number) => boolean;
+  toggleWaitlist: (property: ListingDTO) => void;
+  addToWaitlist: (property: ListingDTO) => void;
+  removeFromWaitlist: (propertyId: number) => void;
   clearWaitlist: () => void;
 
   getWishlistCount: () => number;
@@ -30,38 +30,38 @@ interface PropertyListsStore {
 }
 
 export const usePropertyInfoStore = create<PropertyListsStore>((set, get) => ({
-  wishlist: getDataFromSessStorage('wishlist') || [] as PropertyDTO[] | [],
-  waitlist: getDataFromSessStorage('wait_list') || [] as PropertyDTO[] | [],
+  wishlist: getDataFromSessStorage('wishlist') || [] as ListingDTO[] | [],
+  waitlist: getDataFromSessStorage('wait_list') || [] as ListingDTO[] | [],
 
   initializeFromStorage: () => {
-    const wishlist = getDataFromSessStorage('wishlist') as PropertyDTO[] | [];
-    const waitlist: PropertyDTO[] = getDataFromSessStorage('wait_list') as
-      | PropertyDTO[]
+    const wishlist = getDataFromSessStorage('wishlist') as ListingDTO[] | [];
+    const waitlist: ListingDTO[] = getDataFromSessStorage('wait_list') as
+      | ListingDTO[]
       | [];
     set({ wishlist, waitlist });
   },
 
-  isWishlisted: (propertyId: string) => {
+  isWishlisted: (propertyId: number) => {
     return get().wishlist.some((prop) => prop.id === propertyId);
   },
 
-  toggleWishlist: (property: PropertyDTO) => {
+  toggleWishlist: (property: ListingDTO) => {
     const { wishlist } = get();
-    let newWishlist: PropertyDTO[];
+    let newWishlist: ListingDTO[];
 
     if (wishlist.some((prop) => prop.id === property.id)) {
       newWishlist = wishlist.filter((prop) => prop.id !== property.id);
-      toast.info(`${property.propertyName} removed from wishlist.`);
+      toast.info(`${property.title} removed from wishlist.`);
     } else {
       newWishlist = [...wishlist, property];
-      toast.success(`${property.propertyName} added to wishlist.`);
+      toast.success(`${property.title} added to wishlist.`);
     }
 
     set({ wishlist: newWishlist });
     saveDataToSessStorage('wishlist', newWishlist);
   },
 
-  addToWishlist: (property: PropertyDTO) => {
+  addToWishlist: (property: ListingDTO) => {
     const { wishlist } = get();
     if (!wishlist.some((prop) => prop.id === property.id)) {
       const newWishlist = [...wishlist, property];
@@ -70,7 +70,7 @@ export const usePropertyInfoStore = create<PropertyListsStore>((set, get) => ({
     }
   },
 
-  removeFromWishlist: (propertyId: string) => {
+  removeFromWishlist: (propertyId: number) => {
     const newWishlist = get().wishlist.filter((prop) => prop.id !== propertyId);
     set({ wishlist: newWishlist });
     saveDataToSessStorage('wishlist', newWishlist);
@@ -82,27 +82,27 @@ export const usePropertyInfoStore = create<PropertyListsStore>((set, get) => ({
   },
 
   // Waitlist actions
-  isWaitlisted: (propertyId: string) => {
+  isWaitlisted: (propertyId: number) => {
     return get().waitlist.some((prop) => prop.id === propertyId);
   },
 
-  toggleWaitlist: (property: PropertyDTO) => {
+  toggleWaitlist: (property: ListingDTO) => {
     const { waitlist } = get();
-    let newWaitlist: PropertyDTO[];
+    let newWaitlist: ListingDTO[];
 
     if (waitlist.some((prop) => prop.id === property.id)) {
-      toast.info(`${property.propertyName} removed from waitlist.`);
+      toast.info(`${property.title} removed from waitlist.`);
       newWaitlist = waitlist.filter((prop) => prop.id !== property.id);
     } else {
       newWaitlist = [...waitlist, property];
-      toast.success(`${property.propertyName} added to waitlist.`);
+      toast.success(`${property.title} added to waitlist.`);
     }
 
     set({ waitlist: newWaitlist });
     saveDataToSessStorage('wait_list', newWaitlist);
   },
 
-  addToWaitlist: (property: PropertyDTO) => {
+  addToWaitlist: (property: ListingDTO) => {
     const { waitlist } = get();
     if (!waitlist.some((prop) => prop.id === property.id)) {
       const newWaitlist = [...waitlist, property];
@@ -111,7 +111,7 @@ export const usePropertyInfoStore = create<PropertyListsStore>((set, get) => ({
     }
   },
 
-  removeFromWaitlist: (propertyId: string) => {
+  removeFromWaitlist: (propertyId: number) => {
     const newWaitlist = get().waitlist.filter((prop) => prop.id !== propertyId);
     set({ waitlist: newWaitlist });
     clearDataFromSessStorage('wait_list');

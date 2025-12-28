@@ -11,7 +11,7 @@ type JoinWaitlistProps = {
 export const JoinWaitlist = ({ property }: JoinWaitlistProps) => {
   const toggleWaitlist = usePropertyInfoStore((s) => s.toggleWaitlist);
   const isWaitlisted = usePropertyInfoStore((s) =>
-    s.isWaitlisted(property?.id ?? '')
+    s.isWaitlisted(property?.id ?? 0)
   );
   return (
     <div className="flex flex-col gap-10 p-3 shadow-ter rounded-[1.25em] aspect-[4/3] w-full max-w-md">

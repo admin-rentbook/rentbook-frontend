@@ -1,4 +1,3 @@
-import propertyImage from '@/assets/images/property-image.jpg';
 import { PropertyCard } from '@/features/landing-page/components/PropertyCard';
 import { Loader2 } from 'lucide-react';
 import { useReviewListing } from '../../hooks';
@@ -17,11 +16,7 @@ type ReviewListingProps = {
   goToStep?: (mainStepId: number, subStepId?: number) => void;
 };
 
-export const ReviewListing = ({
-  onNext,
-  onPrev,
-  goToStep,
-}: ReviewListingProps) => {
+export const ReviewListing = ({ onPrev, goToStep }: ReviewListingProps) => {
   const {
     listingDescription,
     amenities,
@@ -33,39 +28,11 @@ export const ReviewListing = ({
     finalDetails,
     additionalDetails,
     isLoading,
+    isSubmitting,
     handleReviewSubmit,
     loadingStates,
-  } = useReviewListing(onNext);
-
-  const property = {
-    id: '1',
-    propertyName: 'The Palm Residence',
-    location: 'Windhoek, Khomas Region',
-    images: [propertyImage, propertyImage, propertyImage],
-    amenities: [
-      'SWIMMING_POOL',
-      'BAR',
-      'JACUZZI',
-      'GYM',
-      'dryer',
-      'free_parking',
-      'pool',
-      'gym',
-      'elevator',
-      'security_system',
-      'balcony',
-      'garden',
-      'pet_friendly',
-      'wheelchair_accessible',
-    ],
-    amount: 20000,
-    bedrooms: 3,
-    bathrooms: 2,
-    square: 25,
-    propertyType: 'APARTMENT',
-    description:
-      'Spacious 3-bedroom apartment with modern amenities, located in a secure neighborhood. Features include a fully equipped kitchen, ensuite master bedroom, ample parking, and 24/7 security. Spacious 3-bedroom apartment with modern amenities, located in a secure neighborhood. Features include a fully equipped kitchen, ensuite master bedroom, ample parking, and 24/7 security. ',
-  };
+    propertyCardData,
+  } = useReviewListing();
 
   return (
     <div className="flex flex-col h-full">
@@ -188,7 +155,7 @@ export const ReviewListing = ({
         </div>
         <div className="bg-sidebar hidden  rounded-[2em] xl:grid place-items-center h-full">
           <div className="w-2/3">
-            <PropertyCard property={property} />
+            <PropertyCard property={propertyCardData} />
           </div>
         </div>
       </div>
@@ -197,7 +164,7 @@ export const ReviewListing = ({
           onBack={() => onPrev?.()}
           onContinue={handleReviewSubmit}
           saveBtnText="Publish listing"
-          isButtonDisabled={isLoading}
+          isButtonDisabled={isLoading || isSubmitting}
         />
       </div>
     </div>

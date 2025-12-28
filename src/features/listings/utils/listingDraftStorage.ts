@@ -45,7 +45,6 @@ export const listingDraftStorage = {
     );
     draft.amenities = apiData.amenities;
 
-    // If we have current_step from API, use it to set progress
     if (apiData.current_step) {
       const stepCoord = getStepFromApiName(apiData.current_step);
 
@@ -53,23 +52,45 @@ export const listingDraftStorage = {
         // Mark all steps up to (but not including) current step as completed
         const completedSteps = getCompletedStepsUpTo(apiData.current_step);
 
-        // Update currentSubStep to be an object mapping mainStep -> subStep
         const currentSubStep = draft.progress.currentSubStep || {};
-        currentSubStep[stepCoord.mainStep] = stepCoord.subStep;
 
-        draft.progress = {
-          ...draft.progress,
-          currentMainStep: stepCoord.mainStep,
-          currentSubStep: currentSubStep,
-          completedSteps: {
-            ...draft.progress.completedSteps,
-            ...completedSteps,
-          },
-          apiSyncedSteps: {
-            ...draft.progress.apiSyncedSteps,
-            [apiData.current_step]: true,
-          },
-        };
+      
+        if (apiData.current_step === 'additional_details') {
+          // Mark additional_details as completed
+          completedSteps[`${stepCoord.mainStep}-${stepCoord.subStep}`] = true;
+
+          // Advance to review step
+          currentSubStep[4] = 0;
+          draft.progress = {
+            ...draft.progress,
+            currentMainStep: 4,
+            currentSubStep: currentSubStep,
+            completedSteps: {
+              ...draft.progress.completedSteps,
+              ...completedSteps,
+            },
+            apiSyncedSteps: {
+              ...draft.progress.apiSyncedSteps,
+              [apiData.current_step]: true,
+            },
+          };
+        } else {
+          currentSubStep[stepCoord.mainStep] = stepCoord.subStep;
+
+          draft.progress = {
+            ...draft.progress,
+            currentMainStep: stepCoord.mainStep,
+            currentSubStep: currentSubStep,
+            completedSteps: {
+              ...draft.progress.completedSteps,
+              ...completedSteps,
+            },
+            apiSyncedSteps: {
+              ...draft.progress.apiSyncedSteps,
+              [apiData.current_step]: true,
+            },
+          };
+        }
 
         draft.apiCurrentStep = apiData.current_step;
       }
@@ -124,21 +145,43 @@ export const listingDraftStorage = {
 
       // Update currentSubStep to be an object mapping mainStep -> subStep
       const currentSubStep = draft.progress.currentSubStep || {};
-      currentSubStep[stepCoord.mainStep] = stepCoord.subStep;
 
-      updated.progress = {
-        ...draft.progress,
-        currentMainStep: stepCoord.mainStep,
-        currentSubStep: currentSubStep,
-        completedSteps: {
-          ...draft.progress.completedSteps,
-          ...completedSteps,
-        },
-        apiSyncedSteps: {
-          ...draft.progress.apiSyncedSteps,
-          [response.current_step]: true,
-        },
-      };
+      if (response.current_step === 'additional_details') {
+        // Mark additional_details as completed
+        completedSteps[`${stepCoord.mainStep}-${stepCoord.subStep}`] = true;
+
+        // Advance to review step
+        currentSubStep[4] = 0;
+        updated.progress = {
+          ...draft.progress,
+          currentMainStep: 4,
+          currentSubStep: currentSubStep,
+          completedSteps: {
+            ...draft.progress.completedSteps,
+            ...completedSteps,
+          },
+          apiSyncedSteps: {
+            ...draft.progress.apiSyncedSteps,
+            [response.current_step]: true,
+          },
+        };
+      } else {
+        currentSubStep[stepCoord.mainStep] = stepCoord.subStep;
+
+        updated.progress = {
+          ...draft.progress,
+          currentMainStep: stepCoord.mainStep,
+          currentSubStep: currentSubStep,
+          completedSteps: {
+            ...draft.progress.completedSteps,
+            ...completedSteps,
+          },
+          apiSyncedSteps: {
+            ...draft.progress.apiSyncedSteps,
+            [response.current_step]: true,
+          },
+        };
+      }
     } else {
       // Mark API step as synced even if we don't have coordinates
       if (updated.progress.apiSyncedSteps) {
