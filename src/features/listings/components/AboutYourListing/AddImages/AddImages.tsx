@@ -2,9 +2,9 @@ import { useMedia } from '@/features/listings/hooks';
 import { Button, PropertyImage } from '@/shared/components';
 import { Add01Icon } from 'hugeicons-react';
 import { ListingTitle, NavigateButtons } from '../../shared';
+import { ImageLoadingSkeleton } from './ImageLoadingSkeleton';
 import { ImagePreviewCard } from './ImagePreviewCard';
 import { UploadProgress } from './UploadProgress';
-import { ImageLoadingSkeleton } from './ImageLoadingSkeleton';
 
 type AddImagesProps = {
   onNext: (() => void) | undefined;
@@ -33,7 +33,6 @@ export const AddImages = ({ onNext, onPrev }: AddImagesProps) => {
           description="You will need a minimum of 5 images. You can add more or make changes later"
         />
         <div className="pt-10">
-          {/* Show loading skeleton while fetching media */}
           {isLoadingMedia && previewUrls.length === 0 ? (
             <ImageLoadingSkeleton />
           ) : previewUrls.length === 0 ? (
@@ -62,7 +61,9 @@ export const AddImages = ({ onNext, onPrev }: AddImagesProps) => {
           <div className="grid grid-cols-2 grid-rows-3 gap-4">
             {previewUrls.map((url, index) => {
               const media = mediaMetadata[index];
-              const isDeleting = media?.id ? deletingImageId === media.id : false;
+              const isDeleting = media?.id
+                ? deletingImageId === media.id
+                : false;
 
               return index === 0 ? (
                 <div key={`image-${index}`} className="row-span-1 col-span-2">

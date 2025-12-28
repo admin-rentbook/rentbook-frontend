@@ -18,7 +18,7 @@ export const ViewingTimesDetails = ({
 }: ViewingTimesDetailsProps) => {
   if (!viewingTimes) return null;
 
-  const { viewing_fee, booking_mode, availability } = viewingTimes;
+  const { viewing_fee, booking_mode, availabilities } = viewingTimes;
 
   const items = [
     {
@@ -35,7 +35,7 @@ export const ViewingTimesDetails = ({
     string,
     Array<{ start_time: string; end_time: string }>
   > = {};
-  availability.forEach((slot) => {
+  availabilities?.forEach((slot) => {
     if (!groupedByDay[slot.day]) {
       groupedByDay[slot.day] = [];
     }

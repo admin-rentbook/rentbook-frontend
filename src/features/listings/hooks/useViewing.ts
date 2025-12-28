@@ -10,6 +10,7 @@ export type UseViewing = {
   isUpdateLoading: boolean;
   isPending: boolean;
   isFetching: boolean;
+  isError: boolean;
   viewingData: ViewingDTO | undefined;
 };
 
@@ -23,6 +24,7 @@ export const useViewing = (
     data: viewingData,
     isPending,
     isFetching,
+    isError,
   } = useGetViewing(listingId);
   const viewing = viewingData?.data;
 
@@ -69,6 +71,7 @@ export const useViewing = (
     isUpdateLoading: updateViewingMutation.isPending,
     isPending: isPending && !viewing,
     isFetching,
+    isError,
     viewingData: viewing,
   };
 };

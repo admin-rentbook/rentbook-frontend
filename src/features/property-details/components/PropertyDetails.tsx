@@ -1,3 +1,5 @@
+import { ListingLiveModal } from '@/features/listings/components/ListingLiveModal';
+import { ListingLinks } from '@/features/listings/constants';
 import { Links } from '@/features/property-owners/constants';
 import {
   Button,
@@ -9,7 +11,7 @@ import {
 } from '@/shared/components';
 import { convertUnderscoreToSpace } from '@/shared/utils';
 import { returnStatus } from '@/shared/utils/helpers';
-import { useNavigate } from '@tanstack/react-router';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
   Add01Icon,
   ArrowLeft01Icon,
@@ -18,8 +20,7 @@ import {
   LegalDocument01Icon,
   UserIcon,
 } from 'hugeicons-react';
-
-import { ListingLinks } from '@/features/listings/constants';
+import { useListingLiveModal } from '../hooks';
 import { Agents } from './Agents';
 import { Leases } from './Leases';
 import { Listings } from './Listings';
@@ -28,7 +29,35 @@ import { Summary } from './Summary';
 
 export const PropertyDetails = () => {
   const navigate = useNavigate();
-  const { bgColor, textColor, fillColor } = returnStatus('active');
+
+  const {
+    propertyName,
+    propertyCity,
+    propertyStreet,
+    propertyStatus,
+    showListingLiveModal,
+    listingId,
+  } = useSearch({
+    from: '/property-details',
+  });
+
+  const {
+    isModalOpen,
+    listingData,
+    handleShareListing,
+    handleModalClose,
+  } = useListingLiveModal({
+    listingId,
+    showListingLiveModal,
+  });
+
+  const displayName = propertyName
+    ? `Apartment in ${propertyCity || 'Unknown City'}`
+    : 'Apartment in Windhoek';
+  const displayAddress =
+    propertyStreet || '123 Independence Avenue Central Business district';
+  const status = (propertyStatus as any) || 'active';
+  const { bgColor, textColor, fillColor } = returnStatus(status);
 
   return (
     <div>
@@ -47,19 +76,15 @@ export const PropertyDetails = () => {
       <div className="px-3 lg:p-5 flex flex-col gap-3 lg:gap-0 lg:flex-row lg:justify-between items-center">
         <div className="w-full lg:w-auto">
           <div className="flex gap-3 pb-2">
-            <h4 className="text-heading-4 text-neutral-600">
-              Apartment in Windhoek
-            </h4>
+            <h4 className="text-heading-4 text-neutral-600">{displayName}</h4>
             <StatusBox
               bgColor={bgColor}
               textColor={textColor}
-              text={convertUnderscoreToSpace('active')}
+              text={convertUnderscoreToSpace(status)}
               fillColor={fillColor}
             />
           </div>
-          <p className="text-body-small text-black-300">
-            123 Independence Avenue Central Business district
-          </p>
+          <p className="text-body-small text-black-300">{displayAddress}</p>
         </div>
         <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
           <Button
@@ -111,6 +136,18 @@ export const PropertyDetails = () => {
           ))}
         </Tabs>
       </div>
+
+      {/* Listing Live Modal */}
+      {listingId && (
+        <ListingLiveModal
+          listing={listingData}
+          modalOptions={{
+            open: isModalOpen,
+            onOpenChange: handleModalClose,
+          }}
+          onShareListing={handleShareListing}
+        />
+      )}
     </div>
   );
 };

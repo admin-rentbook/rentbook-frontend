@@ -29,7 +29,6 @@ export const useStepper = (
   steps: Step[],
   initialState?: StepperInitialState
 ): UseStepper => {
-  // Initialize from draft state or default to 0
   const [currentMainStep, setCurrentMainStep] = useState(
     initialState?.initialMainStep ?? 0
   );

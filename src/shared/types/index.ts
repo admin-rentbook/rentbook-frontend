@@ -78,23 +78,27 @@ export type SidebarItem = {
   link?: string;
 };
 
-export type PropertyDTO = {
-  id?: string;
+export type ListingDTO = {
+  id?: number;
   images: string[];
-  propertyName: string;
-  location: string;
+  title: string;
+  location: string; 
   amenities: string[];
-  amount: number;
-  bedrooms: number;
+  amount: number; 
+  beds: number;
   bathrooms: number;
-  square: number;
+  size_sqft: number;
   description?: string;
-  propertyType?: string;
+  listing_type?: string;
   locationResult?: LocationResult;
   reviews?: ReviewDTO;
   notes?: Note[];
   isWaitlisted?: boolean;
 };
+
+// Keep old PropertyDTO for backward compatibility (deprecated)
+/** @deprecated Use ListingDTO instead */
+export type PropertyDTO = ListingDTO;
 
 export type ReviewDTO = {
   id: number;

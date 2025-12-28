@@ -13,7 +13,8 @@ export const STATUS = {
   PENDING: 'pending',
   AVAILABLE: 'available',
   DRAFT: 'draft',
-  UNAVAILABLE: 'unavailable'
+  UNAVAILABLE: 'unavailable',
+  SUBMITTED: 'submitted'
 } as const
 export type Status = (typeof STATUS)[keyof typeof STATUS];
 

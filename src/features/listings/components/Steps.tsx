@@ -66,10 +66,10 @@ export const steps: Step[] = [
     id: 3,
     title: 'Final details',
     subSteps: [
-      {
+    {
         id: 0,
         title: 'Set final details',
-        apiStepName: 'availability',
+        apiStepName: 'final',
         component: ({ onNext, onPrev }) => (
           <RentAvailability onNext={onNext} onPrev={onPrev} />
         ),

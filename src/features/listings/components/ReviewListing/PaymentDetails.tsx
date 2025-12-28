@@ -18,7 +18,7 @@ import { AdditionalFeeBox, ReviewTrigger } from '../shared';
 type PaymentDetailsProps = {
   rentalPricing?: RentalPricingDTO;
   additionalFees?: AdditionalFeeDTO[];
-  discount?: DiscountDTO[];
+  discount?: DiscountDTO;
   onEdit?: () => void;
 };
 
@@ -48,15 +48,15 @@ export const PaymentDetails = ({
     },
   ];
 
-  if (discount && discount.length > 0) {
+  if (discount) {
     items.push(
       {
         name: 'Discount',
-        value: percentageFormatter.format(Number(discount[0].percent)),
+        value: percentageFormatter.format(Number(discount.percent)),
       },
       {
         name: 'Discount end date',
-        value: discount[0].end_date,
+        value: discount.end_date,
       }
     );
   }

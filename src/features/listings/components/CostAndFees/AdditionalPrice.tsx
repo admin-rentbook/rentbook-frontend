@@ -90,7 +90,7 @@ export const AdditionalPrice = () => {
                     Added Fees ({additionalFees.length})
                   </p>
                   <Button
-                    variant="destructive"
+                    variant="outline"
                     size="sm"
                     onClick={handleDeleteAllFees}
                     disabled={isDeleting}
@@ -103,7 +103,6 @@ export const AdditionalPrice = () => {
                     ) : (
                       <>
                         <Trash2 className="w-4 h-4 mr-2" />
-                        Delete All Fees
                       </>
                     )}
                   </Button>

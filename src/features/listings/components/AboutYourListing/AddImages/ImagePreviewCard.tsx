@@ -15,12 +15,12 @@ export const ImagePreviewCard = ({
   onRemove,
   isDeleting = false,
 }: ImagePreviewCardProps) => {
-  const [imageLoading, setImageLoading] = useState(true);
+  const [imageLoading, setImageLoading] = useState(!!url);
   const [imageError, setImageError] = useState(false);
 
   return (
     <div className="relative group h-[200px] rounded-[1.25em] border-none overflow-hidden">
-      {imageLoading && !imageError && (
+      {imageLoading && !imageError && url && (
         <div className="absolute inset-0 bg-gray-200 animate-pulse">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
         </div>
@@ -42,16 +42,25 @@ export const ImagePreviewCard = ({
         </div>
       )}
 
-      <img
-        src={url}
-        alt={`Upload ${index + 1}`}
-        className={`w-full h-full object-cover ${imageLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
-        onLoad={() => setImageLoading(false)}
-        onError={() => {
-          setImageLoading(false);
-          setImageError(true);
-        }}
-      />
+      {url && (
+        <img
+          src={url}
+          alt={`Upload ${index + 1}`}
+          className={`w-full h-full object-cover ${imageLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+          onLoad={() => setImageLoading(false)}
+          onError={() => {
+            setImageLoading(false);
+            setImageError(true);
+          }}
+        />
+      )}
+
+      {!url && !imageLoading && (
+        <div className="absolute inset-0 bg-gray-100 flex flex-col items-center justify-center gap-2">
+          <AlertCircleIcon className="h-8 w-8 text-red-500" />
+          <p className="text-xs text-gray-500">No URL available</p>
+        </div>
+      )}
 
       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all">
         <button

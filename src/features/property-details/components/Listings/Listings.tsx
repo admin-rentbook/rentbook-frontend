@@ -17,7 +17,6 @@ export const Listings = () => {
     error,
     isError,
   } = useGetListsByPropsId(propertyId as number);
-  console.log('allListings', listingDescription);
 
   return (
     <div className="flex flex-col gap-4">
