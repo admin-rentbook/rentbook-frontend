@@ -4,7 +4,7 @@ import {
 } from '@/shared/components/Accordion';
 import {
   convertUnderscoreToSpace,
-  currencyFormatter,
+  formatRentalPrice,
   percentageFormatter,
 } from '@/shared/utils';
 import React from 'react';
@@ -64,8 +64,9 @@ export const PaymentDetails = ({
   if (isFixedPrice && rentalPricing.fixed_config) {
     items.push({
       name: 'Rental price',
-      value: currencyFormatter.format(
-        Number(rentalPricing.fixed_config.rental_price)
+      value: formatRentalPrice(
+        rentalPricing.fixed_config.rental_price,
+        rentalPricing.rent_period
       ),
     });
   }
@@ -74,8 +75,9 @@ export const PaymentDetails = ({
     items.push(
       {
         name: 'Minimum Bid',
-        value: currencyFormatter.format(
-          Number(rentalPricing.auction_config.minimum_bid)
+        value: formatRentalPrice(
+          rentalPricing.auction_config.minimum_bid,
+          rentalPricing.rent_period
         ),
       },
       {

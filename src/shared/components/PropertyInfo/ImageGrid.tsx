@@ -4,10 +4,12 @@ import {
   ArrowRight01Icon,
   Cancel01Icon,
 } from 'hugeicons-react';
+import type { ImageWithThumbnail } from '@/shared/types';
+import { OptimizedImage } from '../OptimizedImage';
 import { Button } from '../ui';
 
 type ImageGridProps = {
-  imageArray: string[];
+  imageArray: string[] | ImageWithThumbnail[];
 };
 
 export const ImageGrid = ({ imageArray }: ImageGridProps) => {
@@ -29,10 +31,13 @@ export const ImageGrid = ({ imageArray }: ImageGridProps) => {
           className="col-span-2 row-span-2 relative overflow-hidden group cursor-pointer"
           onClick={() => openGallery(0)}
         >
-          <img
-            src={images[0]}
+          <OptimizedImage
+            src={images[0].url}
+            thumbnailSrc={images[0].thumbnail}
             alt="Property main view"
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            priority={true}
+            loading="eager"
           />
           <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
         </div>
@@ -41,10 +46,12 @@ export const ImageGrid = ({ imageArray }: ImageGridProps) => {
           className="relative overflow-hidden group cursor-pointer"
           onClick={() => openGallery(1)}
         >
-          <img
-            src={images[1]}
+          <OptimizedImage
+            src={images[1].url}
+            thumbnailSrc={images[1].thumbnail}
             alt="Property view 2"
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
         </div>
@@ -53,10 +60,12 @@ export const ImageGrid = ({ imageArray }: ImageGridProps) => {
           className="relative overflow-hidden group cursor-pointer rounded-br-[1.25em] hover:rounded-br-[1.25em]"
           onClick={() => openGallery(2)}
         >
-          <img
-            src={images[2]}
+          <OptimizedImage
+            src={images[2].url}
+            thumbnailSrc={images[2].thumbnail}
             alt="Property view 3"
             className="w-full h-full  object-cover transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
         </div>
@@ -65,10 +74,12 @@ export const ImageGrid = ({ imageArray }: ImageGridProps) => {
           className="relative overflow-hidden group cursor-pointer"
           onClick={() => openGallery(3)}
         >
-          <img
-            src={images[3]}
+          <OptimizedImage
+            src={images[3].url}
+            thumbnailSrc={images[3].thumbnail}
             alt="Property view 4"
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
         </div>
@@ -77,15 +88,17 @@ export const ImageGrid = ({ imageArray }: ImageGridProps) => {
           className="relative overflow-hidden rounded-tr-[1.25em] hover:rounded-tr-[1.25em] group cursor-pointer"
           onClick={() => openGallery(4)}
         >
-          <img
-            src={images[4]}
+          <OptimizedImage
+            src={images[4].url}
+            thumbnailSrc={images[4].thumbnail}
             alt="Property view 5"
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
 
           {imageArray.length > 5 && (
-            <div className="absolute bottom-3 right-2">
+            <div className="absolute bottom-3 right-2 z-10">
               <Button variant="default" onClick={() => console.log('heheeh')}>
                 <p className="text-body-xs text-icons-black">Show all photos</p>
                 <p className="text-body-xs text-center text-black-400">
@@ -127,7 +140,7 @@ export const ImageGrid = ({ imageArray }: ImageGridProps) => {
 
           <div className="max-w-6xl max-h-[90vh] mx-auto px-16">
             <img
-              src={images[currentImageIndex]}
+              src={images[currentImageIndex].url}
               alt={`Property view ${currentImageIndex + 1}`}
               className="max-w-full max-h-[90vh] object-contain"
             />
@@ -155,7 +168,7 @@ export const ImageGrid = ({ imageArray }: ImageGridProps) => {
                   }`}
                 >
                   <img
-                    src={img}
+                    src={img.thumbnail || img.url}
                     alt={`Thumbnail ${index + 1}`}
                     className="w-full h-full object-cover"
                   />

@@ -2,7 +2,7 @@ import { rootRoute } from '@/core/router/rootRoute';
 import { Layout, LayoutWithoutHeader } from '@/shared/components/Layout';
 import { createRoute } from '@tanstack/react-router';
 import z from 'zod';
-import { Property } from '../components';
+import { Kyc, Property } from '../components';
 import { Links, sidebarItems } from '../constants';
 import { CreatePropertyView } from './create-property';
 import { GetStartedView } from './get-started';
@@ -42,6 +42,12 @@ export const createPropertyRoute = createRoute({
   path: Links.CREATE_PROPERTY,
   validateSearch: createPropertySearchSchema,
   component: () => <CreatePropertyView />,
+});
+
+export const kycRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: Links.KYC,
+  component: () => <Kyc />,
 });
 
 export const notificationRoute = createRoute({

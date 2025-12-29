@@ -41,15 +41,11 @@ export const PropertyDetails = () => {
     from: '/property-details',
   });
 
-  const {
-    isModalOpen,
-    listingData,
-    handleShareListing,
-    handleModalClose,
-  } = useListingLiveModal({
-    listingId,
-    showListingLiveModal,
-  });
+  const { isModalOpen, listingData, handleShareListing, handleModalClose } =
+    useListingLiveModal({
+      listingId,
+      showListingLiveModal,
+    });
 
   const displayName = propertyName
     ? `Apartment in ${propertyCity || 'Unknown City'}`

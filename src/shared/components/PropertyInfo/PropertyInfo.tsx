@@ -1,9 +1,14 @@
-import property2 from '@/assets/images/property-2.jpg';
-import property3 from '@/assets/images/property-3.jpg';
-import property1 from '@/assets/images/property-image.jpg';
+import propertyImageFallback from '@/assets/images/property-image.jpg';
 import { usePropertyInfoStore } from '@/core/store';
-import type { PropertyDTO } from '@/shared/types';
-import { FavouriteIcon, Flag02Icon, Upload04Icon } from 'hugeicons-react';
+import type { ListingDTO } from '@/shared/types';
+import { useNavigate } from '@tanstack/react-router';
+import {
+  ArrowLeft01Icon,
+  FavouriteIcon,
+  Flag02Icon,
+  Upload04Icon,
+} from 'hugeicons-react';
+import { ImageCarousel } from '../ImageCarousel/ImageCarousel';
 import { Button } from '../ui';
 import { Details } from './Details';
 import { ExcitingFeatures } from './ExcitingFeatures';
@@ -14,20 +19,30 @@ import { WhereYouLive } from './WhereYouLive';
 
 type PropertyInfoProps = {
   actionItem?: React.ReactNode;
-  property: PropertyDTO;
+  property: ListingDTO;
 };
 
 export const PropertyInfo = ({ actionItem, property }: PropertyInfoProps) => {
-  //   const location = useLocation();
-  //   const property = location.state.property;
-
+  const navigate = useNavigate();
   const isWishlisted = usePropertyInfoStore((s) =>
     s.isWishlisted(property?.id ?? 0)
   );
   const toggleWishlist = usePropertyInfoStore((s) => s.toggleWishlist);
+
+  // Use images from API or fallback to default image
+  const imageArray =
+    property?.images && property.images.length > 0
+      ? property.images
+      : [{ url: propertyImageFallback, thumbnail: undefined }];
+
+  const handleBack = () => {
+    navigate({ to: '/' });
+  };
+
   return (
-    <div className="h-full flex flex-col px-4 gap-6 md:px-6 lg:px-8 2xl:px-30 py-10">
-      <div className="flex flex-col gap-4">
+    <div className="h-full flex flex-col gap-6 py-10">
+      {/* Desktop: Buttons above image grid */}
+      <div className="hidden lg:flex flex-col gap-4 px-4 md:px-6 lg:px-8 2xl:px-30">
         <div className="flex gap-2 justify-end">
           {propertyItems.map((item) => (
             <>
@@ -36,9 +51,7 @@ export const PropertyInfo = ({ actionItem, property }: PropertyInfoProps) => {
                   className="px-4 py-2 rounded-full"
                   variant="outline"
                   key={item.name}
-                  onClick={() =>
-                    toggleWishlist(property || ({} as PropertyDTO))
-                  }
+                  onClick={() => toggleWishlist(property || ({} as ListingDTO))}
                 >
                   <item.icon
                     className={`${
@@ -62,39 +75,77 @@ export const PropertyInfo = ({ actionItem, property }: PropertyInfoProps) => {
             </>
           ))}
         </div>
-        <ImageGrid
-          imageArray={[
-            property1,
-            property2,
-            property3,
-            property1,
-            property2,
-            property3,
-          ]}
+        <ImageGrid imageArray={imageArray} />
+      </div>
+
+      <div className="lg:hidden">
+        <ImageCarousel
+          images={imageArray}
+          alt="Property"
+          imageClassName="w-full h-[290px] object-cover"
+          containerClassName="relative w-full"
+          showDots={false}
+          showArrows={true}
+          showArrowsOnHover={false}
+          showCounter={true}
+          overlay={
+            <div className="flex justify-between items-start px-4 pt-2">
+              <div
+                className="rounded-full size-9 grid place-items-center bg-white shadow-md"
+                onClick={handleBack}
+              >
+                <ArrowLeft01Icon className="size-6" />
+              </div>
+
+              <div className="flex gap-2">
+                <div className="rounded-full size-9 grid place-items-center bg-white shadow-md">
+                  <Upload04Icon className="size-4" />
+                </div>
+                <div
+                  className="rounded-full size-9 grid place-items-center bg-white shadow-md"
+                  onClick={() => toggleWishlist(property || ({} as ListingDTO))}
+                >
+                  <FavouriteIcon
+                    className={`size-4 ${
+                      isWishlisted
+                        ? 'fill-primary-500 text-primary-500'
+                        : 'fill-white text-black-500'
+                    }`}
+                  />
+                </div>
+                <div className="rounded-full size-9 grid place-items-center bg-white shadow-md">
+                  <Flag02Icon className="size-4" />
+                </div>
+              </div>
+            </div>
+          }
         />
       </div>
-      <div className="grid md:grid-cols-[60%_40%] gap-4 pt-4 justify-between">
-        <div className="flex flex-col gap-6">
-          <Details property={property} />
-          <div className="h-[1px] w-full bg-custom-neutral-100" />
-          {property?.amenities && (
-            <ExcitingFeatures amenities={property.amenities} />
-          )}
-          <div className="h-[1px] w-full bg-custom-neutral-100" />
 
-          {property?.locationResult && (
-            <WhereYouLive location={property.locationResult} />
+      <div className="px-4 md:px-6 lg:px-8 2xl:px-30">
+        <div className="grid md:grid-cols-[60%_40%] gap-4 pt-4 justify-between">
+          <div className="flex flex-col gap-6">
+            <Details property={property} />
+            <div className="h-[1px] w-full bg-custom-neutral-100" />
+            {property?.amenities && (
+              <ExcitingFeatures amenities={property.amenities} />
+            )}
+            <div className="h-[1px] w-full bg-custom-neutral-100" />
+
+            {property?.locationResult && (
+              <WhereYouLive location={property.locationResult} />
+            )}
+            <div className="h-[1px] w-full bg-custom-neutral-100" />
+          </div>
+          {actionItem && (
+            <div className="flex items-start justify-end">{actionItem}</div>
           )}
-          <div className="h-[1px] w-full bg-custom-neutral-100" />
         </div>
-        {actionItem && (
-          <div className="flex items-start justify-end">{actionItem}</div>
-        )}
-      </div>
 
-      {property?.reviews && <ReviewComponent reviewData={property.reviews} />}
-      <div className="h-[1px] w-full bg-custom-neutral-100" />
-      {property?.notes && <ThingsToNote notes={property.notes} />}
+        {property?.reviews && <ReviewComponent reviewData={property.reviews} />}
+        {/* <div className="h-[1px] w-full bg-custom-neutral-100" /> */}
+        {property?.notes && <ThingsToNote notes={property.notes} />}
+      </div>
     </div>
   );
 };

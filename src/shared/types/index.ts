@@ -78,13 +78,19 @@ export type SidebarItem = {
   link?: string;
 };
 
+export type ImageWithThumbnail = {
+  url: string;
+  thumbnail?: string;
+};
+
 export type ListingDTO = {
   id?: number;
-  images: string[];
+  images: string[] | ImageWithThumbnail[];
   title: string;
-  location: string; 
+  location: string;
   amenities: string[];
-  amount: number; 
+  amount: number;
+  rent_period?: 'MONTH' | 'YEAR' | 'month' | 'year';
   beds: number;
   bathrooms: number;
   size_sqft: number;
@@ -94,6 +100,10 @@ export type ListingDTO = {
   reviews?: ReviewDTO;
   notes?: Note[];
   isWaitlisted?: boolean;
+  is_available?: boolean;
+  availability_date?: string;
+  viewing_fee?: number;
+  booking_mode?: 'instant' | 'review';
 };
 
 // Keep old PropertyDTO for backward compatibility (deprecated)

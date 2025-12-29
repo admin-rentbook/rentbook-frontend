@@ -1,10 +1,15 @@
 import UserIcon from '@/assets/icons/user.svg?react';
 import logo from '@/assets/images/logo.png';
 import { useAppStore } from '@/core/store';
-import { ArrowReloadHorizontalIcon, LogoutSquare01Icon, Menu01Icon } from 'hugeicons-react';
+import { useNavigate } from '@tanstack/react-router';
+import {
+  ArrowReloadHorizontalIcon,
+  LogoutSquare01Icon,
+  Menu01Icon,
+} from 'hugeicons-react';
+import { TooltipComp } from '../Tooltip/Tooltip';
 import { Avatar, AvatarFallback, Button } from '../ui';
 import { useSidebar } from '../ui/sidebar';
-import { useNavigate } from '@tanstack/react-router';
 
 export const MobileHeader = () => {
   const { toggleSidebar } = useSidebar();
@@ -12,8 +17,7 @@ export const MobileHeader = () => {
   const authUser = useAppStore((s) => s.authUser);
   const onOpenAuth = useAppStore((s) => s.onOpenAuth);
   const isAuthUser = authUser?.tokens.access;
-    const navigate = useNavigate();
-  
+  const navigate = useNavigate();
 
   return (
     <div className="p-4 pb-2 justify-between md:justify-end flex items-center">
@@ -27,16 +31,33 @@ export const MobileHeader = () => {
           <h4 className="logo-text text-black-500">rentbook</h4>
         </div>
       </div>
-       <div className="gap-4 hidden md:flex items-center pr-3">
+      <div className="gap-4 hidden md:flex items-center pr-3">
         <Button
           variant="tertiary"
           onClick={() => navigate({ to: '/properties/create' })}
-          className='rounded-full'
-          size='lg'
+          className="rounded-full"
+          size="lg"
         >
           <ArrowReloadHorizontalIcon className="size-[17px]" />
           List your property
         </Button>
+      </div>
+      <div className="block md:hidden">
+        <TooltipComp
+          tooltipTrigger={
+            <Button
+              variant="tertiary"
+              onClick={() => navigate({ to: '/properties/create' })}
+              className="rounded-full"
+              size="lg"
+            >
+              <ArrowReloadHorizontalIcon className="size-[17px]" />
+            </Button>
+          }
+          children={
+            <p className="text-body-small text-neutral-">List your property</p>
+          }
+        />
       </div>
       {isAuthUser ? (
         <div className="flex gap-3 items-center">

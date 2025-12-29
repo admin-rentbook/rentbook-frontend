@@ -44,13 +44,13 @@ export const useListingLiveModal = ({
   const handleModalClose = (open: boolean) => {
     setIsModalOpen(open);
     if (!open) {
-      // Clear the modal flags from URL
       navigate({
         to: '/property-details',
         search: (prev) => ({
           ...prev,
           showListingLiveModal: undefined,
-          propertyId: prev.propertyId
+          propertyId: prev.propertyId,
+          listingId: prev.listingId
         }),
         replace: true,
       });

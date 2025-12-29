@@ -4,5 +4,6 @@ export * from './numberUtils';
 export * from './stepperUtils';
 export * from './storage';
 export * from './stringUtils';
+export * from './transformers';
 export * from './typeGuards';
 export * from './url';

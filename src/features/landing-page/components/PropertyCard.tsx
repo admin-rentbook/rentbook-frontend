@@ -1,7 +1,7 @@
 import { usePropertyInfoStore } from '@/core/store';
 import { Card, CardContent, ImageCarousel } from '@/shared/components';
 import type { ListingDTO } from '@/shared/types';
-import { formatNamibianDollar } from '@/shared/utils';
+import { formatNamibianDollar, formatRentalPrice } from '@/shared/utils';
 import {
   Bathtub01Icon,
   BedSingle02Icon,
@@ -16,7 +16,12 @@ type PropertyCardProps = {
 };
 
 export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
-  const { symbol, amount } = formatNamibianDollar(property.amount);
+  const formattedPrice = property.rent_period
+    ? formatRentalPrice(property.amount, property.rent_period)
+    : (() => {
+        const { symbol, amount } = formatNamibianDollar(property.amount);
+        return `${symbol}${amount}/mo`;
+      })();
   const toggleWishlist = usePropertyInfoStore((s) => s.toggleWishlist);
   const isWishlisted = usePropertyInfoStore((s) =>
     s.isWishlisted(property.id ?? 0)
@@ -103,10 +108,8 @@ export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
               ))}
             </div>
           </div>
-          <p className="text-body-sm-semi">
-            <span className="text-black-500/60">{symbol}</span>
-            <span className="text-black-500">{amount}</span>
-            <span className="text-black-400">/mo</span>
+          <p className="text-body-sm-semi text-black-500">
+            {formattedPrice}
           </p>
         </div>
       </CardContent>
