@@ -7,7 +7,6 @@ import {
   PopoverComponent,
   Sheet,
 } from '@/shared/components';
-import { DEFAULT_ADDRESS } from '@/shared/constants';
 import {
   useCurrentLocation,
   useGooglePlacesAutocomplete,
@@ -17,7 +16,7 @@ import { useMapPicker } from '@/shared/hooks/useMapPicker';
 import type { LocationResult } from '@/shared/types';
 import { GlobalSearchIcon, Location05Icon } from 'hugeicons-react';
 import { Loader2, MapPin } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 import { AddressPredictionsList } from './AddressPredictionList';
 
@@ -43,15 +42,6 @@ export const Address = ({ form, setLocationResult }: AddressProps) => {
     },
     [form]
   );
-
-  // Set default address as fallback when Google Maps API is unavailable
-  useEffect(() => {
-    if (!finalAddress && !form?.getValues('address')) {
-      handleFinalAddress(DEFAULT_ADDRESS);
-      setFinalAddress(DEFAULT_ADDRESS);
-      setLocationResult?.(DEFAULT_ADDRESS);
-    }
-  }, [finalAddress, form, handleFinalAddress, setLocationResult]);
 
   const { input, setInput, predictions, loading, handleSelectPrediction } =
     useGooglePlacesAutocomplete({

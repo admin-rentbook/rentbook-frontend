@@ -15,8 +15,11 @@ import {
   GridViewIcon,
   GuestHouseIcon,
   LegalDocument01Icon,
+  Loading03Icon,
+  MailSend01Icon,
   UserIcon,
 } from 'hugeicons-react';
+import { useResendVerification } from '../apis';
 import { useListingLiveModal, usePropertyDetails } from '../hooks';
 import { Agents } from './Agents';
 import { Leases } from './Leases';
@@ -31,7 +34,7 @@ export const PropertyDetails = () => {
     propertyData,
     isLoading,
     error,
-    // propertyId,
+    propertyId,
     listingId,
     showListingLiveModal,
     displayData,
@@ -43,6 +46,10 @@ export const PropertyDetails = () => {
       listingId,
       showListingLiveModal,
     });
+
+  const resendVerificationMutation = useResendVerification();
+
+  const isPropertyInactive = displayData.status?.toLowerCase() === 'inactive';
 
   if (isLoading) {
     return (
@@ -88,6 +95,27 @@ export const PropertyDetails = () => {
           <p className="text-body-small text-black-300">{displayData.displayAddress}</p>
         </div>
         <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
+          {isPropertyInactive && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full lg:w-auto"
+              onClick={() => propertyId && resendVerificationMutation.mutate(propertyId)}
+              disabled={resendVerificationMutation.isPending}
+            >
+              {resendVerificationMutation.isPending ? (
+                <>
+                  <Loading03Icon className="size-4 animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <MailSend01Icon className="size-4" />
+                  Resend Verification
+                </>
+              )}
+            </Button>
+          )}
           <Button
             variant="outline"
             size="sm"
