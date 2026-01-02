@@ -1,8 +1,4 @@
-import {
-  axios,
-  useMutation,
-  type MutationConfig,
-} from '@/core/lib';
+import { axios, useMutation, type MutationConfig } from '@/core/lib';
 import type { ApiResponse } from '@/shared/types';
 import { formatError } from '@/shared/utils/helpers';
 import { toast } from 'sonner';
@@ -37,17 +33,10 @@ type UseVerifyTokenOptions = {
 export const useVerifyToken = ({ config }: UseVerifyTokenOptions = {}) => {
   return useMutation({
     onSuccess: (response) => {
-      if (response.data.verified) {
-        toast.success(
-          response?.message || 'Property ownership verified successfully!',
-          { id: 'verify-token-success' }
-        );
-      } else {
-        toast.error(
-          response?.message || 'Token verification failed',
-          { id: 'verify-token-error' }
-        );
-      }
+      toast.success(
+        response?.message || 'Property ownership verified successfully!',
+        { id: 'verify-token-success' }
+      );
     },
     onError: (error: any) => {
       const errorMessage = error?.message || 'Failed to verify token';
