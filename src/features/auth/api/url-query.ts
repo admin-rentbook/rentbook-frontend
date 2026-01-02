@@ -9,4 +9,5 @@ export const url = {
   resetPassword: env.API_BASE_URL + '/auth/reset_password_with_otp/',
   sendOtp: env.API_BASE_URL + '/auth/send_otp/',
   googleAuth: env.API_BASE_URL + '/auth/google_login/',
+  refreshToken: env.API_BASE_URL + '/auth/token/refresh/',
 };

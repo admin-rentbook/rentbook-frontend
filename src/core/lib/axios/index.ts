@@ -5,7 +5,7 @@ import { env } from '@/config';
 
 import {
   authRequestInterceptor,
-  authResponseInterceptor,
+  createAuthResponseInterceptor,
   rejectErrorInterceptor,
 } from './interceptors';
 
@@ -16,5 +16,5 @@ export const axios = Axios.create({
 axios.interceptors.request.use(authRequestInterceptor, rejectErrorInterceptor);
 axios.interceptors.response.use(
   (response) => response,
-  authResponseInterceptor
+  createAuthResponseInterceptor(axios)
 );

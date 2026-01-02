@@ -1,3 +1,4 @@
+import { ErrorState } from '@/shared/components';
 import {
   PropertyInfo,
   PropertyInfoSkeleton,
@@ -5,6 +6,7 @@ import {
 import { usePropertyInfo } from '@/shared/hooks';
 import { useLocation, useSearch } from '@tanstack/react-router';
 import { JoinWaitlist } from './JoinWaitlist';
+import { RequestViewing } from './RequestViewing';
 
 export const ListingDetails = () => {
   const location = useLocation();
@@ -13,11 +15,12 @@ export const ListingDetails = () => {
     propertyName?: string;
     location?: string;
   };
+  // const isTokenExpired = useAppStore((s) => s.isTokenExpired);
 
   // Support both old state-based navigation and new search-based navigation
   const listingId = searchParams.listingId || location.state?.property?.id || 0;
 
-  const { propertyData, isLoading, error } = usePropertyInfo({
+  const { propertyData, isLoading, error, isError, refetch } = usePropertyInfo({
     listingId,
   });
 
@@ -25,17 +28,10 @@ export const ListingDetails = () => {
     return <PropertyInfoSkeleton />;
   }
 
-  if (error) {
+  if (isError) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <p className="text-body text-red-500">
-            Failed to load property details
-          </p>
-          <p className="text-body-small text-black-400 mt-2">
-            {error instanceof Error ? error.message : 'An error occurred'}
-          </p>
-        </div>
+      <div className="p-6">
+        <ErrorState error={error} onRetry={refetch} />
       </div>
     );
   }
@@ -48,10 +44,15 @@ export const ListingDetails = () => {
     );
   }
 
+  // Determine which action component to show based on availability
+  const ActionComponent = propertyData.is_available
+    ? RequestViewing
+    : JoinWaitlist;
+
   return (
     <PropertyInfo
       property={propertyData}
-      actionItem={<JoinWaitlist property={propertyData} />}
+      actionItem={<ActionComponent property={propertyData} />}
     />
   );
 };

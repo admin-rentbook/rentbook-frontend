@@ -2,6 +2,7 @@ import { ListingLiveModal } from '@/features/listings/components/ListingLiveModa
 import { ListingLinks } from '@/features/listings/constants';
 import {
   Button,
+  ErrorState,
   StatusBox,
   Tabs,
   TabsContent,
@@ -31,7 +32,6 @@ export const PropertyDetails = () => {
   const navigate = useNavigate();
 
   const {
-    propertyData,
     isLoading,
     error,
     propertyId,
@@ -39,6 +39,8 @@ export const PropertyDetails = () => {
     showListingLiveModal,
     displayData,
     handlers,
+    isError,
+    refetch,
   } = usePropertyDetails();
 
   const { isModalOpen, listingData, handleShareListing, handleModalClose } =
@@ -54,15 +56,17 @@ export const PropertyDetails = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="text-heading-4 text-neutral-600">Loading property details...</div>
+        <div className="text-heading-4 text-neutral-600">
+          Loading property details...
+        </div>
       </div>
     );
   }
 
-  if (error || !propertyData) {
+  if (isError) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-heading-4 text-error-500">Error loading property details</div>
+      <div className="p-6">
+        <ErrorState error={error} onRetry={refetch} />
       </div>
     );
   }
@@ -84,7 +88,9 @@ export const PropertyDetails = () => {
       <div className="px-3 lg:p-5 flex flex-col gap-3 lg:gap-0 lg:flex-row lg:justify-between items-center">
         <div className="w-full lg:w-auto">
           <div className="flex gap-3 pb-2">
-            <h4 className="text-heading-4 text-neutral-600">{displayData.displayName}</h4>
+            <h4 className="text-heading-4 text-neutral-600">
+              {displayData.displayName}
+            </h4>
             <StatusBox
               bgColor={displayData.statusDetails.bgColor}
               textColor={displayData.statusDetails.textColor}
@@ -92,7 +98,9 @@ export const PropertyDetails = () => {
               fillColor={displayData.statusDetails.fillColor}
             />
           </div>
-          <p className="text-body-small text-black-300">{displayData.displayAddress}</p>
+          <p className="text-body-small text-black-300">
+            {displayData.displayAddress}
+          </p>
         </div>
         <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
           {isPropertyInactive && (
@@ -100,7 +108,9 @@ export const PropertyDetails = () => {
               variant="outline"
               size="sm"
               className="w-full lg:w-auto"
-              onClick={() => propertyId && resendVerificationMutation.mutate(propertyId)}
+              onClick={() =>
+                propertyId && resendVerificationMutation.mutate(propertyId)
+              }
               disabled={resendVerificationMutation.isPending}
             >
               {resendVerificationMutation.isPending ? (

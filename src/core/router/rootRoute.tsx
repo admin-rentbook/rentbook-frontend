@@ -1,3 +1,4 @@
+import { TokenExpiredModal } from '@/shared/components/TokenExpiredModal';
 import { createRootRoute, Outlet, redirect } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { Toaster } from 'sonner';
@@ -24,6 +25,7 @@ export const rootRoute = createRootRoute({
 
   component: () => (
     <>
+      <TokenExpiredModal />
       <Outlet />
       <TanStackRouterDevtools />
       <Toaster position="top-center" richColors closeButton />

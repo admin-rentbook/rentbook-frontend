@@ -8,6 +8,7 @@ export const url = {
   getPropertyDetailsById: (propertyId: number) =>
     env.API_BASE_URL + `/properties/${propertyId}/`,
   kyc: env.API_BASE_URL + '/kyc',
+  kycStatus: env.API_BASE_URL + '/kyc/status/',
   storage: env.API_BASE_URL + '/storage',
 };
 
@@ -16,4 +17,6 @@ export const queryKey = {
   lists: () => [...queryKey.all, 'list'] as const,
   list: (filter: PropertyStatusType, page: number, pageSize: number) =>
     [...queryKey.lists(), filter, page, pageSize] as const,
+  kyc: ['kyc'] as const,
+  kycStatus: () => [...queryKey.kyc, 'status'] as const,
 };
