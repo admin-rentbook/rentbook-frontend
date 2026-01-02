@@ -40,7 +40,6 @@ export const ListingTable = ({
         mobileCardRender={(row) => <ListingListMobile row={row} />}
         onRowAction={(listing) => {
           const isDraft = listing.status === 'draft';
-          console.log('isDrafr', isDraft);
           navigate({
             to: isDraft
               ? ListingLinks.LISTINGS

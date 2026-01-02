@@ -47,15 +47,6 @@ export const useMedia = (onNext: (() => void) | undefined) => {
         if (!url) {
           console.warn(`⚠️ No URL available for image ${index}:`, media.file_name);
         }
-
-        console.log(`🔗 Image ${index}:`, {
-          signed_url: media.signed_url,
-          thumb_medium: media.thumb_medium,
-          thumb_large: media.thumb_large,
-          file_url: media.file_url,
-          using: url || 'MISSING',
-          file_name: media.file_name,
-        });
         return url || ''; // Keep empty string to maintain array length
       });
 
@@ -173,7 +164,6 @@ export const useMedia = (onNext: (() => void) | undefined) => {
       return;
     }
 
-    // If there are no new files to upload, just proceed to next step
     if (newFiles.length === 0) {
       console.log('✅ No new files to upload, proceeding to next step');
       onNext?.();
@@ -203,8 +193,6 @@ export const useMedia = (onNext: (() => void) | undefined) => {
       toast.success('Media uploaded successfully');
       onNext?.();
     } catch (error: any) {
-      console.error('Upload error:', error);
-
       const errorMessage =
         error.message || 'Failed to upload media. Please try again.';
       toast.error(errorMessage, {

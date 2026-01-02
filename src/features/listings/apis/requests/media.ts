@@ -8,31 +8,16 @@ import {
   type QueryConfig,
 } from '@/core/lib';
 import type { ApiResponse } from '@/shared/types';
+import { delay, getUploadUrl, uploadToBackblaze } from '@/shared/utils';
 import { formatError } from '@/shared/utils/helpers';
 import { toast } from 'sonner';
 import type { MediaDTO } from '../../types';
-import {
-  createMediaDTO,
-  delay,
-  uploadToBackblaze,
-} from '../../utils/mediaUploadHelpers';
+import { createMediaDTO } from '../../utils/mediaUploadHelpers';
 import { queryKey, url } from '../url-query';
 
 type AddMediaVariables = {
   data: MediaDTO;
   listingId: number;
-};
-
-type UploadUrlResponse = {
-  success: boolean;
-  data: {
-    upload_url: string;
-    authorization_token: string;
-    bucket_id: string;
-    file_name: string;
-  };
-  error: string | null;
-  message: string;
 };
 
 const addMediaToGetUploadUrl = async ({
@@ -48,48 +33,8 @@ const addMediaToGetUploadUrl = async ({
     mime_type: data.mime_type,
   };
 
-  // Add a small delay to avoid rate limiting
-  await new Promise((resolve) => setTimeout(resolve, 100));
-
-  try {
-    const response = await axios.post<UploadUrlResponse>(
-      `${url.listing}/${listingId}/media/upload-url/`,
-      payload
-    );
-
-    if (response.data.success === false || response.data.error) {
-      const errorMessage =
-        response.data.error ||
-        response.data.message ||
-        'Failed to get upload URL';
-      throw new Error(errorMessage);
-    }
-
-    if (
-      !response.data.data?.upload_url ||
-      !response.data.data?.file_name ||
-      !response.data.data?.authorization_token
-    ) {
-      console.error('Invalid response structure:', response.data);
-      throw new Error(
-        `Invalid response from server: missing required upload information. Response: ${JSON.stringify(response.data)}`
-      );
-    }
-
-    return {
-      upload_url: response.data.data.upload_url,
-      file_name: response.data.data.file_name,
-      authorization_token: response.data.data.authorization_token,
-    };
-  } catch (err: any) {
-    if (
-      err.message?.includes('Server storage') ||
-      err.message?.includes('Invalid response')
-    ) {
-      throw err;
-    }
-    throw formatError(err);
-  }
+  const endpoint = `${url.listing}/${listingId}/media/upload-url/`;
+  return getUploadUrl(endpoint, payload);
 };
 
 type UseAddMediaToGetUploadUrlOptions = {

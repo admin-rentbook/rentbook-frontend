@@ -1,5 +1,6 @@
 import { ListingDetailsLinks } from '@/features/listing-details/constants';
 import { useGetListingSummary, useGetMedia } from '@/features/listings/apis';
+import { ListingLinks } from '@/features/listings/constants';
 import {
   formatRentalPrice,
   transformListingSummaryToDTO,
@@ -61,7 +62,14 @@ export const useViewListingDetails = () => {
   }, [listingId]);
 
   const handleEditListing = useCallback(() => {
-    console.log('Edit listing', listingId);
+     navigate({
+      to: ListingLinks.LISTINGS,
+      search: (prev) => ({
+        ...prev,
+        listingId: prev.listingId,
+        propertyId: prev.propertyId
+      }),
+    });
   }, [listingId]);
 
   const handleShareListing = useCallback(() => {

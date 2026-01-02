@@ -6,4 +6,5 @@ export * from './storage';
 export * from './stringUtils';
 export * from './transformers';
 export * from './typeGuards';
+export * from './uploadHelpers';
 export * from './url';

@@ -212,3 +212,21 @@ export const getDaysUntil = (dateString: string): number | null => {
 
   return diffDays > 0 ? diffDays : null;
 };
+
+/**
+ * Formats a date string to "12 June, 2025" format
+ * @param dateString - ISO date string
+ * @returns Formatted date string
+ */
+export const formatDateLong = (dateString: string): string => {
+  if (!dateString) return '';
+
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return '';
+
+  const day = date.getDate();
+  const month = date.toLocaleDateString('en-US', { month: 'long' });
+  const year = date.getFullYear();
+
+  return `${day} ${month}, ${year}`;
+};

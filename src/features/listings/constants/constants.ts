@@ -30,10 +30,10 @@ export const listingTypeOptions = Object.values(ListingTypes).map(
 );
 
 export const FeeTypes = {
-  INCLUDED_IN_BASE_RENT: 'INCLUDED_IN_BASE_RENT',
+  INCLUDED_IN_BASE_RENT: 'included',
   REQUIRED: 'REQUIRED',
   OPTIONAL: 'OPTIONAL',
-};
+} as const;
 export const PaymentFrequency = {
   ONE_TIME: 'ONE_TIME',
   MONTHLY: 'MONTHLY',

@@ -4,15 +4,9 @@ import {
   type ExtractFnReturnType,
   type QueryConfig,
 } from '@/core/lib';
-import type { ListingDTO } from '@/shared/types';
 import { formatError } from '@/shared/utils/helpers';
 import { queryKey, url } from '../url-query';
-
-type WaitlistItem = {
-  id: number;
-  listing: ListingDTO;
-  created_at: string;
-};
+import type { WaitlistItem } from '../../types';
 
 type GetUserWaitlistsResponse = {
   success: boolean;
@@ -23,7 +17,10 @@ type GetUserWaitlistsResponse = {
 const getUserWaitlists = async () => {
   try {
     const response = await axios.get<GetUserWaitlistsResponse>(
-      url.userWaitlists
+      url.userWaitlists,
+      {
+        skipAuthRedirect: true, 
+      }
     );
     return response.data;
   } catch (err) {

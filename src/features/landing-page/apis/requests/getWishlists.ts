@@ -4,25 +4,21 @@ import {
   type ExtractFnReturnType,
   type QueryConfig,
 } from '@/core/lib';
-import type { ListingDTO, PaginateApiResponse } from '@/shared/types';
+import type { ApiResponse } from '@/shared/types';
 import { formatError } from '@/shared/utils/helpers';
+import type { WishlistItem } from '../../types';
 import { queryKey, url } from '../url-query';
-
-type WishlistItem = {
-  id: number;
-  listing: ListingDTO;
-  created_at: string;
-};
 
 const getWishlists = async (page: number, pageSize: number) => {
   try {
-    const response = await axios.get<PaginateApiResponse<WishlistItem>>(
+    const response = await axios.get<ApiResponse<WishlistItem[]>>(
       url.wishlists,
       {
         params: {
           page,
           page_size: pageSize,
         },
+        skipAuthRedirect: true,
       }
     );
     return response.data;
@@ -34,7 +30,7 @@ const getWishlists = async (page: number, pageSize: number) => {
 const STALE_TIME = 5 * 60 * 1000; // 5 minutes
 const CACHE_TIME = 10 * 60 * 1000; // 10 minutes
 
-type QueryFnType = () => Promise<PaginateApiResponse<WishlistItem>>;
+type QueryFnType = () => Promise<ApiResponse<WishlistItem[]>>;
 type UseGetWishlistsOptions = QueryConfig<QueryFnType>;
 
 export const useGetWishlists = (

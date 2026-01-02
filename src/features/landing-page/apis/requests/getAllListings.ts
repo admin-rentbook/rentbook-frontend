@@ -4,21 +4,75 @@ import {
   type ExtractFnReturnType,
   type QueryConfig,
 } from '@/core/lib';
-import type { ListingSummaryDTO } from '@/features/listings';
-import type { PaginateApiResponse } from '@/shared/types';
 import { formatError } from '@/shared/utils/helpers';
 import { queryKey, url } from '../url-query';
 
-const getAllListings = async (currentPage: number, pageSize: number) => {
+export type ListingFilters = {
+  listing_type?: string;
+  max_price?: number;
+  min_price?: number;
+  ordering?: string;
+  q?: string;
+  search?: string;
+  status?: string;
+};
+
+/**
+ * API Response type for listing summary (matches actual API response)
+ */
+export type ApiListingSummary = {
+  id: number;
+  title: string;
+  listing_type: string;
+  description: string;
+  beds: number;
+  bathrooms: number;
+  size_sqft: string;
+  is_available: boolean;
+  availability_date: string;
+  property: {
+    id: number;
+    property_name: string;
+    approval_status: string;
+  };
+  complex: any;
+  price: string;
+  status: string;
+  primary_image?: {
+    id: number;
+    file_url: string;
+    thumb_small: string;
+    thumb_medium: string;
+    thumb_large: string;
+  };
+};
+
+/**
+ * API Paginated Response
+ */
+type PaginatedResponse<T> = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+};
+
+const getAllListings = async (
+  currentPage: number,
+  pageSize: number,
+  filters?: ListingFilters
+) => {
   try {
-    const response = await axios.get<PaginateApiResponse<ListingSummaryDTO>>(
+    const response = await axios.get<PaginatedResponse<ApiListingSummary>>(
       url.allListings,
       {
         params: {
           page: currentPage,
           page_size: pageSize,
+          ...filters,
         },
-        // skipAuthRedirect: true,
+        skipAuth: true, // Public endpoint - no bearer token required
+        skipAuthRedirect: true, // Don't redirect on 401
       }
     );
     return response.data;
@@ -30,18 +84,20 @@ const getAllListings = async (currentPage: number, pageSize: number) => {
 const STALE_TIME = 5 * 60 * 1000; // 5 minutes
 const CACHE_TIME = 10 * 60 * 1000; // 10 minutes
 
-type QueryFnType = () => Promise<PaginateApiResponse<ListingSummaryDTO>>;
+type QueryFnType = () => Promise<PaginatedResponse<ApiListingSummary>>;
 type UseGetAllListingsOptions = QueryConfig<QueryFnType>;
 
 export const useGetAllListings = (
   currentPage: number,
   pageSize: number,
+  filters?: ListingFilters,
   config?: UseGetAllListingsOptions
 ) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
     ...config,
-    queryFn: () => getAllListings(currentPage, pageSize),
-    queryKey: queryKey.allListings(currentPage, pageSize),
+    queryFn: () => getAllListings(currentPage, pageSize, filters),
+    // Use spread to ensure filters object changes trigger cache invalidation
+    queryKey: [...queryKey.allListings(currentPage, pageSize), filters || {}],
     staleTime: STALE_TIME,
     gcTime: CACHE_TIME,
   });

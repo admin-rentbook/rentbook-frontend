@@ -9,7 +9,7 @@ import {
 } from '@/core/lib';
 import type { ApiResponse } from '@/shared/types';
 import { formatError } from '@/shared/utils/helpers';
-import { useNavigate } from '@tanstack/react-router';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 import { toast } from 'sonner';
 import { ListingLinks, type ListingType } from '../../constants';
 import type {
@@ -75,7 +75,10 @@ export const useAddListingDescription = ({
       });
       navigate({
         to: ListingLinks.LISTINGS,
-        search: { listingId: res.data.listing_id },
+        search: (prev) => ({
+          ...prev,
+          listingId: res.data.listing_id,
+        }),
       });
       queryClient.invalidateQueries({
         queryKey: queryKey.listingDescription(res.data.listing_id),
@@ -130,6 +133,8 @@ type UseUpdateListingDescriptionOptions = {
 export const useUpdateListingDescription = ({
   config,
 }: UseUpdateListingDescriptionOptions = {}) => {
+  const navigate = useNavigate({ from: '/listings-start' });
+  const search = useSearch({ from: '/listings-start' });
   return useMutation({
     onError: (err) => {
       toast.error(err.message, { id: 'update-listing-err' });
@@ -140,6 +145,13 @@ export const useUpdateListingDescription = ({
       });
       queryClient.invalidateQueries({
         queryKey: queryKey.listingDescription(res.data.id as number),
+      });
+      navigate({
+        to: ListingLinks.LISTINGS,
+        search: (prev) => ({
+          ...prev,
+          listingId: search.listingId
+        }),
       });
     },
     mutationFn: updateListingDescription,

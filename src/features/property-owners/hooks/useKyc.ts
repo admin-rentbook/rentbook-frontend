@@ -1,15 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
-
-// Zod schema for KYC form validation
-const kycSchema = z.object({
-  namibianRegNo: z
-    .string()
-    .min(1, 'Registration number is required')
-    .min(5, 'Registration number must be at least 5 characters'),
-});
+import { uploadKycDocuments } from '../apis/requests';
+import { kycSchema } from '../constants';
+import { validateKycFile } from '../utils/kycUploadHelpers';
 
 type KycFormData = z.infer<typeof kycSchema>;
 
@@ -24,6 +20,7 @@ export const useKyc = () => {
   const [backIdCard, setBackIdCard] = useState<KycFile | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const form = useForm<KycFormData>({
     resolver: zodResolver(kycSchema),
@@ -33,19 +30,6 @@ export const useKyc = () => {
     },
   });
 
-  const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB in bytes
-  const ACCEPTED_FILE_TYPES = ['application/pdf', 'image/jpeg', 'image/png'];
-
-  const validateFile = (file: File): string | null => {
-    if (file.size > MAX_FILE_SIZE) {
-      return 'File size must be smaller than 20MB';
-    }
-    if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
-      return 'Only PDF, JPG, and PNG files are accepted';
-    }
-    return null;
-  };
-
   const handleFileSelect = (
     event: React.ChangeEvent<HTMLInputElement>,
     type: 'front' | 'back'
@@ -53,9 +37,12 @@ export const useKyc = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const error = validateFile(file);
-    if (error) {
-      setUploadError(error);
+    const validation = validateKycFile(file);
+    if (!validation.valid) {
+      setUploadError(validation.error || 'Invalid file');
+      toast.error('Invalid file', {
+        description: validation.error,
+      });
       return;
     }
 
@@ -95,30 +82,26 @@ export const useKyc = () => {
   const onSubmit = async (data: KycFormData) => {
     // Validate that both ID card images are uploaded
     if (!frontIdCard || !backIdCard) {
-      setUploadError('Please upload both front and back images of your identity card');
+      setUploadError(
+        'Please upload both front and back images of your identity card'
+      );
       return;
     }
 
     setIsSubmitting(true);
     setUploadError(null);
+    setUploadProgress(0);
 
     try {
-      // Prepare FormData for API call (similar to media upload)
-      const formData = new FormData();
-      formData.append('front_id_card', frontIdCard.file);
-      formData.append('back_id_card', backIdCard.file);
-      formData.append('namibian_reg_no', data.namibianRegNo);
-
-      // TODO: Call API here
-      // await submitKyc(formData);
-      console.log('KYC Form Data:', {
+      // Upload KYC documents with 3-step flow
+      await uploadKycDocuments({
+        frontIdCard: frontIdCard.file,
+        backIdCard: backIdCard.file,
         namibianRegNo: data.namibianRegNo,
-        frontIdCard: frontIdCard.file.name,
-        backIdCard: backIdCard.file.name,
+        onProgress: (progress) => {
+          setUploadProgress(progress);
+        },
       });
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // Success - clean up and reset
       if (frontIdCard?.preview) URL.revokeObjectURL(frontIdCard.preview);
@@ -128,13 +111,18 @@ export const useKyc = () => {
       setBackIdCard(null);
       form.reset();
 
-      // TODO: Show success message or redirect
-      console.log('KYC submitted successfully!');
-    } catch (error) {
-      console.error('Error submitting KYC:', error);
-      setUploadError('Failed to submit KYC. Please try again.');
+      toast.success('KYC submitted successfully!', { id: 'kyc-suc' });
+    } catch (error: any) {
+      const errorMessage =
+        error.message || 'Failed to submit KYC. Please try again.';
+      toast.error(errorMessage, {
+        id: 'kyc-err',
+        duration: 5000,
+      });
+      setUploadError(errorMessage);
     } finally {
       setIsSubmitting(false);
+      setUploadProgress(0);
     }
   };
 
@@ -144,7 +132,8 @@ export const useKyc = () => {
     if (backIdCard?.preview) URL.revokeObjectURL(backIdCard.preview);
   };
 
-  const isButtonDisabled = !form.formState.isValid || isSubmitting;
+  const isButtonDisabled =
+    !form.formState.isValid || isSubmitting || !frontIdCard || !backIdCard;
 
   return {
     form,
@@ -152,6 +141,7 @@ export const useKyc = () => {
     backIdCard,
     isSubmitting,
     uploadError,
+    uploadProgress,
     handleFileSelect,
     removeFile,
     onSubmit,

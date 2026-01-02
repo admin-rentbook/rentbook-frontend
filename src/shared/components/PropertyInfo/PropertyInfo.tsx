@@ -1,13 +1,14 @@
 import propertyImageFallback from '@/assets/images/property-image.jpg';
-import { usePropertyInfoStore } from '@/core/store';
 import type { ListingDTO } from '@/shared/types';
 import { useNavigate } from '@tanstack/react-router';
 import {
   ArrowLeft01Icon,
   FavouriteIcon,
   Flag02Icon,
+  Loading03Icon,
   Upload04Icon,
 } from 'hugeicons-react';
+import { useWishlist } from '@/features/wait-wish-lists/hooks/useWishlist';
 import { ImageCarousel } from '../ImageCarousel/ImageCarousel';
 import { Button } from '../ui';
 import { Details } from './Details';
@@ -24,10 +25,15 @@ type PropertyInfoProps = {
 
 export const PropertyInfo = ({ actionItem, property }: PropertyInfoProps) => {
   const navigate = useNavigate();
-  const isWishlisted = usePropertyInfoStore((s) =>
-    s.isWishlisted(property?.id ?? 0)
-  );
-  const toggleWishlist = usePropertyInfoStore((s) => s.toggleWishlist);
+  const {
+    toggleWishlist,
+    isWishlisted: checkIsWishlisted,
+    isAdding,
+    isRemoving,
+  } = useWishlist();
+
+  const isWishlisted = checkIsWishlisted(property?.id ?? 0);
+  const isWishlistLoading = isAdding || isRemoving;
 
   // Use images from API or fallback to default image
   const imageArray =
@@ -44,22 +50,27 @@ export const PropertyInfo = ({ actionItem, property }: PropertyInfoProps) => {
       {/* Desktop: Buttons above image grid */}
       <div className="hidden lg:flex flex-col gap-4 px-4 md:px-6 lg:px-8 2xl:px-30">
         <div className="flex gap-2 justify-end">
-          {propertyItems.map((item) => (
+          {propertyItems.map((item, index) => (
             <>
               {item.name === 'Wishlist' ? (
                 <Button
                   className="px-4 py-2 rounded-full"
                   variant="outline"
-                  key={item.name}
-                  onClick={() => toggleWishlist(property || ({} as ListingDTO))}
+                  key={`${item.name}-${index}`}
+                  onClick={() => property.id && toggleWishlist(property.id)}
+                  disabled={isWishlistLoading}
                 >
-                  <item.icon
-                    className={`${
-                      isWishlisted
-                        ? 'fill-primary-500 text-white'
-                        : 'fill-white text-black-500'
-                    }`}
-                  />
+                  {isWishlistLoading ? (
+                    <Loading03Icon className="size-5 animate-spin" />
+                  ) : (
+                    <item.icon
+                      className={`${
+                        isWishlisted
+                          ? 'fill-primary-500 text-white'
+                          : 'fill-white text-black-500'
+                      }`}
+                    />
+                  )}
                   {isWishlisted ? 'Added to Wish list' : item.name}
                 </Button>
               ) : (
@@ -101,18 +112,23 @@ export const PropertyInfo = ({ actionItem, property }: PropertyInfoProps) => {
                 <div className="rounded-full size-9 grid place-items-center bg-white shadow-md">
                   <Upload04Icon className="size-4" />
                 </div>
-                <div
+                <button
                   className="rounded-full size-9 grid place-items-center bg-white shadow-md"
-                  onClick={() => toggleWishlist(property || ({} as ListingDTO))}
+                  onClick={() => property.id && toggleWishlist(property.id)}
+                  disabled={isWishlistLoading}
                 >
-                  <FavouriteIcon
-                    className={`size-4 ${
-                      isWishlisted
-                        ? 'fill-primary-500 text-primary-500'
-                        : 'fill-white text-black-500'
-                    }`}
-                  />
-                </div>
+                  {isWishlistLoading ? (
+                    <Loading03Icon className="size-4 text-primary-500 animate-spin" />
+                  ) : (
+                    <FavouriteIcon
+                      className={`size-4 ${
+                        isWishlisted
+                          ? 'fill-primary-500 text-primary-500'
+                          : 'fill-white text-black-500'
+                      }`}
+                    />
+                  )}
+                </button>
                 <div className="rounded-full size-9 grid place-items-center bg-white shadow-md">
                   <Flag02Icon className="size-4" />
                 </div>

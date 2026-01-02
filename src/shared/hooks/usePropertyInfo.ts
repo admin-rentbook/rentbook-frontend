@@ -1,6 +1,6 @@
-import { useGetListingSummary, useGetMedia } from '@/features/listings/apis';
+import { useGetPublicListing } from '@/features/listing-details/apis';
 import type { ListingDTO } from '@/shared/types';
-import { transformListingSummaryToDTO } from '@/shared/utils';
+import { transformPublicListingToDTO } from '@/shared/utils';
 import { useMemo } from 'react';
 
 type UsePropertyInfoParams = {
@@ -11,35 +11,20 @@ type UsePropertyInfoParams = {
 
 export const usePropertyInfo = ({
   listingId,
-  propertyName,
-  location,
 }: UsePropertyInfoParams) => {
   const {
-    data: summaryData,
-    isLoading: isSummaryLoading,
-    error: summaryError,
-  } = useGetListingSummary(listingId);
-
-  const { data: mediaData, isLoading: isMediaLoading } = useGetMedia(listingId);
-
-  const isLoading = isSummaryLoading || isMediaLoading;
-  const error = summaryError;
+    data: publicListingData,
+    isLoading,
+    error,
+  } = useGetPublicListing(listingId);
 
   const propertyData = useMemo((): ListingDTO | null => {
-    if (!summaryData?.data) {
+    if (!publicListingData?.data) {
       return null;
     }
 
-    const summary = summaryData.data;
-    const media = mediaData?.data || [];
-
-    return transformListingSummaryToDTO({
-      summary,
-      media,
-      propertyName: propertyName || summary.property_name,
-      location,
-    });
-  }, [summaryData, mediaData, propertyName, location]);
+    return transformPublicListingToDTO(publicListingData.data);
+  }, [publicListingData]);
 
   return {
     propertyData,

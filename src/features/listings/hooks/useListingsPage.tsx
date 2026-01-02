@@ -83,8 +83,8 @@ export const useListingsPage = () => {
         }
       });
     } else {
-      // If no apiCurrentStep (draft was cleared), reset stepper to initial state
-      stepper.goToStep(0, 0);
+      // If no apiCurrentStep (draft was cleared), reset stepper completely
+      stepper.resetStepper();
     }
   }, [draft?.apiCurrentStep, draft?.listingId]);
 

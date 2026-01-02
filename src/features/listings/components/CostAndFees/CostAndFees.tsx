@@ -2,6 +2,7 @@ import { useSearch } from '@tanstack/react-router';
 import { usePaymentTypeSelection, useRentalPrice } from '../../hooks';
 import { ListingTitle, NavigateButtons } from '../shared';
 import { AdditionalPrice } from './AdditionalPrice';
+import { OptionalFees } from './OptionalFees';
 import { RentalPricing } from './RentalPricing';
 
 type CostAndFeesProps = {
@@ -31,6 +32,7 @@ export const CostAndFees = ({ onNext, onPrev }: CostAndFeesProps) => {
           paymentTypeSelection={paymentTypeSelection}
           rentalPricing={rentalPrice}
         />
+        <OptionalFees listingId={listingId as number} />
         <AdditionalPrice />
       </div>
       <NavigateButtons

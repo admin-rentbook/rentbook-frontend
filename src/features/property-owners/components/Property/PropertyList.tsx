@@ -78,10 +78,6 @@ export const PropertyList = () => {
             to: PropertyDetailsLinks.PROPERTY_DETAILS,
             search: {
               propertyId: property.id,
-              propertyName: property.property_name,
-              propertyCity: property.address?.city,
-              propertyStreet: property.address?.street_name || property.address?.formatted_address,
-              propertyStatus: property.approval_status,
             },
           });
         }}

@@ -1,4 +1,3 @@
-import { usePropertyInfoStore } from '@/core/store';
 import { Button } from '@/shared/components';
 import type { PropertyDTO } from '@/shared/types';
 import {
@@ -7,17 +6,23 @@ import {
   formatRentalPrice,
   getDaysUntil,
 } from '@/shared/utils';
-import { CalendarLock01Icon } from 'hugeicons-react';
+import { useWaitlist } from '@/features/wait-wish-lists/hooks/useWaitlist';
+import { CalendarLock01Icon, Loading03Icon } from 'hugeicons-react';
 
 type JoinWaitlistProps = {
   property: PropertyDTO;
 };
 
 export const JoinWaitlist = ({ property }: JoinWaitlistProps) => {
-  const toggleWaitlist = usePropertyInfoStore((s) => s.toggleWaitlist);
-  const isWaitlisted = usePropertyInfoStore((s) =>
-    s.isWaitlisted(property?.id ?? 0)
-  );
+  const {
+    toggleWaitlist,
+    isWaitlisted: checkIsWaitlisted,
+    isAdding,
+    isRemoving
+  } = useWaitlist();
+
+  const isWaitlisted = checkIsWaitlisted(property?.id ?? 0);
+  const isWaitlistLoading = isAdding || isRemoving;
 
   // Calculate days until available
   const daysUntilAvailable = getDaysUntil(property.availability_date || '');
@@ -56,8 +61,19 @@ export const JoinWaitlist = ({ property }: JoinWaitlistProps) => {
       </div>
 
       <div className="flex flex-col gap-3">
-        <Button size="lg" onClick={() => toggleWaitlist(property)}>
-          {isWaitlisted ? 'Leave waitlist' : 'Join waitlist'}
+        <Button
+          size="lg"
+          onClick={() => property.id && toggleWaitlist(property.id)}
+          disabled={isWaitlistLoading}
+        >
+          {isWaitlistLoading ? (
+            <div className="flex items-center gap-2">
+              <Loading03Icon className="size-5 animate-spin" />
+              <span>{isWaitlisted ? 'Leaving...' : 'Joining...'}</span>
+            </div>
+          ) : (
+            <span>{isWaitlisted ? 'Leave waitlist' : 'Join waitlist'}</span>
+          )}
         </Button>
         <Button size="lg" variant="tertiary">
           Request a viewing ({viewingFeeFormatted})

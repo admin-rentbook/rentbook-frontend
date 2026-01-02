@@ -4,17 +4,33 @@ import { useGooglePlacesAutocomplete } from '@/shared/hooks';
 import type { LocationResult } from '@/shared/types';
 import { Search01Icon } from 'hugeicons-react';
 import { useState } from 'react';
-import { useSearchFilters } from '../hooks';
+import { useListingsFilter } from '../providers';
 import { PriceRangeFilter } from './PriceRangeFilter';
 import { PropertyTypeFilter } from './PropertyTypeFilter';
 import { RoomsAndBedFilter } from './RoomsAndBedFilter';
 
 export const Header = () => {
-  const { filters, setPropertyType, setBathrooms, setBedrooms, setPriceRange } =
-    useSearchFilters();
+  const { filters, updateFilters } = useListingsFilter();
   const [_locationResult, setLocationResult] = useState<LocationResult | null>(
     null
   );
+
+  // Helper functions to update individual filters
+  const setPropertyType = (propertyType: typeof filters.propertyType) => {
+    updateFilters({ propertyType });
+  };
+
+  const setBedrooms = (bedrooms: number) => {
+    updateFilters({ bedrooms });
+  };
+
+  const setBathrooms = (bathrooms: number) => {
+    updateFilters({ bathrooms });
+  };
+
+  const setPriceRange = (priceRange: [number, number]) => {
+    updateFilters({ priceRange });
+  };
 
   const { input, setInput, predictions, loading, handleSelectPrediction } =
     useGooglePlacesAutocomplete({

@@ -31,19 +31,29 @@ export type PropertyFilters = {
 };
 
 export type AddressDTO = {
-  id?: string;
+  id?: number;
   place_id?: string;
   formatted_address: string;
   latitude: number;
   longitude: number;
-  street_number?: string;
-  street_name?: string;
+  street_number?: string | null;
+  street_name?: string | null;
   city?: string;
   state?: string;
-  state_code?: string;
-  country?: string; 
-  country_code?: string;
+  state_code?: string | null;
+  country?: string;
+  country_code?: string | null;
   postal_code?: string;
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type UserDTO = {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  full_name: string;
 };
 
 export type PropertyDTO = {
@@ -51,9 +61,15 @@ export type PropertyDTO = {
   property_name: string;
   address: AddressDTO;
   listed_by: ListingTypes;
-  owner_email?: string;
+  listed_by_display?: string;
   approval_status?: PropertyStatusType;
+  approval_status_display?: string;
+  owner?: UserDTO;
+  owner_email?: string;
+  owner_phone?: string;
+  is_owner_verified?: boolean;
+  created_by?: UserDTO;
   created_at?: string;
   updated_at?: string;
-  is_owner_verified?: boolean;
+  listings_count?: number;
 };

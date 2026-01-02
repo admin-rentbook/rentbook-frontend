@@ -2,7 +2,7 @@ import { landingPageRoute } from '@/features/landing-page';
 import { listingDetailsRoute } from '@/features/listing-details';
 import { listingGetStartedRoute, listingsRoute } from '@/features/listings';
 import { viewListingRoute } from '@/features/owner-listing-details';
-import { propertyDetailsRoute } from '@/features/property-details';
+import { complexRoute, propertyDetailsRoute } from '@/features/property-details';
 import {
   createPropertyRoute,
   getStartedRoute,
@@ -37,6 +37,7 @@ const routeTree = rootRoute.addChildren([
   listingDetailsRoute,
   myInterestRoute,
   propertyDetailsRoute,
+  complexRoute,
   viewingRoute,
   viewListingRoute,
   kycRoute,

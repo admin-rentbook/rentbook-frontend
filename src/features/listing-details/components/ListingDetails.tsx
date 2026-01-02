@@ -16,15 +16,9 @@ export const ListingDetails = () => {
 
   // Support both old state-based navigation and new search-based navigation
   const listingId = searchParams.listingId || location.state?.property?.id || 0;
-  const propertyNameFromParams =
-    searchParams.propertyName || location.state?.property?.title;
-  const locationFromParams =
-    searchParams.location || location.state?.property?.location;
 
   const { propertyData, isLoading, error } = usePropertyInfo({
     listingId,
-    propertyName: propertyNameFromParams,
-    location: locationFromParams,
   });
 
   if (isLoading) {

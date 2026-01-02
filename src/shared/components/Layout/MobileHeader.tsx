@@ -31,17 +31,20 @@ export const MobileHeader = () => {
           <h4 className="logo-text text-black-500">rentbook</h4>
         </div>
       </div>
-      <div className="gap-4 hidden md:flex items-center pr-3">
-        <Button
-          variant="tertiary"
-          onClick={() => navigate({ to: '/properties/create' })}
-          className="rounded-full"
-          size="lg"
-        >
-          <ArrowReloadHorizontalIcon className="size-[17px]" />
-          List your property
-        </Button>
-      </div>
+      {isAuthUser && (
+        <div className="gap-4 hidden md:flex items-center pr-3">
+          <Button
+            variant="tertiary"
+            onClick={() => navigate({ to: '/properties/create' })}
+            className="rounded-full"
+            size="lg"
+          >
+            <ArrowReloadHorizontalIcon className="size-[17px]" />
+            List your property
+          </Button>
+        </div>
+      )}
+
       <div className="block md:hidden">
         <TooltipComp
           tooltipTrigger={

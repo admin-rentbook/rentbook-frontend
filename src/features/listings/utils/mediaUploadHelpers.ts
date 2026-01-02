@@ -1,75 +1,9 @@
-import { env } from '@/config/env';
+import {
+  constructBackblazeFileUrl,
+  delay,
+  type BackblazeUploadResponse,
+} from '@/shared/utils';
 import type { MediaDTO } from '../types/listing.dtos';
-
-/**
- * Calculate SHA1 hash of a file using Web Crypto API
- */
-export const calculateSHA1 = async (file: File): Promise<string> => {
-  const buffer = await file.arrayBuffer();
-  const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
-  return hashHex;
-};
-
-/**
- * Construct Backblaze B2 public file URL
- */
-export const constructBackblazeFileUrl = (fileName: string): string => {
-  const bucketName = env.BACKBLAZE_BUCKET_NAME || 'rentbookBucket';
-  return `https://f002.backblazeb2.com/file/${bucketName}/${fileName}`;
-};
-
-/**
- * Delay execution for a specified number of milliseconds
- */
-export const delay = (ms: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
-/**
- * Backblaze B2 upload response structure
- */
-export type BackblazeUploadResponse = {
-  fileId: string;
-  fileName: string;
-  contentLength: number;
-  contentSha1: string;
-  contentType: string;
-  fileInfo: Record<string, string>;
-};
-
-/**
- * Upload a single file to Backblaze B2 signed URL
- */
-export const uploadToBackblaze = async (
-  file: File,
-  signedUrl: string,
-  authorizationToken: string,
-  fileName: string
-): Promise<BackblazeUploadResponse> => {
-  const sha1Hash = await calculateSHA1(file);
-
-  const response = await fetch(signedUrl, {
-    method: 'POST',
-    headers: {
-      Authorization: authorizationToken,
-      'Content-Type': file.type,
-      'X-Bz-File-Name': encodeURIComponent(fileName),
-      'X-Bz-Content-Sha1': sha1Hash,
-    },
-    body: file,
-  });
-
-  if (!response.ok) {
-    throw new Error(`Backblaze upload failed: ${response.statusText}`);
-  }
-
-  const backblazeResponse: BackblazeUploadResponse = await response.json();
-  return backblazeResponse;
-};
 
 /**
  * Transform Backblaze response to MediaDTO

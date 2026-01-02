@@ -5,6 +5,10 @@ export const url = {
   createProperty: env.API_BASE_URL + '/properties/create/',
   getProperties: env.API_BASE_URL + '/properties/my-properties/',
   getPropertyDetails: env.API_BASE_URL + '/',
+  getPropertyDetailsById: (propertyId: number) =>
+    env.API_BASE_URL + `/properties/${propertyId}/`,
+  kyc: env.API_BASE_URL + '/kyc',
+  storage: env.API_BASE_URL + '/storage',
 };
 
 export const queryKey = {
