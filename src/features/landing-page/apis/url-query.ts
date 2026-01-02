@@ -6,7 +6,7 @@ export const url = {
   userWaitlists: `${env.API_BASE_URL}/waitlist/user/waitlists/`,
   wishlist: (listingId: number) => `${env.API_BASE_URL}/wishlist/listings/${listingId}/`,
   wishlists: `${env.API_BASE_URL}/wishlist/`,
-  verifyToken: (token: string) => `${env.API_BASE_URL}/verify/${token}/`,
+  verifyToken: (token: string) => `${env.API_BASE_URL}/properties/verify/${token}/`,
 };
 
 export const queryKey = {
