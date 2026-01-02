@@ -1,6 +1,5 @@
 import { ListingLiveModal } from '@/features/listings/components/ListingLiveModal';
 import { ListingLinks } from '@/features/listings/constants';
-import { Links } from '@/features/property-owners/constants';
 import {
   Button,
   StatusBox,
@@ -9,9 +8,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/shared/components';
-import { convertUnderscoreToSpace } from '@/shared/utils';
-import { returnStatus } from '@/shared/utils/helpers';
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import {
   Add01Icon,
   ArrowLeft01Icon,
@@ -20,7 +17,7 @@ import {
   LegalDocument01Icon,
   UserIcon,
 } from 'hugeicons-react';
-import { useListingLiveModal } from '../hooks';
+import { useListingLiveModal, usePropertyDetails } from '../hooks';
 import { Agents } from './Agents';
 import { Leases } from './Leases';
 import { Listings } from './Listings';
@@ -31,33 +28,37 @@ export const PropertyDetails = () => {
   const navigate = useNavigate();
 
   const {
-    propertyName,
-    propertyCity,
-    propertyStreet,
-    propertyStatus,
-    showListingLiveModal,
-    listingId,
-  } = useSearch({
-    from: '/property-details',
-  });
-
-  const {
-    isModalOpen,
-    listingData,
-    handleShareListing,
-    handleModalClose,
-  } = useListingLiveModal({
+    propertyData,
+    isLoading,
+    error,
+    // propertyId,
     listingId,
     showListingLiveModal,
-  });
+    displayData,
+    handlers,
+  } = usePropertyDetails();
 
-  const displayName = propertyName
-    ? `Apartment in ${propertyCity || 'Unknown City'}`
-    : 'Apartment in Windhoek';
-  const displayAddress =
-    propertyStreet || '123 Independence Avenue Central Business district';
-  const status = (propertyStatus as any) || 'active';
-  const { bgColor, textColor, fillColor } = returnStatus(status);
+  const { isModalOpen, listingData, handleShareListing, handleModalClose } =
+    useListingLiveModal({
+      listingId,
+      showListingLiveModal,
+    });
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-heading-4 text-neutral-600">Loading property details...</div>
+      </div>
+    );
+  }
+
+  if (error || !propertyData) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-heading-4 text-error-500">Error loading property details</div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -65,7 +66,7 @@ export const PropertyDetails = () => {
         <div className="flex items-center justify-between p-5">
           <div
             className="flex items-center gap-3  text-black-300 hover:cursor-pointer"
-            onClick={() => navigate({ to: Links.PROPERTIES })}
+            onClick={handlers.handleBackToProperties}
           >
             <ArrowLeft01Icon className="size-4" />
             <p className="text-body">Properties</p>
@@ -76,15 +77,15 @@ export const PropertyDetails = () => {
       <div className="px-3 lg:p-5 flex flex-col gap-3 lg:gap-0 lg:flex-row lg:justify-between items-center">
         <div className="w-full lg:w-auto">
           <div className="flex gap-3 pb-2">
-            <h4 className="text-heading-4 text-neutral-600">{displayName}</h4>
+            <h4 className="text-heading-4 text-neutral-600">{displayData.displayName}</h4>
             <StatusBox
-              bgColor={bgColor}
-              textColor={textColor}
-              text={convertUnderscoreToSpace(status)}
-              fillColor={fillColor}
+              bgColor={displayData.statusDetails.bgColor}
+              textColor={displayData.statusDetails.textColor}
+              text={displayData.statusText}
+              fillColor={displayData.statusDetails.fillColor}
             />
           </div>
-          <p className="text-body-small text-black-300">{displayAddress}</p>
+          <p className="text-body-small text-black-300">{displayData.displayAddress}</p>
         </div>
         <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
           <Button
@@ -106,7 +107,7 @@ export const PropertyDetails = () => {
           <Button variant="outline" size="sm">
             Create lease
           </Button>
-          <PropertyMenu />
+          <PropertyMenu handlers={handlers} />
         </div>
       </div>
 

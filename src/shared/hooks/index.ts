@@ -6,5 +6,6 @@ export * from './useExpandableTextOptions';
 export * from './useGooglePlacesAutoComplete';
 export * from './useImageGrid';
 export * from './useMobile';
+export * from './usePropertyInfo';
 export * from './useStepper';
 export * from './useTimer';

@@ -2,6 +2,7 @@ import { convertUnderscoreToSpace } from '@/shared/utils';
 
 export const PropertyDetailsLinks = {
   PROPERTY_DETAILS: '/property-details',
+  COMPLEX_VIEW: '/property-details/complex/$complexId',
 } as const;
 export type PropertyDetailsLinkType =
   (typeof PropertyDetailsLinks)[keyof typeof PropertyDetailsLinks];

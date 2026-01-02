@@ -17,9 +17,9 @@ export const ownerListingSchema = z.object({
 
 export const agentListingSchema = z.object({
   listedBy: z.literal(LISTING_TYPE.AGENT),
-  ownerName: z.string().min(2, 'Owner name must be at least 2 characters'),
   ownerEmail: z.email('Please enter a valid email address'),
-  ownerPhone: z.string().min(10, 'Please enter a valid phone number'),
+  ownerName: z.string().optional(),
+  ownerPhone: z.string().optional(),
   agentCommission: z.number().min(0).max(100).optional(),
 });
 
@@ -30,3 +30,11 @@ export const listingTypeSchema = z.discriminatedUnion('listedBy', [
 ]);
 
 export const createPropertySchema = propertyInfoSchema.and(listingTypeSchema);
+
+export const kycSchema = z.object({
+  namibianRegNo: z
+    .string()
+    .min(1, 'Registration number is required')
+    .min(5, 'Registration number must be at least 5 characters')
+    .max(50, 'Registration number must not exceed 50 characters'),
+});

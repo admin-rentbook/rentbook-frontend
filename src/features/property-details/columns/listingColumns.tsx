@@ -58,7 +58,10 @@ export const listingColumns: ColumnDef<ListingDescriptionDTO, any>[] = [
       return (
         <div className="flex gap-2 items-center">
           {items.map((item) => (
-            <div className="flex gap-1 items-start text-icons-black">
+            <div
+              key={item.value}
+              className="flex gap-1 items-start text-icons-black"
+            >
               {<item.icon className="size-4 text-black-400" />}
               <p className="text-body-xs">{item.value}</p>
             </div>

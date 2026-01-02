@@ -171,3 +171,62 @@ export const formatTimeFromISO = (isoTime: string): string => {
   }
   return '';
 };
+
+/**
+ * Formats a date string to display format like "Tue, November 13, 2025, 10:00AM"
+ * @param dateString - ISO date string
+ * @returns Formatted date string
+ */
+export const formatAvailabilityDate = (dateString: string): string => {
+  if (!dateString) return '';
+
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return '';
+
+  const weekday = date.toLocaleDateString('en-US', { weekday: 'short' });
+  const month = date.toLocaleDateString('en-US', { month: 'long' });
+  const day = date.getDate();
+  const year = date.getFullYear();
+  const time = formatTimeToDisplay(
+    date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
+  );
+
+  return `${weekday}, ${month} ${day}, ${year}, ${time}`;
+};
+
+/**
+ * Calculate days until a given date
+ * @param dateString - ISO date string
+ * @returns Number of days until the date, or null if date has passed
+ */
+export const getDaysUntil = (dateString: string): number | null => {
+  if (!dateString) return null;
+
+  const now = new Date();
+  const targetDate = new Date(dateString);
+
+  if (isNaN(targetDate.getTime())) return null;
+
+  const diffTime = targetDate.getTime() - now.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  return diffDays > 0 ? diffDays : null;
+};
+
+/**
+ * Formats a date string to "12 June, 2025" format
+ * @param dateString - ISO date string
+ * @returns Formatted date string
+ */
+export const formatDateLong = (dateString: string): string => {
+  if (!dateString) return '';
+
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return '';
+
+  const day = date.getDate();
+  const month = date.toLocaleDateString('en-US', { month: 'long' });
+  const year = date.getFullYear();
+
+  return `${day} ${month}, ${year}`;
+};

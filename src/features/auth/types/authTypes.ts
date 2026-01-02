@@ -18,6 +18,7 @@ export type UserDTO = {
   first_name: string;
   last_name: string;
   username: string;
+  kyc_status: 'active' | null
 };
 export type AuthUser = {
   tokens: {

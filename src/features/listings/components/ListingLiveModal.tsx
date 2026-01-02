@@ -51,7 +51,7 @@ export const ListingLiveModal = ({
 
         <div className="relative h-[300px] lg:h-[200px] lg:w-[440px] rounded-[1.25em] overflow-hidden z-10">
           <img
-            src={listing.images[0] || propImg}
+            src={listing.images[0] as string || propImg}
             alt={listing.title}
             className="object-cover w-full h-full"
           />

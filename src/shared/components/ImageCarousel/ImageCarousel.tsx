@@ -7,15 +7,18 @@ import {
   CarouselPrevious,
 } from '../ui/carousel';
 import { useCarouselHook } from '@/shared/hooks';
+import type { ImageWithThumbnail } from '@/shared/types';
+import { OptimizedImage } from '../OptimizedImage';
 
 type ImageCarouselProps = {
-  images: string[];
+  images: string[] | ImageWithThumbnail[];
   alt?: string;
   imageClassName?: string;
   containerClassName?: string;
   showDots?: boolean;
   showArrows?: boolean;
   showArrowsOnHover?: boolean;
+  showCounter?: boolean;
   overlay?: ReactNode;
   onImageClick?: (index: number) => void;
 };
@@ -28,6 +31,7 @@ export const ImageCarousel = ({
   showDots = true,
   showArrows = true,
   showArrowsOnHover = true,
+  showCounter = false,
   overlay,
   onImageClick,
 }: ImageCarouselProps) => {
@@ -64,20 +68,30 @@ export const ImageCarousel = ({
         setApi={setApi}
       >
         <CarouselContent className="h-full">
-          {images.map((image, index) => (
-            <CarouselItem key={index} className="h-full">
-              <div
-                className="h-full w-full"
-                onClick={() => onImageClick?.(index)}
-              >
-                <img
-                  src={image}
-                  alt={`${alt} - Image ${index + 1}`}
-                  className={imageClassName}
-                />
-              </div>
-            </CarouselItem>
-          ))}
+          {images.map((image, index) => {
+            // Check if image is a string or ImageWithThumbnail object
+            const imageUrl = typeof image === 'string' ? image : image.url;
+            const thumbnailUrl =
+              typeof image === 'string' ? undefined : image.thumbnail;
+
+            return (
+              <CarouselItem key={index} className="h-full">
+                <div
+                  className="h-full w-full"
+                  onClick={() => onImageClick?.(index)}
+                >
+                  <OptimizedImage
+                    src={imageUrl}
+                    thumbnailSrc={thumbnailUrl}
+                    alt={`${alt} - Image ${index + 1}`}
+                    className={imageClassName}
+                    priority={index === 0} // First image loads eagerly
+                    loading={index === 0 ? 'eager' : 'lazy'} // Lazy load non-visible images
+                  />
+                </div>
+              </CarouselItem>
+            );
+          })}
         </CarouselContent>
 
         {/* Navigation arrows */}
@@ -95,7 +109,7 @@ export const ImageCarousel = ({
         )}
 
         {/* Dot indicators */}
-        {images.length > 1 && showDots && (
+        {images.length > 1 && showDots && !showCounter && (
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
             {images.map((_, index) => (
               <button
@@ -112,6 +126,15 @@ export const ImageCarousel = ({
                 aria-label={`Go to image ${index + 1}`}
               />
             ))}
+          </div>
+        )}
+
+        {/* Image counter - bottom right */}
+        {images.length > 1 && showCounter && (
+          <div className="absolute bottom-3 right-3 bg-white text-icons-black px-3 py-1 rounded-full">
+            <p className="text-body">
+              {currentIndex + 1}/{images.length}
+            </p>
           </div>
         )}
       </Carousel>

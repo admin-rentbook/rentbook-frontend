@@ -10,8 +10,37 @@ import {
 import { useMobile } from '@/shared/hooks';
 import { MoreHorizontalCircle01Icon } from 'hugeicons-react';
 
-export const PropertyMenu = () => {
+type PropertyMenuProps = {
+  handlers: {
+    handleCreateComplex: () => void;
+    handleAddAgent: () => void;
+    handleEditProperty: () => void;
+    handleDeactivateProperty: () => void;
+    handleBackToProperties: () => void;
+  };
+};
+
+export const PropertyMenu = ({ handlers }: PropertyMenuProps) => {
   const { isMobile } = useMobile();
+
+  const menuItems = [
+    {
+      name: 'Create complex',
+      action: handlers.handleCreateComplex,
+    },
+    {
+      name: 'Add agent',
+      action: handlers.handleAddAgent,
+    },
+    {
+      name: 'Edit property',
+      action: handlers.handleEditProperty,
+    },
+    {
+      name: 'Deactivate property',
+      action: handlers.handleDeactivateProperty,
+    },
+  ];
 
   if (isMobile) {
     return (
@@ -25,7 +54,11 @@ export const PropertyMenu = () => {
         children={
           <div className="flex flex-col gap-4">
             {menuItems.map((item) => (
-              <div key={item.name} className="cursor-pointer flex gap-2">
+              <div
+                key={item.name}
+                className="cursor-pointer flex gap-2"
+                onClick={item.action}
+              >
                 {item.name === 'Deactivate property' ? (
                   <div className="text-body text-red-400">
                     <p>{item.name}</p>
@@ -56,7 +89,11 @@ export const PropertyMenu = () => {
       >
         <DropdownMenuGroup className="space-y-2">
           {menuItems.map((item) => (
-            <DropdownMenuItem key={item.name} className="cursor-pointer">
+            <DropdownMenuItem
+              key={item.name}
+              className="cursor-pointer"
+              onClick={item.action}
+            >
               {item.name === 'Deactivate property' ? (
                 <div className="text-body text-red-400">
                   <p>{item.name}</p>
@@ -73,26 +110,3 @@ export const PropertyMenu = () => {
     </DropdownMenu>
   );
 };
-
-type MenuItemProps = {
-  name: string;
-  action: () => void;
-};
-const menuItems: MenuItemProps[] = [
-  {
-    name: 'Create block',
-    action: () => ({}),
-  },
-  {
-    name: 'Add agent',
-    action: () => ({}),
-  },
-  {
-    name: 'Edit property',
-    action: () => ({}),
-  },
-  {
-    name: 'Deactivate property',
-    action: () => ({}),
-  },
-];

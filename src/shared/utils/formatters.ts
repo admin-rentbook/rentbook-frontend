@@ -98,3 +98,20 @@ export const squareMeterFormatter: Formatter = {
     return isNaN(parsed) ? undefined : parsed;
   },
 };
+
+export const formatRentalPrice = (
+  amount: number | string | undefined,
+  rentPeriod?: 'MONTH' | 'YEAR' | 'month' | 'year' | string
+): string => {
+  if (amount === undefined || amount === null || amount === '') return '';
+
+  const numValue = typeof amount === 'string' ? parseFloat(amount) : amount;
+  if (isNaN(numValue)) return '';
+
+  const formattedAmount = currencyFormatter.format(numValue, false);
+
+  if (!rentPeriod) return formattedAmount;
+
+  const period = rentPeriod.toUpperCase() === 'MONTH' ? '/m' : '/yr';
+  return `${formattedAmount}${period}`;
+};

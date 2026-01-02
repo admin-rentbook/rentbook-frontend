@@ -1,5 +1,6 @@
 import { ListingLinks } from '@/features/listings/constants';
 import type { ListingDescriptionDTO } from '@/features/listings/types';
+import { ViewListingLinks } from '@/features/owner-listing-details';
 import { DataTable } from '@/shared/components';
 import { EmptyState } from '@/shared/components/EmptyState';
 import { useNavigate } from '@tanstack/react-router';
@@ -38,8 +39,11 @@ export const ListingTable = ({
         isServerSide
         mobileCardRender={(row) => <ListingListMobile row={row} />}
         onRowAction={(listing) => {
+          const isDraft = listing.status === 'draft';
           navigate({
-            to: ListingLinks.LISTINGS,
+            to: isDraft
+              ? ListingLinks.LISTINGS
+              : ViewListingLinks.VIEW_A_LISTING,
             search: (prev) => ({
               propertyId: prev.propertyId,
               listingId: listing.id,

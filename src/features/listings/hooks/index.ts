@@ -7,6 +7,7 @@ export * from './useDiscount';
 export * from './useListingDescription';
 export * from './useListingsPage';
 export * from './useMedia';
+export * from './useOptionalFees';
 export * from './usePaymentTypeSelection';
 export * from './useRentalPrice';
 export * from './useRentAvailability';

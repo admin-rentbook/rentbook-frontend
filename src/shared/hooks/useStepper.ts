@@ -23,6 +23,7 @@ export type UseStepper = {
   getCurrentSubStep: (mainStepId: number) => number;
   goBack: () => void;
   goForward: () => void;
+  resetStepper: () => void;
 };
 
 export const useStepper = (
@@ -161,6 +162,13 @@ export const useStepper = (
     }
   };
 
+  const resetStepper = () => {
+    setCurrentMainStep(0);
+    setCurrentSubStep({});
+    setCompletedSteps({});
+    setExpandedSteps({ 0: true });
+  };
+
   return {
     currentMainStep,
     currentSubStep: getCurrentSubStep(currentMainStep),
@@ -177,5 +185,6 @@ export const useStepper = (
     getCurrentSubStep,
     goBack,
     goForward,
+    resetStepper,
   };
 };

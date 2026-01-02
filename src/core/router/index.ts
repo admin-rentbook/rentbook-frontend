@@ -1,10 +1,12 @@
 import { landingPageRoute } from '@/features/landing-page';
 import { listingDetailsRoute } from '@/features/listing-details';
 import { listingGetStartedRoute, listingsRoute } from '@/features/listings';
-import { propertyDetailsRoute } from '@/features/property-details';
+import { viewListingRoute } from '@/features/owner-listing-details';
+import { complexRoute, propertyDetailsRoute } from '@/features/property-details';
 import {
   createPropertyRoute,
   getStartedRoute,
+  kycRoute,
   leasesRoute,
   notificationRoute,
   paymentRoute,
@@ -35,7 +37,10 @@ const routeTree = rootRoute.addChildren([
   listingDetailsRoute,
   myInterestRoute,
   propertyDetailsRoute,
+  complexRoute,
   viewingRoute,
+  viewListingRoute,
+  kycRoute,
 ]); //this will be updated properly by putting them in their correct features
 const router = createRouter({ routeTree });
 

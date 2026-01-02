@@ -1,13 +1,15 @@
-import { usePropertyInfoStore } from '@/core/store';
+import { useWaitlist } from '@/features/wait-wish-lists/hooks/useWaitlist';
+import { useWishlist } from '@/features/wait-wish-lists/hooks/useWishlist';
 import { Card, CardContent, ImageCarousel } from '@/shared/components';
 import type { ListingDTO } from '@/shared/types';
-import { formatNamibianDollar } from '@/shared/utils';
+import { formatNamibianDollar, formatRentalPrice } from '@/shared/utils';
 import {
   Bathtub01Icon,
   BedSingle02Icon,
   CalendarLock01Icon,
   DashedLine02Icon,
   FavouriteIcon,
+  Loading03Icon,
 } from 'hugeicons-react';
 
 type PropertyCardProps = {
@@ -16,17 +18,30 @@ type PropertyCardProps = {
 };
 
 export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
-  const { symbol, amount } = formatNamibianDollar(property.amount);
-  const toggleWishlist = usePropertyInfoStore((s) => s.toggleWishlist);
-  const isWishlisted = usePropertyInfoStore((s) =>
-    s.isWishlisted(property.id ?? 0)
-  );
-  const isWaitlisted = usePropertyInfoStore((s) =>
-    s.isWaitlisted(property.id ?? 0)
-  );
+  const formattedPrice = property.rent_period
+    ? formatRentalPrice(property.amount, property.rent_period)
+    : (() => {
+        const { symbol, amount } = formatNamibianDollar(property.amount);
+        return `${symbol}${amount}/mo`;
+      })();
+
+  const {
+    toggleWishlist,
+    isWishlisted: checkIsWishlisted,
+    isAdding,
+    isRemoving,
+  } = useWishlist();
+  const { isWaitlisted: checkIsWaitlisted } = useWaitlist();
+
+  const isWishlisted = checkIsWishlisted(property.id ?? 0);
+  const isWaitlisted = checkIsWaitlisted(property.id ?? 0);
+  const isWishlistLoading = isAdding || isRemoving;
+
   const handleWishlistClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    toggleWishlist(property);
+    if (property.id && !isWishlistLoading) {
+      toggleWishlist(property.id);
+    }
   };
 
   const propertyItems = [
@@ -58,14 +73,20 @@ export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
       <button
         onClick={handleWishlistClick}
         aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+        disabled={isWishlistLoading}
+        className="relative"
       >
-        <FavouriteIcon
-          className={`size-6 transition-colors ${
-            isWishlisted
-              ? 'fill-primary-500 text-white'
-              : 'fill-gray-900 text-white'
-          }`}
-        />
+        {isWishlistLoading ? (
+          <Loading03Icon className="size-6 text-primary-500 animate-spin" />
+        ) : (
+          <FavouriteIcon
+            className={`size-6 transition-colors ${
+              isWishlisted
+                ? 'fill-primary-500 text-white'
+                : 'fill-gray-900 text-white'
+            }`}
+          />
+        )}
       </button>
     </div>
   );
@@ -103,11 +124,7 @@ export const PropertyCard = ({ property, onClick }: PropertyCardProps) => {
               ))}
             </div>
           </div>
-          <p className="text-body-sm-semi">
-            <span className="text-black-500/60">{symbol}</span>
-            <span className="text-black-500">{amount}</span>
-            <span className="text-black-400">/mo</span>
-          </p>
+          <p className="text-body-sm-semi text-black-500">{formattedPrice}</p>
         </div>
       </CardContent>
     </Card>
