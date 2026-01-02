@@ -1,7 +1,11 @@
 import {
   axios,
+  queryClient,
   useMutation,
+  useQuery,
+  type ExtractFnReturnType,
   type MutationConfig,
+  type QueryConfig,
 } from '@/core/lib';
 import type { ApiResponse } from '@/shared/types';
 import {
@@ -12,7 +16,7 @@ import {
 } from '@/shared/utils';
 import { formatError } from '@/shared/utils/helpers';
 import { toast } from 'sonner';
-import { url } from '../url-query';
+import { queryKey, url } from '../url-query';
 
 /**
  * KYC Document Type
@@ -91,8 +95,58 @@ export const useSubmitKyc = ({ config }: UseSubmitKycOptions = {}) => {
     },
     onSuccess: () => {
       toast.success('KYC submitted successfully!', { id: 'kyc-submit-succ' });
+      // Invalidate KYC status query to refetch updated status
+      queryClient.invalidateQueries({ queryKey: queryKey.kycStatus() });
     },
     mutationFn: submitKyc,
+    ...config,
+  });
+};
+
+/**
+ * KYC Status Response
+ */
+export type KycStatusResponse = {
+  id: number;
+  user: {
+    id: number;
+    email: string;
+    first_name: string;
+    last_name: string;
+    full_name: string;
+  };
+  namibian_registration_number: string;
+  status: 'approved' | 'pending' | 'rejected';
+  status_display: string;
+  is_verified: boolean;
+  submitted_at: string;
+  reviewed_at: string | null;
+};
+
+/**
+ * Get KYC Status
+ */
+const getKycStatus = async () => {
+  try {
+    const response = await axios.get<ApiResponse<KycStatusResponse>>(url.kycStatus);
+    return response.data.data;
+  } catch (err) {
+    throw formatError(err);
+  }
+};
+
+type QueryFnType = typeof getKycStatus;
+
+type UseGetKycStatusOptions = {
+  config?: QueryConfig<QueryFnType>;
+};
+
+export const useGetKycStatus = ({ config }: UseGetKycStatusOptions = {}) => {
+  return useQuery<ExtractFnReturnType<QueryFnType>>({
+    queryKey: queryKey.kycStatus(),
+    queryFn: getKycStatus,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
     ...config,
   });
 };

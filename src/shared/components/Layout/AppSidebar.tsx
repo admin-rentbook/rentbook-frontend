@@ -1,6 +1,7 @@
 import logo from '@/assets/images/logo.png';
 import { Button } from '@/shared/components';
 
+import { useAppStore } from '@/core/store';
 import {
   Sidebar,
   SidebarContent,
@@ -26,6 +27,8 @@ type AppSidebarProps = {
 
 export const AppSidebar = (props: AppSidebarProps) => {
   const { toggleSidebar, open } = useSidebar();
+  const authUser = useAppStore((s) => s.authUser);
+  const isAuthUser = authUser?.tokens.access;
 
   return (
     <Sidebar collapsible="icon" className="border-r bg-white border-r-gray-50">
@@ -61,7 +64,7 @@ export const AppSidebar = (props: AppSidebarProps) => {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className="gap-2">
-              {props.sidebarItems.slice(0, 4).map((item) => {
+              {props.sidebarItems.slice(0, 3).map((item) => {
                 if (item.name?.toLowerCase() === 'search') {
                   return (
                     <SpecialCompRender
@@ -96,7 +99,7 @@ export const AppSidebar = (props: AppSidebarProps) => {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className="gap-2">
-              {props.sidebarItems.slice(4, 7).map((item) => (
+              {props.sidebarItems.slice(3, 6).map((item) => (
                 <SidebarMenuItem key={item.name}>
                   <SidebarMenuButton asChild tooltip={item.name}>
                     <Link
@@ -121,7 +124,7 @@ export const AppSidebar = (props: AppSidebarProps) => {
       <SidebarFooter>
         <SidebarGroup>
           <SidebarMenu className="gap-2">
-            {props.sidebarItems.slice(7).map((item) => (
+            {props.sidebarItems.slice(6).map((item) => (
               <SidebarMenuItem key={item.name}>
                 <SidebarMenuButton asChild tooltip={item.name}>
                   <Link
@@ -140,7 +143,8 @@ export const AppSidebar = (props: AppSidebarProps) => {
             ))}
           </SidebarMenu>
         </SidebarGroup>
-        {props.showUserMenu && (
+
+        {isAuthUser && (
           <SidebarGroup>
             <UserMenu />
           </SidebarGroup>

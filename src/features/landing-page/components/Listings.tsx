@@ -9,13 +9,16 @@ import { ListingSkeleton } from './ListingSkeleton';
 import { PropertyCard } from './PropertyCard';
 
 export const Listings = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate({ from: '/' });
   const { listings, isLoading, error } = useListingsFilter();
 
-  const handleClick = (property: ListingDTO) => {
+  const handleClick = (listing: ListingDTO) => {
     navigate({
       to: ListingDetailsLinks.LISTING_DETAILS,
-      state: { property: property },
+      search: (prev) => ({
+        ...prev,
+        listingId: listing.id
+      }),
     });
   };
 
@@ -93,7 +96,7 @@ export const Listings = () => {
           <PropertyCard
             property={listing}
             key={listing.id || listing.title}
-            onClick={handleClick}
+            onClick={() => handleClick(listing)}
           />
         ))}
       </div>

@@ -1,49 +1,53 @@
-import { useAppStore } from '@/core/store';
+import { Button } from '@/shared/components';
 import { useNavigate } from '@tanstack/react-router';
 import {
   ArrowRight01Icon,
   Cancel01Icon,
   UserCheck02Icon,
+  UserStoryIcon,
 } from 'hugeicons-react';
 import { useState } from 'react';
+import { useGetKycStatus } from '../../apis/requests';
 import { Links } from '../../constants';
 
 export const OverviewHeader = () => {
   const navigate = useNavigate();
-  const kycStatus = useAppStore((s) => s.authUser)?.user.kyc_status;
+  const { data: kycStatusData, isLoading } = useGetKycStatus();
   const [isKycBannerDismissed, setIsKycBannerDismissed] = useState(false);
 
-  // If KYC is verified and banner is dismissed, show white/blank header
-  if (kycStatus === 'active' && isKycBannerDismissed) {
+  const kycStatus = kycStatusData?.status;
+  const isVerified = kycStatusData?.is_verified;
+
+  if (isLoading) {
     return <div className="p-3 lg:p-5 bg-white"></div>;
   }
 
-  // Show verification complete message if KYC is active
-  if (kycStatus === 'active') {
+  if (kycStatus === 'approved' && isVerified && isKycBannerDismissed) {
+    return <div className="p-3 lg:p-5 bg-white"></div>;
+  }
+
+  if (kycStatus === 'approved' && isVerified) {
     return (
       <div className="p-3 lg:p-5">
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-3 flex justify-between items-center">
+        <div className="bg-white rounded-2xl p-3 flex justify-between items-center">
           <div className="flex gap-2 items-center">
-            <div className="size-[40px] rounded-xl grid place-items-center bg-white/20">
-              <UserCheck02Icon className="text-white size-4" />
+            <div className="size-[40px] rounded-xl grid place-items-center bg-red-400">
+              <UserStoryIcon className="text-white size-5" />
             </div>
             <div>
-              <p className="text-body-medium text-success-500">
+              <p className="text-body-medium text-success-600">
                 Verification complete
               </p>
-              <p className="text-body-small text-white">
-                Your profile has been verified and all your listings are now live
+              <p className="text-body-small text-black-300">
+                Your profile has been verified and all your listings are now
+                live
               </p>
             </div>
           </div>
 
-          <button
-            onClick={() => setIsKycBannerDismissed(true)}
-            className="p-1 hover:bg-white/20 rounded-lg transition-colors"
-            aria-label="Dismiss verification banner"
-          >
-            <Cancel01Icon className="size-5 text-white" />
-          </button>
+          <Button onClick={() => setIsKycBannerDismissed(true)} variant="ghost">
+            <Cancel01Icon className="size-5 text-black-400" />
+          </Button>
         </div>
       </div>
     );

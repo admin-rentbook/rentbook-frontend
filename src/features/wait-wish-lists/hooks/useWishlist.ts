@@ -15,7 +15,6 @@ export const useWishlist = () => {
     currentPage,
     ITEMS_PER_PAGE
   );
-  console.log('wishlist', wishlistData)
 
   const addMutation = useAddToWishlist();
   const removeMutation = useRemoveFromWishlist();

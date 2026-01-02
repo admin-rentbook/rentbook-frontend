@@ -21,8 +21,8 @@ export const Onboarding = () => {
     }
   }, []);
 
-  const search = useSearch({ from: '/' });
-  const currentStep = search.step || 1;
+  const search = useSearch({ strict: false }) as { step?: number };
+  const currentStep = search?.step || 1;
   return (
     <div className="grid grid-cols-2 w-full min-h-[70vh]">
       <div className="flex flex-col col-span-2 lg:col-span-1 px-6 lg:px-8 xl:px-10 pr-6 py-8 items-start gap-6 h-full">

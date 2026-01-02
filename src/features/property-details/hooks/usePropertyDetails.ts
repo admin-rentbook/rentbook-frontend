@@ -12,7 +12,13 @@ export const usePropertyDetails = () => {
     from: '/property-details',
   });
 
-  const { data: propertyData, isLoading, error } = useGetPropertyDetailsById(propertyId!);
+  const {
+    data: propertyData,
+    isLoading,
+    error,
+    isError,
+    refetch,
+  } = useGetPropertyDetailsById(propertyId!);
 
   const displayData = useMemo(() => {
     if (!propertyData) {
@@ -78,6 +84,8 @@ export const usePropertyDetails = () => {
     listingId,
     showListingLiveModal,
     displayData,
+    isError,
+    refetch,
     handlers: {
       handleCreateComplex,
       handleAddAgent,

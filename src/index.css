@@ -89,6 +89,7 @@
   --color-success-300: var(--success-300);
   --color-success-400: var(--success-400);
   --color-success-500: var(--success-500);
+  --color-success-600: var(--success-600);
 
   --color-warning-300: var(--warning-300);
   --color-warning-500: var(--warning-500);
@@ -180,6 +181,7 @@
   --success-300: oklch(0.6859 0.1667 154.86); /*#12b76a*/
   --success-400: oklch(0.7303 0.1944 147.44); /*#34c759*/
   --success-500: oklch(0.282 0.0846 157.98); /*#1c5d3d*/
+  --success-600: oklch(0.5475 0.1231 159.87); /*#048657*/
 
   --sidebar: oklch(0.985 0 0); /*f9f9f9*/
   --sidebar-foreground: oklch(0.145 0 0);

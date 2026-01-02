@@ -20,6 +20,10 @@ type AppStore = {
   onOpenAuth: (open: boolean) => void;
   isOpenGetStarted: boolean;
   onOpenGetStarted: (open: boolean) => void;
+
+  isTokenExpired: boolean;
+  setTokenExpired: (expired: boolean) => void;
+
   logout: () => void;
 };
 
@@ -49,8 +53,11 @@ export const useAppStore = create<AppStore>((set) => ({
   isOpenGetStarted: false,
   onOpenGetStarted: (open) => set({ isOpenGetStarted: open }),
 
+  isTokenExpired: false,
+  setTokenExpired: (expired) => set({ isTokenExpired: expired }),
+
   logout: () => {
-    set({ authUser: null, userType: null });
+    set({ authUser: null, userType: null, isTokenExpired: false });
     clearDataFromSessStorage('auth_user');
     clearDataFromLocalStorage('userType');
     clearDataFromSessStorage('verify-timer');
