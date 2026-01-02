@@ -1,11 +1,15 @@
 import { Auth } from '@/features/auth';
 import { AuthStoreProvider } from '@/features/auth/providers';
+import { useTokenVerification } from '../hooks';
 import { ListingsFilterProvider } from '../providers';
 import { GetStartedModal } from './GetStartedModal';
 import { Header } from './Header';
 import { Listings } from './Listings';
 
 export const LandingPage = () => {
+  // Handle token verification from URL search params
+  useTokenVerification();
+
   return (
     <>
       <GetStartedModal />
