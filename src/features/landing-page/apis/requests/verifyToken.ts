@@ -39,12 +39,12 @@ export const useVerifyToken = ({ config }: UseVerifyTokenOptions = {}) => {
     onSuccess: (response) => {
       if (response.data.verified) {
         toast.success(
-          response.data.message || 'Property ownership verified successfully!',
+          response?.message || 'Property ownership verified successfully!',
           { id: 'verify-token-success' }
         );
       } else {
         toast.error(
-          response.data.message || 'Token verification failed',
+          response?.message || 'Token verification failed',
           { id: 'verify-token-error' }
         );
       }
