@@ -43,8 +43,8 @@ export const Wishlist = () => {
   return (
     <>
       {wishlists.length === 0 ? (
-        <div className="flex justify-center py-10 rounded-[1.25em] overflow-hidden aspect-[4/4]">
-          <div className="flex flex-col gap-6 h-[500px] w-[500px] items-center justify-center bg-sidebar-accent rounded-[15px]">
+        <div className="flex justify-center py-10 rounded-[1.25em] overflow-hidden">
+          <div className="flex flex-col gap-6  h-[300px] w-[400px] lg:h-[500px] lg:w-[500px] items-center justify-center bg-sidebar-accent rounded-[15px]">
             <GuestHouseIcon className="size-[40px] text-black-500" />
             <h4 className="text-body-medium text-black-400">
               Wishlists added will be displayed here

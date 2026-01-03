@@ -14,9 +14,14 @@ export const getStartedRoute = createRoute({
   component: () => <GetStartedView />,
 });
 
+const overviewSearchSchema = z.object({
+  kycSubmitted: z.boolean().optional(),
+});
+
 export const propertyOverviewRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: Links.OVERVIEW,
+  validateSearch: overviewSearchSchema,
   component: () => (
     <LayoutWithoutHeader sidebarItems={sidebarItems}>
       <OverviewView />

@@ -13,6 +13,7 @@ import {
 export const ListingLinks = {
   LISTINGS_GET_STARTED: '/listings/get-started',
   LISTINGS: '/listings-start',
+  LISTINGS_EDIT: '/listings-edit',
 } as const;
 export type ListingLinkType = (typeof ListingLinks)[keyof typeof ListingLinks];
 

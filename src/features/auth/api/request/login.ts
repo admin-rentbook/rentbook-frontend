@@ -23,7 +23,7 @@ type UseLoginOptions = {
 export const useLoginMutation = ({ config }: UseLoginOptions = {}) => {
   const setAuthUser = useAppStore((s) => s.setAuthUser);
   const onOpenAuth = useAppStore((s) => s.onOpenAuth);
-  const search = useSearch({ from: '/' });
+  const search = useSearch({ strict: false }) as { redirectTo?: string };
   const navigate = useNavigate();
 
   return useMutation({

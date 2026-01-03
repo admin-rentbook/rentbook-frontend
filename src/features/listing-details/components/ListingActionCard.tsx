@@ -43,10 +43,17 @@ export const ListingActionCard = ({ property, mode }: ListingActionCardProps) =>
     ? currencyFormatter.format(property.viewing_fee, false)
     : 'N$99';
 
-  // Determine button text based on mode
-  const actionButtonText = mode === 'viewing'
-    ? 'Make Payment'
-    : 'Request a viewing';
+  // Determine button text and disabled state based on mode and availability
+  // If is_available is undefined, treat as available (default behavior)
+  const isAvailable = property.is_available !== false;
+  const isUnavailable = property.is_available === false;
+
+  const getActionButtonText = () => {
+    if (mode === 'viewing' && isAvailable) return 'Make Payment';
+    return 'Request a viewing';
+  };
+
+  const actionButtonText = getActionButtonText();
 
   return (
     <div className="flex flex-col gap-10 p-3 shadow-ter rounded-[1.25em] aspect-[4/3] w-full max-w-md">
@@ -69,23 +76,32 @@ export const ListingActionCard = ({ property, mode }: ListingActionCardProps) =>
       </div>
 
       <div className="flex flex-col gap-3">
-        <Button
-          size="lg"
-          onClick={() => property.id && toggleWaitlist(property.id)}
-          disabled={isWaitlistLoading}
-        >
-          {isWaitlistLoading ? (
-            <div className="flex items-center gap-2">
-              <Loading03Icon className="size-5 animate-spin" />
-              <span>{isWaitlisted ? 'Leaving...' : 'Joining...'}</span>
-            </div>
-          ) : (
-            <span>{isWaitlisted ? 'Leave waitlist' : 'Join waitlist'}</span>
-          )}
-        </Button>
-        <Button size="lg" variant="tertiary">
-          {actionButtonText} ({viewingFeeFormatted})
-        </Button>
+        {/* Waitlist/Join button - shown for waitlist mode OR when property is unavailable */}
+        {(mode === 'waitlist' || isUnavailable) && (
+          <Button
+            size="lg"
+            onClick={() => property.id && toggleWaitlist(property.id)}
+            disabled={isWaitlistLoading || isUnavailable}
+          >
+            {isUnavailable ? (
+              'Not Available'
+            ) : isWaitlistLoading ? (
+              <div className="flex items-center gap-2">
+                <Loading03Icon className="size-5 animate-spin" />
+                <span>{isWaitlisted ? 'Leaving...' : 'Joining...'}</span>
+              </div>
+            ) : (
+              <span>{isWaitlisted ? 'Leave waitlist' : 'Join waitlist'}</span>
+            )}
+          </Button>
+        )}
+
+        {/* Viewing/Payment button - only shown in viewing mode when available */}
+        {mode === 'viewing' && !isUnavailable && (
+          <Button size="lg" variant="tertiary">
+            {actionButtonText} ({viewingFeeFormatted})
+          </Button>
+        )}
 
         {mode === 'waitlist' && !showInstantBooking && formattedAvailabilityDate && (
           <div className="flex text-primary-500 text-body gap-2 pt-3">

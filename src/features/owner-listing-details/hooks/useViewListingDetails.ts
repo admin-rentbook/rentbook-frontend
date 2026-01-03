@@ -63,7 +63,7 @@ export const useViewListingDetails = () => {
 
   const handleEditListing = useCallback(() => {
      navigate({
-      to: ListingLinks.LISTINGS,
+      to: ListingLinks.LISTINGS_EDIT,
       search: (prev) => ({
         ...prev,
         listingId: prev.listingId,

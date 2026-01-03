@@ -105,8 +105,13 @@ export const useViewingFee = (
     (slots) => slots.length > 0
   );
 
+  // Only require schedule when viewing is available
+  const requiresSchedule = viewingType === 'VIEWING_AVAILABLE';
+
   const canSubmit =
-    !isButtonDisabled && isScheduleNotEmpty && Boolean(viewingType);
+    !isButtonDisabled &&
+    Boolean(viewingType) &&
+    (requiresSchedule ? isScheduleNotEmpty : true);
 
   const handleSubmit = () => {
     if (canSubmit && draft?.viewingTimes) {

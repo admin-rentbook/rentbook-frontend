@@ -14,7 +14,7 @@ type AmenitiesProps = {
 };
 
 export const Amenities = ({ onNext, onPrev }: AmenitiesProps) => {
-  const { listingId } = useSearch({ from: '/listings-start' });
+  const { listingId } = useSearch({ strict: false }) as { listingId?: number };
   const {
     availableAmenities,
     inputValue,

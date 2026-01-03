@@ -14,7 +14,7 @@ export const AdditionalDetails = ({
   onNext,
   onPrev,
 }: AdditionalDetailsProps) => {
-  const { listingId } = useSearch({ from: '/listings-start' });
+  const { listingId } = useSearch({ strict: false }) as { listingId?: number };
   const addNoteHook = useAddNote(listingId as number, onNext);
   return (
     <div className="flex flex-col h-full">

@@ -21,7 +21,7 @@ export const useVerifyEmail = () => {
 
   const { timeLeft, canResend, resendCode } = useTimer(60 * 5);
 
-  const search = useSearch({ from: '/' });
+  const search = useSearch({ strict: false }) as { email?: string };
   const email = search?.email;
 
   function onSubmit(data: z.infer<typeof verifyEmailSchema>) {

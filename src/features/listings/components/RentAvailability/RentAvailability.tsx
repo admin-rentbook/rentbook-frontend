@@ -10,7 +10,7 @@ type RentAvailabilityProps = {
   onNext: (() => void) | undefined;
 };
 export const RentAvailability = ({ onPrev, onNext }: RentAvailabilityProps) => {
-  const { listingId } = useSearch({ from: '/listings-start' });
+  const { listingId } = useSearch({ strict: false }) as { listingId?: number };
   const rentAvailabilityHook = useRentAvailability(listingId as number, onNext);
   return (
     <div className="flex flex-col h-full">

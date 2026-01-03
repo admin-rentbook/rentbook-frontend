@@ -57,7 +57,8 @@ export const useAppStore = create<AppStore>((set) => ({
   setTokenExpired: (expired) => set({ isTokenExpired: expired }),
 
   logout: () => {
-    set({ authUser: null, userType: null, isTokenExpired: false });
+    // Don't reset isTokenExpired here - it's managed by the interceptor
+    set({ authUser: null, userType: null });
     clearDataFromSessStorage('auth_user');
     clearDataFromLocalStorage('userType');
     clearDataFromSessStorage('verify-timer');

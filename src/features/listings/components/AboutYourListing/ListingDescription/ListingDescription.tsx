@@ -19,7 +19,7 @@ type ListingDescriptionProps = {
 };
 
 export const ListingDescription = ({ onNext }: ListingDescriptionProps) => {
-  const { listingId, propertyId } = useSearch({ from: '/listings-start' });
+  const { listingId, propertyId } = useSearch({ strict: false }) as { listingId?: number; propertyId?: number };
   const {
     isButtonDisabled,
     form,

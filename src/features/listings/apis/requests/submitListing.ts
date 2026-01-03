@@ -4,6 +4,7 @@ import {
   useMutation,
   type MutationConfig,
 } from '@/core/lib';
+import { queryKey as landingPageQueryKey } from '@/features/landing-page/apis';
 import { PropertyDetailsLinks } from '@/features/property-details';
 import type { ApiResponse } from '@/shared/types';
 import { formatError } from '@/shared/utils/helpers';
@@ -54,6 +55,9 @@ export const useSubmitListing = ({ config }: UseSubmitListingOptions = {}) => {
       });
       queryClient.invalidateQueries({
         queryKey: queryKey.listingDescription(variables.listingId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: landingPageQueryKey.allListings(1, 10),
       });
 
       navigate({

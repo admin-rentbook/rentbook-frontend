@@ -46,5 +46,11 @@ export const returnStatus = (status: Status) => {
     },
   };
 
-  return statusColors[status];
+  return (
+    statusColors[status] || {
+      bgColor: 'bg-custom-blue-100',
+      textColor: 'text-custom-blue-300',
+      fillColor: 'fill-custom-blue-300',
+    }
+  );
 };

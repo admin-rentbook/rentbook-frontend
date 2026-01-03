@@ -12,7 +12,11 @@ export const useListingsPage = () => {
   const navigate = useNavigate();
   const { isMobile } = useMobile();
   const { draft, syncFromApiData, clearDraft } = useListingDraft();
-  const { listingId, propertyId } = useSearch({ from: '/listings-start' });
+  const { listingId, propertyId } = useSearch({ strict: false }) as {
+    listingId?: number;
+    propertyId?: number;
+    blockName?: string;
+  };
 
   const { data: listingDescription } = useGetListingDescription(
     listingId as number
@@ -113,9 +117,6 @@ export const useListingsPage = () => {
     }
   };
 
-  const isEmpty = (obj: object | null | undefined): boolean =>
-    !!obj && Object.keys(obj).length === 0;
-
   const handleSaveAndExit = () => {
     toast.success('Listing draft saved successfully', { id: 'saved-draft' });
     navigate({
@@ -145,6 +146,7 @@ export const useListingsPage = () => {
     getCurrentComponent,
     handleSaveAndExit,
     handleCancel,
-    isSaveDisabled: isEmpty(draft?.progress.completedSteps),
+    // Only disable on first step ('listings') - use API step name as source of truth
+    isSaveDisabled: draft?.apiCurrentStep === 'listings' || !draft?.apiCurrentStep,
   };
 };

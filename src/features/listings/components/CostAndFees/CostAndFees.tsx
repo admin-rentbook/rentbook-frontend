@@ -11,7 +11,7 @@ type CostAndFeesProps = {
 };
 
 export const CostAndFees = ({ onNext, onPrev }: CostAndFeesProps) => {
-    const { listingId } = useSearch({ from: '/listings-start' });
+    const { listingId } = useSearch({ strict: false }) as { listingId?: number };
   
   const paymentTypeSelection = usePaymentTypeSelection();
   const rentalPrice = useRentalPrice(

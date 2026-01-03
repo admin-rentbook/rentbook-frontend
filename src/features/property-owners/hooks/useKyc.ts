@@ -1,10 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { uploadKycDocuments } from '../apis/requests';
-import { kycSchema } from '../constants';
+import { kycSchema, Links } from '../constants';
 import { validateKycFile } from '../utils/kycUploadHelpers';
 
 type KycFormData = z.infer<typeof kycSchema>;
@@ -16,6 +17,7 @@ type KycFile = {
 };
 
 export const useKyc = () => {
+  const navigate = useNavigate();
   const [frontIdCard, setFrontIdCard] = useState<KycFile | null>(null);
   const [backIdCard, setBackIdCard] = useState<KycFile | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -112,6 +114,12 @@ export const useKyc = () => {
       form.reset();
 
       toast.success('KYC submitted successfully!', { id: 'kyc-suc' });
+
+      // Navigate to overview with kycSubmitted param
+      navigate({
+        to: Links.OVERVIEW,
+        search: { kycSubmitted: true }
+      });
     } catch (error: any) {
       const errorMessage =
         error.message || 'Failed to submit KYC. Please try again.';

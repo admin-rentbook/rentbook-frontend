@@ -154,13 +154,13 @@ export const uploadAndSaveMedia = async ({
   files,
   listingId,
   onProgress,
-  maxConcurrent = 1, // Process 1 file at a time to avoid rate limits (429 errors)
-  delayBetweenBatches = 1000, // 1 second delay between files to avoid rate limiting
+  maxConcurrent = 3, // Process 3 files at a time for better performance
+  delayBetweenBatches = 300, // Reduced delay to 300ms between batches
 }: UploadFilesParams): Promise<void> => {
   const uploadedFiles: MediaDTO[] = [];
   let completedUploads = 0;
 
-  // Process files in batches to avoid rate limiting
+  // Process files in batches
   for (let i = 0; i < files.length; i += maxConcurrent) {
     const batch = files.slice(i, i + maxConcurrent);
 
@@ -187,7 +187,7 @@ export const uploadAndSaveMedia = async ({
         // Update progress
         completedUploads++;
         if (onProgress) {
-          const progressPercent = (completedUploads / files.length) * 80;
+          const progressPercent = (completedUploads / files.length) * 85;
           onProgress(Math.round(progressPercent));
         }
 
@@ -208,7 +208,7 @@ export const uploadAndSaveMedia = async ({
     const batchResults = await Promise.all(batchPromises);
     uploadedFiles.push(...batchResults);
 
-    // Add delay between batches to avoid rate limiting (except for last batch)
+    // Add small delay between batches only if there are more files (except for last batch)
     if (i + maxConcurrent < files.length) {
       await delay(delayBetweenBatches);
     }
@@ -219,8 +219,8 @@ export const uploadAndSaveMedia = async ({
     onProgress(90);
   }
 
-  // Add a delay before saving to database to avoid rate limiting
-  await delay(2000);
+  // Small delay before saving to database
+  await delay(500);
 
   // Step 3: Save all media to database
   await updateListingMedia({ listingId, media: uploadedFiles });

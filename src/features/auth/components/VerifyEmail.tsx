@@ -13,7 +13,7 @@ export const VerifyEmail = () => {
     isOtpLoading,
     handleSendOtp,
   } = useVerifyEmail();
-  const search = useSearch({ from: '/' });
+  const search = useSearch({ strict: false }) as { email?: string };
   const email = search?.email;
   return (
     <>
