@@ -10,8 +10,8 @@ import { loginSchema } from '../constants';
 import type { LoginDTO } from '../types';
 
 export const useLogin = () => {
-  const navigate = useNavigate({ from: '/' });
-  const search = useSearch({ from: '/' });
+  const navigate = useNavigate();
+  const search = useSearch({ strict: false }) as { redirectTo?: string; step?: number; email?: string };
 
   const loginMutation = useLoginMutation();
   const googleAuthMutation = useGoogleAuth();

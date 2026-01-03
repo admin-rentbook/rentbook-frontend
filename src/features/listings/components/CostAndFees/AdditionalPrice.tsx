@@ -11,7 +11,7 @@ import { DiscountCard } from './Discount';
 export const AdditionalPrice = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDiscount, setIsOpenDiscount] = useState(false);
-  const { listingId } = useSearch({ from: '/listings-start' });
+  const { listingId } = useSearch({ strict: false }) as { listingId?: number };
   const {
     form,
     onSubmit,

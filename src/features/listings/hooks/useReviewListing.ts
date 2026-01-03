@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { useGetListingSummary, useGetMedia, useSubmitListing } from '../apis';
 
 export const useReviewListing = () => {
-  const { listingId, propertyId } = useSearch({ from: '/listings-start' });
+  const { listingId, propertyId } = useSearch({ strict: false }) as { listingId?: number; propertyId?: number };
 
   const {
     data: summaryData,

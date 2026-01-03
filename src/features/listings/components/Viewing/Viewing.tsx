@@ -16,7 +16,7 @@ type ViewingProps = {
   onPrev: (() => void) | undefined;
 };
 export const Viewing = ({ onNext, onPrev }: ViewingProps) => {
-  const { listingId } = useSearch({ from: '/listings-start' });
+  const { listingId } = useSearch({ strict: false }) as { listingId?: number };
 
   const viewingApiHook = useViewing(listingId as number, onNext);
   const viewingTypeSelection = useViewingTypeSelection(viewingApiHook.viewingData);

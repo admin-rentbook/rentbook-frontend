@@ -43,7 +43,7 @@ export const ListingLiveModal = ({
   ];
 
   const content = (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col">
       <div className="h-full flex flex-col p-10 lg:p-12 relative overflow-hidden">
         <div className="absolute inset-0 p-4 lg:p-8">
           <div className="h-[300px] lg:h-[200px] lg:w-[440px] rounded-[1.25em] overflow-hidden opacity-50 blur-[200px] bg-gradient-to-b from-primary-500 to-warning-600" />
@@ -83,7 +83,6 @@ export const ListingLiveModal = ({
         </div>
       </div>
 
-      {/* Bottom part - White background with content */}
       <div className="bg-white p-6 lg:p-8 flex flex-col gap-6 items-center">
         <div className="flex flex-col gap-3 items-center text-center">
           <h3 className="text-heading-xl text-black-500">
@@ -107,7 +106,7 @@ export const ListingLiveModal = ({
         <Sheet
           open={modalOptions.open}
           onOpenChange={modalOptions.onOpenChange}
-          className="pt-0 max-h-[90vh] rounded-t-[1.25em] overflow-hidden"
+          className="pt-0 max-h-[60vh] rounded-t-[1.25em] overflow-hidden"
         >
           {content}
         </Sheet>

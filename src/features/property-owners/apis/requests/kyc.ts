@@ -170,12 +170,10 @@ type UploadKycDocumentsParams = {
 };
 
 /**
- * Complete KYC Upload Flow (3 steps)
- * Step 1: Get upload URL for front ID
- * Step 2: Upload front ID to Backblaze
- * Step 3: Get upload URL for back ID
- * Step 4: Upload back ID to Backblaze
- * Step 5: Submit KYC with file details
+ * Complete KYC Upload Flow - Optimized with parallel uploads
+ * Step 1: Get upload URLs for both front and back IDs in parallel
+ * Step 2: Upload both IDs to Backblaze in parallel
+ * Step 3: Submit KYC with file details
  */
 export const uploadKycDocuments = async ({
   frontIdCard,
@@ -184,51 +182,44 @@ export const uploadKycDocuments = async ({
   onProgress,
 }: UploadKycDocumentsParams): Promise<void> => {
   try {
-    // Step 1: Get upload URL for front ID card
+    // Step 1: Get upload URLs for both documents in parallel
     if (onProgress) onProgress(10);
 
-    const frontUploadData = await getKycUploadUrl({
-      file_name: frontIdCard.name,
-      document_type: 'id_card_front',
-    });
+    const [frontUploadData, backUploadData] = await Promise.all([
+      getKycUploadUrl({
+        file_name: frontIdCard.name,
+        document_type: 'id_card_front',
+      }),
+      getKycUploadUrl({
+        file_name: backIdCard.name,
+        document_type: 'id_card_back',
+      }),
+    ]);
 
-    if (onProgress) onProgress(20);
+    if (onProgress) onProgress(30);
 
-    // Step 2: Upload front ID card to Backblaze
-    const frontBackblazeResponse: BackblazeUploadResponse = await uploadToBackblaze(
-      frontIdCard,
-      frontUploadData.upload_url,
-      frontUploadData.authorization_token,
-      frontUploadData.file_name
-    );
+    // Step 2: Upload both ID cards to Backblaze in parallel
+    const [frontBackblazeResponse, backBackblazeResponse]: BackblazeUploadResponse[] = await Promise.all([
+      uploadToBackblaze(
+        frontIdCard,
+        frontUploadData.upload_url,
+        frontUploadData.authorization_token,
+        frontUploadData.file_name
+      ),
+      uploadToBackblaze(
+        backIdCard,
+        backUploadData.upload_url,
+        backUploadData.authorization_token,
+        backUploadData.file_name
+      ),
+    ]);
 
-    if (onProgress) onProgress(40);
-
-    // Small delay before next upload
-    await delay(500);
-
-    // Step 3: Get upload URL for back ID card
-    const backUploadData = await getKycUploadUrl({
-      file_name: backIdCard.name,
-      document_type: 'id_card_back',
-    });
-
-    if (onProgress) onProgress(50);
-
-    // Step 4: Upload back ID card to Backblaze
-    const backBackblazeResponse: BackblazeUploadResponse = await uploadToBackblaze(
-      backIdCard,
-      backUploadData.upload_url,
-      backUploadData.authorization_token,
-      backUploadData.file_name
-    );
-
-    if (onProgress) onProgress(70);
+    if (onProgress) onProgress(75);
 
     // Small delay before final submit
-    await delay(1000);
+    await delay(300);
 
-    // Step 5: Submit KYC with uploaded file details
+    // Step 3: Submit KYC with uploaded file details
     const submitPayload: KycSubmitPayload = {
       namibian_registration_number: namibianRegNo,
       id_card_front_file_name: frontBackblazeResponse.fileName,
@@ -237,7 +228,7 @@ export const uploadKycDocuments = async ({
       id_card_back_file_id: backBackblazeResponse.fileId,
     };
 
-    if (onProgress) onProgress(85);
+    if (onProgress) onProgress(90);
 
     await submitKyc(submitPayload);
 

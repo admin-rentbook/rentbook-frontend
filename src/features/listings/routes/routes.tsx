@@ -32,3 +32,14 @@ export const listingsRoute = createRoute({
     </ListingDraftProvider>
   ),
 });
+
+export const listingsEditRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: ListingLinks.LISTINGS_EDIT,
+  validateSearch: listingPageSearchSchema,
+  component: () => (
+    <ListingDraftProvider>
+      <Listings isEditMode />
+    </ListingDraftProvider>
+  ),
+});

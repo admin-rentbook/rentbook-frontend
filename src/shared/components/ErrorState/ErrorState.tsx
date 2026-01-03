@@ -14,7 +14,8 @@ interface ErrorStateProps {
 }
 
 export const ErrorState = ({ error, onRetry }: ErrorStateProps) => {
-  const isTokenExpired = useAppStore((s) => s.isTokenExpired);
+  // Safely get isTokenExpired with fallback to prevent invariant errors during logout
+  const isTokenExpired = useAppStore((s) => s?.isTokenExpired ?? false);
 
   // Don't show ErrorState if token is expired - TokenExpiredModal will handle it
   if (!error || isTokenExpired) return null;

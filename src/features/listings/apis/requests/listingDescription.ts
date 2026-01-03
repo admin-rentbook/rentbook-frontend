@@ -64,7 +64,7 @@ type UseAddListingDescriptionOptions = {
 export const useAddListingDescription = ({
   config,
 }: UseAddListingDescriptionOptions = {}) => {
-  const navigate = useNavigate({ from: '/listings-start' });
+  const navigate = useNavigate();
   return useMutation({
     onError: (err) => {
       toast.error(err.message, { id: 'create-add-listing-err' });
@@ -133,8 +133,8 @@ type UseUpdateListingDescriptionOptions = {
 export const useUpdateListingDescription = ({
   config,
 }: UseUpdateListingDescriptionOptions = {}) => {
-  const navigate = useNavigate({ from: '/listings-start' });
-  const search = useSearch({ from: '/listings-start' });
+  const navigate = useNavigate();
+  const search = useSearch({ strict: false }) as { listingId?: number; propertyId?: number };
   return useMutation({
     onError: (err) => {
       toast.error(err.message, { id: 'update-listing-err' });
