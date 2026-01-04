@@ -16,7 +16,8 @@ export const usePropertyInfo = ({
     data: publicListingData,
     isLoading,
     error,
-    isError,refetch
+    isError,
+    refetch,
   } = useGetPublicListing(listingId);
 
   const propertyData = useMemo((): ListingDTO | null => {
@@ -29,8 +30,10 @@ export const usePropertyInfo = ({
 
   return {
     propertyData,
+    publicListingData: publicListingData?.data ?? null,
     isLoading,
     error,
-    isError, refetch
+    isError,
+    refetch,
   };
 };

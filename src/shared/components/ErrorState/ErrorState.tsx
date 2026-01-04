@@ -5,6 +5,7 @@ import {
   AlertTitle,
 } from '@/shared/components/ui/alert';
 import { Button } from '@/shared/components/ui/button';
+import type { AxiosError } from 'axios';
 import { ReloadIcon } from 'hugeicons-react';
 import { AlertCircle } from 'lucide-react';
 
@@ -17,9 +18,12 @@ export const ErrorState = ({ error, onRetry }: ErrorStateProps) => {
   // Safely get isTokenExpired with fallback to prevent invariant errors during logout
   const isTokenExpired = useAppStore((s) => s?.isTokenExpired ?? false);
 
-  // Don't show ErrorState if token is expired - TokenExpiredModal will handle it
-  if (!error || isTokenExpired) return null;
+  const is401Error = (error as AxiosError)?.response?.status === 401;
 
+  const isUnauthorizedMessage = error?.message?.includes('Unauthorized') ||
+                                 error?.message?.includes('Please login again');
+
+  if (!error || isTokenExpired || is401Error || isUnauthorizedMessage) return null;
   return (
     <Alert variant="destructive" className="max-w-2xl mx-auto">
       <AlertCircle className="h-4 w-4" />

@@ -18,7 +18,6 @@ const getWishlists = async (page: number, pageSize: number) => {
           page,
           page_size: pageSize,
         },
-        skipAuthRedirect: true,
       }
     );
     return response.data;

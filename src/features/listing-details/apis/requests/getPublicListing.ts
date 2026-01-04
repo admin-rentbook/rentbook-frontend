@@ -14,7 +14,8 @@ const getPublicListing = async (listingId: number) => {
     const response = await axios.get<ApiResponse<PublicListingDTO>>(
       url.publicListing(listingId),
       {
-        skipAuthRedirect: true,
+        skipAuth: true, // Public endpoint - no bearer token required
+        skipAuthRedirect: true, // Don't redirect on 401
       }
     );
     return response.data;

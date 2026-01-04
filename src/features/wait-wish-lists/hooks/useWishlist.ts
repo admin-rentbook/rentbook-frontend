@@ -11,10 +11,13 @@ const ITEMS_PER_PAGE = 12;
 export const useWishlist = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: wishlistData, isLoading, error, refetch } = useGetWishlists(
-    currentPage,
-    ITEMS_PER_PAGE
-  );
+  const {
+    data: wishlistData,
+    isLoading,
+    error,
+    refetch,
+    isError,
+  } = useGetWishlists(currentPage, ITEMS_PER_PAGE);
 
   const addMutation = useAddToWishlist();
   const removeMutation = useRemoveFromWishlist();
@@ -67,5 +70,6 @@ export const useWishlist = () => {
     removeFromWishlist,
     isAdding: addMutation.isPending,
     isRemoving: removeMutation.isPending,
+    isError,
   };
 };

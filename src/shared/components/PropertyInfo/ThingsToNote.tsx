@@ -6,7 +6,7 @@ export type ThingsToNoteProps = {
 
 export const ThingsToNote = ({ notes }: ThingsToNoteProps) => {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 py-6">
       <h2 className="text-heading text-black-500">Things to note</h2>
 
       <div className="flex flex-col md:flex-row gap-2 w-full xl:w-2/3">
