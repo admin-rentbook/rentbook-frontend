@@ -12,10 +12,7 @@ type RemoveFromWaitlistResponse = {
 const removeFromWaitlist = async (listingId: number) => {
   try {
     const response = await axios.delete<ApiResponse<RemoveFromWaitlistResponse>>(
-      url.waitlist(listingId),
-      {
-        skipAuthRedirect: true,
-      }
+      url.waitlist(listingId)
     );
     return response.data;
   } catch (err) {
