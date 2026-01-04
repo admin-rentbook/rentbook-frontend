@@ -43,14 +43,11 @@ export const useListings = () => {
     }
 
     if (debouncedBedrooms > 0) {
-      // Send bedrooms as filter to API instead of client-side filtering
-      params.q = `beds:${debouncedBedrooms}`;
+      params.beds = debouncedBedrooms;
     }
 
     if (debouncedBathrooms > 0) {
-      // Send bathrooms as filter to API instead of client-side filtering
-      const bathroomQuery = `bathrooms:${debouncedBathrooms}`;
-      params.q = params.q ? `${params.q},${bathroomQuery}` : bathroomQuery;
+      params.bathrooms = debouncedBathrooms;
     }
 
     // Only return filters if there are any active filters
@@ -98,6 +95,17 @@ export const useListings = () => {
     ? listingsData.length
     : listingsData?.count || 0;
 
+  // Check if any filters are active (different from defaults)
+  const hasActiveFilters = useMemo(() => {
+    return (
+      filters.propertyType !== null ||
+      filters.bedrooms > 0 ||
+      filters.bathrooms > 0 ||
+      filters.priceRange[0] !== 0 ||
+      filters.priceRange[1] !== 10000
+    );
+  }, [filters]);
+
   return {
     listings,
     isLoading,
@@ -109,6 +117,7 @@ export const useListings = () => {
     filters,
     updateFilters,
     resetFilters,
+    hasActiveFilters,
     refetch,
   };
 };

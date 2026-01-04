@@ -1,5 +1,5 @@
 import { AddressPredictionsList } from '@/features/property-owners/components/Property/CreateProperty/AddressPredictionList';
-import { InputGroupAddon, SearchBox } from '@/shared/components';
+import { Button, InputGroupAddon, SearchBox } from '@/shared/components';
 import { useGooglePlacesAutocomplete } from '@/shared/hooks';
 import type { LocationResult } from '@/shared/types';
 import { Search01Icon } from 'hugeicons-react';
@@ -10,7 +10,7 @@ import { PropertyTypeFilter } from './PropertyTypeFilter';
 import { RoomsAndBedFilter } from './RoomsAndBedFilter';
 
 export const Header = () => {
-  const { filters, updateFilters } = useListingsFilter();
+  const { filters, updateFilters, resetFilters, hasActiveFilters } = useListingsFilter();
   const [_locationResult, setLocationResult] = useState<LocationResult | null>(
     null
   );
@@ -92,6 +92,20 @@ export const Header = () => {
                 setPriceRange={setPriceRange}
               />
             </div>
+
+            {/* Reset Filters Button - Only show when filters are active */}
+            {hasActiveFilters && (
+              <div className="flex justify-center mt-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={resetFilters}
+                  className="text-neutral-600 hover:text-black-500"
+                >
+                  Clear all filters
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -12,7 +12,8 @@ export type ListingFilters = {
   max_price?: number;
   min_price?: number;
   ordering?: string;
-  q?: string;
+  beds?: number;
+  bathrooms?: number;
   search?: string;
   status?: string;
 };
