@@ -15,10 +15,7 @@ const addToWaitlist = async (listingId: number) => {
   try {
     const response = await axios.post<ApiResponse<AddToWaitlistResponse>>(
       url.waitlist(listingId),
-      {},
-      {
-        skipAuthRedirect: true,
-      }
+      {}
     );
     return response.data;
   } catch (err) {
