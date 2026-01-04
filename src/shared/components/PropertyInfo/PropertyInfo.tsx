@@ -1,4 +1,5 @@
 import propertyImageFallback from '@/assets/images/property-image.jpg';
+import { useWishlist } from '@/features/wait-wish-lists/hooks/useWishlist';
 import type { ListingDTO } from '@/shared/types';
 import { useNavigate } from '@tanstack/react-router';
 import {
@@ -8,7 +9,6 @@ import {
   Loading03Icon,
   Upload04Icon,
 } from 'hugeicons-react';
-import { useWishlist } from '@/features/wait-wish-lists/hooks/useWishlist';
 import { ImageCarousel } from '../ImageCarousel/ImageCarousel';
 import { Button } from '../ui';
 import { Details } from './Details';
@@ -160,7 +160,9 @@ export const PropertyInfo = ({ actionItem, property }: PropertyInfoProps) => {
 
         {property?.reviews && <ReviewComponent reviewData={property.reviews} />}
         {/* <div className="h-[1px] w-full bg-custom-neutral-100" /> */}
-        {property?.notes && <ThingsToNote notes={property.notes} />}
+        {(property?.notes?.length ?? 0) > 0 && (
+          <ThingsToNote notes={property?.notes || []} />
+        )}
       </div>
     </div>
   );

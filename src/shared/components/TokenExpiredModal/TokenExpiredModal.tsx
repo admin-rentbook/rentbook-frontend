@@ -17,7 +17,6 @@ export const TokenExpiredModal = () => {
   const onOpenAuth = useAppStore((s) => s.onOpenAuth);
 
   const handleLogin = () => {
-    // Close the expired modal and open the auth modal
     setTokenExpired(false);
     onOpenAuth(true);
   };

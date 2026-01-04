@@ -1,13 +1,14 @@
-import { usePropertyInfoStore } from "@/core/store";
-import { PropertyCard } from "@/features/landing-page/components/PropertyCard";
-import { ListingDetailsLinks } from "@/features/listing-details/constants";
-import type { ListingDTO } from "@/shared/types";
-import { useNavigate } from "@tanstack/react-router";
-import { GuestHouseIcon } from "hugeicons-react";
+import { PropertyCard } from '@/features/landing-page/components/PropertyCard';
+import { ListingDetailsLinks } from '@/features/listing-details/constants';
+import { ErrorState, Skeleton } from '@/shared/components';
+import type { ListingDTO } from '@/shared/types';
+import { useNavigate } from '@tanstack/react-router';
+import { GuestHouseIcon } from 'hugeicons-react';
+import { useWaitlist } from '../hooks';
 
-export const Waitlist = () =>{
- const waitlists = usePropertyInfoStore((s) => s.waitlist);
+export const Waitlist = () => {
   const navigate = useNavigate();
+  const { waitlists, isLoading, error, isError, refetch } = useWaitlist();
 
   const handleClick = (property: ListingDTO) => {
     console.log('Navigating to viewing request for property:', property);
@@ -16,6 +17,25 @@ export const Waitlist = () =>{
       state: { property: property },
     });
   };
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 pb-10">
+        {Array.from({ length: 8 }).map((_, index) => (
+          <Skeleton key={index} className="h-64 w-full rounded-[1.25em]" />
+        ))}
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="p-6">
+        <ErrorState error={error} onRetry={refetch} />
+      </div>
+    );
+  }
+
   return (
     <>
       {waitlists.length === 0 ? (
@@ -29,10 +49,10 @@ export const Waitlist = () =>{
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 pb-10">
-          {waitlists.map((wishlist) => (
+          {waitlists.map((waitlist) => (
             <PropertyCard
-              property={wishlist}
-              key={wishlist.id || wishlist.title}
+              property={waitlist}
+              key={waitlist.id || waitlist.title}
               onClick={handleClick}
             />
           ))}
@@ -40,4 +60,4 @@ export const Waitlist = () =>{
       )}
     </>
   );
-}
+};

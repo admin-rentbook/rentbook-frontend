@@ -7,7 +7,13 @@ import { transformWaitlistItemToListingDTO } from '@/features/landing-page/utils
 import { useMemo } from 'react';
 
 export const useWaitlist = () => {
-  const { data: waitlistData, isLoading, error, refetch } = useGetUserWaitlists();
+  const {
+    data: waitlistData,
+    isLoading,
+    error,
+    refetch,
+    isError,
+  } = useGetUserWaitlists();
 
   const addMutation = useAddToWaitlist();
   const removeMutation = useRemoveFromWaitlist();
@@ -44,6 +50,7 @@ export const useWaitlist = () => {
     waitlists,
     isLoading,
     error,
+    isError,
     totalCount,
     refetch,
     isWaitlisted,

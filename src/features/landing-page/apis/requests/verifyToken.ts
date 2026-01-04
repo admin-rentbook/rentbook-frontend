@@ -17,6 +17,7 @@ const verifyToken = async (token: string) => {
     const response = await axios.get<ApiResponse<VerifyTokenResponse>>(
       url.verifyToken(token),
       {
+        skipAuth: true, // Public endpoint - property ownership verification
         skipAuthRedirect: true,
       }
     );

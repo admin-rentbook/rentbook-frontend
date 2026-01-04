@@ -1,6 +1,10 @@
 import { useAppStore } from '@/core/store';
 import { refreshToken } from '@/features/auth/api/request';
-import type { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
+import type {
+  AxiosError,
+  AxiosInstance,
+  InternalAxiosRequestConfig,
+} from 'axios';
 
 // Extend AxiosRequestConfig to include custom properties
 declare module 'axios' {
@@ -44,18 +48,23 @@ export const createAuthResponseInterceptor = (axiosInstance: AxiosInstance) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
-
     // Check if this is a 401 error and we haven't already retried
     if (error.response?.status === 401 && !originalRequest._retry) {
       const skipRedirect = originalRequest?.skipAuthRedirect;
 
+      // For public endpoints with skipAuthRedirect, retry without auth header
+      // This allows the request to gracefully fall back to unauthenticated mode
       if (skipRedirect) {
-        return Promise.reject(error);
+        originalRequest._retry = true;
+        // Remove authorization header and retry as unauthenticated request
+        if (originalRequest.headers) {
+          delete originalRequest.headers.authorization;
+        }
+        return axiosInstance(originalRequest);
       }
 
       const { authUser, setAuthUser, setTokenExpired, logout } =
         useAppStore.getState();
-
       // If no refresh token available, logout immediately
       if (!authUser?.tokens.refresh) {
         logout();

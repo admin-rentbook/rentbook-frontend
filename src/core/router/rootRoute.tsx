@@ -4,12 +4,16 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { Toaster } from 'sonner';
 import { useAppStore } from '../store';
 
+// Public routes that don't require authentication
+const PUBLIC_ROUTES = ['/', '/listing-details'];
+
 export const rootRoute = createRootRoute({
   beforeLoad: ({ location }) => {
     const authUser = useAppStore.getState().authUser;
     const isAuthenticated = !!authUser?.tokens.access;
 
-    if (location.pathname === '/') {
+    // Allow access to public routes without authentication
+    if (PUBLIC_ROUTES.includes(location.pathname)) {
       return;
     }
 

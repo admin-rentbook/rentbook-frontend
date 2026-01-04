@@ -33,6 +33,13 @@ export type PublicListingDTO = {
     security_deposit: string;
     rental_price?: string;
     minimum_bid?: string;
+    bid_start?: string;
+    bid_end?: string;
+    bidding_rules?: {
+      auto_accept_highest: boolean;
+      extend_if_bid_in_last_24h: boolean;
+      extend_by_hours: number;
+    };
   };
   discounts: Array<{
     percent: string;

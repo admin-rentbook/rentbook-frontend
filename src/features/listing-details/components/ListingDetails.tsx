@@ -5,8 +5,7 @@ import {
 } from '@/shared/components/PropertyInfo';
 import { usePropertyInfo } from '@/shared/hooks';
 import { useLocation, useSearch } from '@tanstack/react-router';
-import { JoinWaitlist } from './JoinWaitlist';
-import { RequestViewing } from './RequestViewing';
+import { ListingActionCard } from './ListingActionCard/ListingActionCard';
 
 export const ListingDetails = () => {
   const location = useLocation();
@@ -15,12 +14,18 @@ export const ListingDetails = () => {
     propertyName?: string;
     location?: string;
   };
-  // const isTokenExpired = useAppStore((s) => s.isTokenExpired);
 
   // Support both old state-based navigation and new search-based navigation
   const listingId = searchParams.listingId || location.state?.property?.id || 0;
 
-  const { propertyData, isLoading, error, isError, refetch } = usePropertyInfo({
+  const {
+    propertyData,
+    publicListingData,
+    isLoading,
+    error,
+    isError,
+    refetch,
+  } = usePropertyInfo({
     listingId,
   });
 
@@ -36,7 +41,7 @@ export const ListingDetails = () => {
     );
   }
 
-  if (!propertyData) {
+  if (!propertyData || !publicListingData) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <p className="text-body text-black-400">No property data found</p>
@@ -44,15 +49,10 @@ export const ListingDetails = () => {
     );
   }
 
-  // Determine which action component to show based on availability
-  const ActionComponent = propertyData.is_available
-    ? RequestViewing
-    : JoinWaitlist;
-
   return (
     <PropertyInfo
       property={propertyData}
-      actionItem={<ActionComponent property={propertyData} />}
+      actionItem={<ListingActionCard property={publicListingData} />}
     />
   );
 };

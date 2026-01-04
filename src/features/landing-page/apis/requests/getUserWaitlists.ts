@@ -17,10 +17,7 @@ type GetUserWaitlistsResponse = {
 const getUserWaitlists = async () => {
   try {
     const response = await axios.get<GetUserWaitlistsResponse>(
-      url.userWaitlists,
-      {
-        skipAuthRedirect: true, 
-      }
+      url.userWaitlists
     );
     return response.data;
   } catch (err) {
