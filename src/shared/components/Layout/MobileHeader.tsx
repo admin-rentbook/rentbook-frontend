@@ -20,7 +20,7 @@ export const MobileHeader = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="p-4 pb-2 justify-between md:justify-end flex items-center">
+    <div className="p-4 pb-2 justify-between md:justify-end flex flex-wrap items-center">
       <div className="flex gap-4 md:hidden">
         <Menu01Icon
           className="text-black-500 cursor-pointer size-6"

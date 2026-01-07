@@ -32,7 +32,7 @@ type QueryFnType = () => Promise<GetUserWaitlistsResponse>;
 type UseGetUserWaitlistsOptions = QueryConfig<QueryFnType>;
 
 export const useGetUserWaitlists = (
-  enabled: boolean = true,
+  enabled: boolean = false,
   config?: UseGetUserWaitlistsOptions
 ) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
