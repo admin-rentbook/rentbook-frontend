@@ -1,3 +1,4 @@
+export * from './CalendarGrid';
 export * from './DataTable';
 export * from './Dialog';
 export * from './ErrorBoundary';

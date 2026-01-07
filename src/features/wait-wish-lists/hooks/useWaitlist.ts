@@ -1,3 +1,4 @@
+import { useAppStore } from '@/core/store';
 import {
   useAddToWaitlist,
   useGetUserWaitlists,
@@ -7,13 +8,15 @@ import { transformWaitlistItemToListingDTO } from '@/features/landing-page/utils
 import { useMemo } from 'react';
 
 export const useWaitlist = () => {
+  const authUser = useAppStore((state) => state.authUser);
+  const isAuthenticated = !!authUser;
   const {
     data: waitlistData,
     isLoading,
     error,
     refetch,
     isError,
-  } = useGetUserWaitlists();
+  } = useGetUserWaitlists(isAuthenticated);
 
   const addMutation = useAddToWaitlist();
   const removeMutation = useRemoveFromWaitlist();

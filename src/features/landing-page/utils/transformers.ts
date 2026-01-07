@@ -1,11 +1,10 @@
-import type { ApiListingSummary } from '../apis';
 import type { ListingDTO } from '@/shared/types';
-import type { WishlistItem, WaitlistItem } from '../types';
+import type { ApiListingSummary, WaitlistItem, WishlistItem } from '../types';
 
-/**
- * Transform API listing response to ListingDTO for UI components
- */
-export const transformToListingDTO = (summary: ApiListingSummary): ListingDTO => {
+
+export const transformToListingDTO = (
+  summary: ApiListingSummary
+): ListingDTO => {
   // Use primary_image.file_url or thumbnail
   const images = summary.primary_image?.file_url
     ? [summary.primary_image.file_url]
@@ -29,10 +28,10 @@ export const transformToListingDTO = (summary: ApiListingSummary): ListingDTO =>
   };
 };
 
-/**
- * Transform WishlistItem to ListingDTO for UI components
- */
-export const transformWishlistItemToListingDTO = (item: WishlistItem): ListingDTO => {
+
+export const transformWishlistItemToListingDTO = (
+  item: WishlistItem
+): ListingDTO => {
   const images = item.primary_image?.file_url
     ? [item.primary_image.file_url]
     : [];
@@ -53,10 +52,9 @@ export const transformWishlistItemToListingDTO = (item: WishlistItem): ListingDT
   };
 };
 
-/**
- * Transform WaitlistItem to ListingDTO for UI components
- */
-export const transformWaitlistItemToListingDTO = (item: WaitlistItem): ListingDTO => {
+export const transformWaitlistItemToListingDTO = (
+  item: WaitlistItem
+): ListingDTO => {
   const images = item.primary_image?.file_url
     ? [item.primary_image.file_url]
     : [];
