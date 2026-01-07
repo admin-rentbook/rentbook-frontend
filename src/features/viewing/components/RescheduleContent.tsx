@@ -115,6 +115,7 @@ export const RescheduleContent = ({
           )}
         </div>
 
+{/**Approval required */}
         <div className="bg-primary-100 rounded-[1.25em] p-4 space-y-2">
           <div className="flex items-center gap-2 text-red-400">
             <CheckmarkCircle01Icon className="size-5" />

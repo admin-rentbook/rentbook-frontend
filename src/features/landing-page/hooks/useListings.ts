@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useDebounce } from '@/shared/hooks/useDebounce';
-import { useGetAllListings, type ListingFilters } from '../apis';
-import type { SearchFilters } from '../types';
+import { useGetAllListings } from '../apis';
+import type { ListingFilters, SearchFilters } from '../types';
 
 const ITEMS_PER_PAGE = 12;
 const DEBOUNCE_DELAY = 2000; // 2 seconds
@@ -15,7 +15,6 @@ export const useListings = () => {
     priceRange: [0, 10000],
   });
 
-  // Debounce bedrooms, bathrooms, and price range (2 second delay)
   const debouncedBedrooms = useDebounce(filters.bedrooms, DEBOUNCE_DELAY);
   const debouncedBathrooms = useDebounce(filters.bathrooms, DEBOUNCE_DELAY);
   const debouncedPriceRange = useDebounce(filters.priceRange, DEBOUNCE_DELAY);

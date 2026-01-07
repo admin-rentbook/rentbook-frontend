@@ -5,8 +5,8 @@ import {
   type QueryConfig,
 } from '@/core/lib';
 import { formatError } from '@/shared/utils/helpers';
-import { queryKey, url } from '../url-query';
 import type { WaitlistItem } from '../../types';
+import { queryKey, url } from '../url-query';
 
 type GetUserWaitlistsResponse = {
   success: boolean;
@@ -31,12 +31,16 @@ const CACHE_TIME = 10 * 60 * 1000; // 10 minutes
 type QueryFnType = () => Promise<GetUserWaitlistsResponse>;
 type UseGetUserWaitlistsOptions = QueryConfig<QueryFnType>;
 
-export const useGetUserWaitlists = (config?: UseGetUserWaitlistsOptions) => {
+export const useGetUserWaitlists = (
+  enabled: boolean = true,
+  config?: UseGetUserWaitlistsOptions
+) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
     ...config,
     queryFn: getUserWaitlists,
     queryKey: queryKey.userWaitlists(),
     staleTime: STALE_TIME,
     gcTime: CACHE_TIME,
+    enabled,
   });
 };

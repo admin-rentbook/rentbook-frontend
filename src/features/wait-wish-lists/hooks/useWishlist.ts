@@ -1,3 +1,4 @@
+import { useAppStore } from '@/core/store';
 import {
   useAddToWishlist,
   useGetWishlists,
@@ -10,14 +11,16 @@ const ITEMS_PER_PAGE = 12;
 
 export const useWishlist = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const authUser = useAppStore((state) => state.authUser);
+  const isAuthenticated = !!authUser;
 
   const {
     data: wishlistData,
-    isLoading,
+  isLoading,
     error,
     refetch,
     isError,
-  } = useGetWishlists(currentPage, ITEMS_PER_PAGE);
+  } = useGetWishlists(currentPage, ITEMS_PER_PAGE, isAuthenticated);
 
   const addMutation = useAddToWishlist();
   const removeMutation = useRemoveFromWishlist();

@@ -10,8 +10,7 @@ interface ApiErrorResponse {
 
 export const formatError = (error: unknown): Error => {
   if (axios.isAxiosError(error)) {
-    console.log('error', error);
-    const axiosError = error as AxiosError<ApiErrorResponse>;
+     const axiosError = error as AxiosError<ApiErrorResponse>;
     const status = axiosError.response?.status;
     const data = axiosError.response?.data;
 
