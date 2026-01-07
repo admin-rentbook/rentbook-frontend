@@ -35,7 +35,7 @@ type UseGetWishlistsOptions = QueryConfig<QueryFnType>;
 export const useGetWishlists = (
   page: number,
   pageSize: number,
-  enabled: boolean = true,
+  enabled: boolean = false,
   config?: UseGetWishlistsOptions
 ) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
