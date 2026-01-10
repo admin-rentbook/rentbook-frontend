@@ -55,6 +55,7 @@ export const CreateProperty = () => {
           </div>
         }
       />
+      {/**Create Property Header */}
       <div className="h-screen flex flex-col relative">
         <div className=" top-0 left-0 right-0 border-b-gray-50 z-1 bg-white border-b-0 lg:border-b">
           <div className="flex items-center h-[68px] p-1 lg:p-5 text-heading-4 text-black-400 gap-4">

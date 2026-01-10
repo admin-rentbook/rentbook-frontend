@@ -5,7 +5,13 @@ import { returnStatus } from '@/shared/utils/helpers';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useCallback, useMemo } from 'react';
 
-export const usePropertyDetails = () => {
+type SetOpenComplex = React.Dispatch<React.SetStateAction<boolean>>;
+
+export const usePropertyDetails = (
+  setOpenCreateComplex: SetOpenComplex,
+  setOpenAddAgent: SetOpenComplex,
+  setOpenDeactivateProperty: SetOpenComplex
+) => {
   const navigate = useNavigate();
 
   const { propertyId, showListingLiveModal, listingId } = useSearch({
@@ -52,24 +58,24 @@ export const usePropertyDetails = () => {
   }, [propertyData]);
 
   const handleCreateComplex = useCallback(() => {
-    console.log('Create complex for property:', propertyId);
+    setOpenCreateComplex(true);
   }, [propertyId]);
 
   const handleAddAgent = useCallback(() => {
-    console.log('Add agent for property:', propertyId);
-    // TODO: Navigate to add agent page or open modal
+    setOpenAddAgent(true);
   }, [propertyId]);
 
   const handleEditProperty = useCallback(() => {
     navigate({
-      to: Links.PROPERTIES,
-      search: { propertyId },
+      to: Links.EDIT_PROPERTY,
+      search: (prev) => ({
+        propertyId: prev.propertyId as number,
+      }),
     });
   }, [propertyId, navigate]);
 
   const handleDeactivateProperty = useCallback(() => {
-    console.log('Deactivate property:', propertyId);
-    // TODO: Show confirmation modal and call deactivate API
+    setOpenDeactivateProperty(true);
   }, [propertyId]);
 
   const handleBackToProperties = useCallback(() => {

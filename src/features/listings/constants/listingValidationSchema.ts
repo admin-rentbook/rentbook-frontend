@@ -45,7 +45,7 @@ export const listingDescriptionSchema = z
   });
 
 export const createComplexSchema = z.object({
-  complexName: z.string().min(1),
+  complexName: z.string().min(5, 'Complex name must at least 5 chars'),
 });
 
 export const fixedPriceSchema = z.object({

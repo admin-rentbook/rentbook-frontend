@@ -86,7 +86,6 @@ export const listingColumns: ColumnDef<ListingDescriptionDTO, any>[] = [
   tableColumnHelper.accessor('status', {
     id: 'status',
     cell: (info) => {
-      console.log('info', info.getValue())
       const { bgColor, textColor, fillColor } = returnStatus(
         info.getValue() ?? 'draft'
       );

@@ -5,6 +5,7 @@ import z from 'zod';
 import { Kyc, Property } from '../components';
 import { Links, sidebarItems } from '../constants';
 import { CreatePropertyView } from './create-property';
+import { EditPropertyView } from './edit-property';
 import { GetStartedView } from './get-started';
 import { OverviewView } from './overview';
 
@@ -47,6 +48,16 @@ export const createPropertyRoute = createRoute({
   path: Links.CREATE_PROPERTY,
   validateSearch: createPropertySearchSchema,
   component: () => <CreatePropertyView />,
+});
+
+const editPropertySearchSchema = z.object({
+  propertyId: z.number().int().min(1),
+});
+export const editPropertyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: Links.EDIT_PROPERTY,
+  validateSearch: editPropertySearchSchema,
+  component: () => <EditPropertyView />,
 });
 
 export const kycRoute = createRoute({

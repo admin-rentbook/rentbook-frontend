@@ -1,12 +1,12 @@
 import { ErrorState } from '@/shared/components/ErrorState';
 import { useSearch } from '@tanstack/react-router';
 import { PropertyDetailsLinks } from '../../constants';
-import { useComplex } from '../../hooks';
+import { useComplexList } from '../../hooks';
 import { ComplexHeader } from './ComplexHeader';
 import { ComplexTable } from './ComplexTable';
 
 export const Complex = () => {
-  const complex = useComplex();
+  const complex = useComplexList();
   const { complexName } = useSearch({
     from: PropertyDetailsLinks.COMPLEX_VIEW,
   });
@@ -46,7 +46,12 @@ export const Complex = () => {
 
   return (
     <div className="flex flex-col gap-4 p-6">
-      <ComplexHeader {...complex} complexName={complexName} onEdit={handleEdit} onDelete={handleDelete} />
+      <ComplexHeader
+        {...complex}
+        complexName={complexName}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
       <ComplexTable {...complex} listings={complex.listings} />
     </div>
   );

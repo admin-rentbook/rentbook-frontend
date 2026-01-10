@@ -23,6 +23,7 @@ export const Links = {
   SUPPORT: '/support',
   PROPERTY_GET_STARTED: '/properties/get-started',
   CREATE_PROPERTY: '/properties/create',
+  EDIT_PROPERTY: '/properties/edit',
   KYC: '/verify-your-account',
 } as const;
 export type LinkType = (typeof Links)[keyof typeof Links];

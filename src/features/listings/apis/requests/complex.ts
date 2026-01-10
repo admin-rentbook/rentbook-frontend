@@ -41,7 +41,7 @@ type UseCreateComplexOptions = {
   config?: MutationConfig<typeof createComplex>;
 };
 
-export const useCreateComplex = ({ config }: UseCreateComplexOptions = {}) => {
+export const useCreateComplexMutation = ({ config }: UseCreateComplexOptions = {}) => {
   return useMutation({
     onError: (err) => {
       toast.error(err.message, { id: 'create-com-err' });

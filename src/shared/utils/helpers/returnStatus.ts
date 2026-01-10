@@ -20,9 +20,9 @@ export const returnStatus = (status: Status) => {
       fillColor: 'fill-red-500',
     },
     [STATUS.PENDING]: {
-      bgColor: 'bg-yellow-100',
-      textColor: 'text-yellow-500',
-      fillColor: 'fill-yellow-500',
+      bgColor: 'bg-yellow-200',
+      textColor: 'text-yellow-700',
+      fillColor: 'fill-yellow-700',
     },
     [STATUS.AVAILABLE]: {
       bgColor: 'bg-success-100',

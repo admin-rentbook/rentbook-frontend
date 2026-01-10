@@ -26,10 +26,11 @@ export const CreateComplexContent = ({
         control={form.control}
         name="complexName"
         placeholder="Enter complex name"
+        showErrorMessage
       />
     </Form>
 
-    <div className="flex items-center justify-end gap-4 pt-4">
+    <div className="flex items-center justify-end gap-4 pt-10">
       <Button variant="tertiary" onClick={onClose}>
         Cancel
       </Button>

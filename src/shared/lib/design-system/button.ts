@@ -38,11 +38,11 @@ export const buttonVariants = cva(
 
         // Danger variants
         danger:
-          'bg-danger-500 text-white hover:bg-danger-600 active:bg-danger-700',
+          'bg-red-700 text-white hover:bg-red-700 active:bg-red-700',
         'danger-outline':
           'border border-danger-500 text-danger-600 bg-transparent hover:bg-danger-50 active:bg-danger-100',
         'danger-ghost':
-          'text-danger-600 hover:bg-danger-50 active:bg-danger-100',
+          'text-red-700 hover:bg-red-50 border-none shadow-custom-sm active:bg-red-100',
 
         // Utility variants
         default: 'bg-sidebar text-neutral-600/50',
