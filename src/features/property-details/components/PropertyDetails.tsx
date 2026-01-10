@@ -21,8 +21,16 @@ import {
   UserIcon,
 } from 'hugeicons-react';
 import { useResendVerification } from '../apis';
-import { useListingLiveModal, usePropertyDetails } from '../hooks';
-import { Agents } from './Agents';
+import {
+  useAddAgent,
+  useCreateComplex,
+  useDeactivateProperty,
+  useListingLiveModal,
+  usePropertyDetails,
+} from '../hooks';
+import { AddAgent, Agents } from './Agents';
+import { CreateComplex } from './Complex';
+import { DeactivateProperty } from './DeactivateProperty';
 import { Leases } from './Leases';
 import { Listings } from './Listings';
 import { PropertyMenu } from './PropertyMenu';
@@ -30,7 +38,23 @@ import { Summary } from './Summary';
 
 export const PropertyDetails = () => {
   const navigate = useNavigate();
+  const { openComplex, setOpenComplex, form, isButtonDisabled, onSubmit } =
+    useCreateComplex();
+  const {
+    isAddingAgent,
+    isAddAgentBtnDisabled,
+    addAgentForm,
+    addAgentSubmit,
+    openAddAgent,
+    setOpenAddAgent,
+  } = useAddAgent();
 
+  const {
+    handleDeactivateProperty,
+    isDeactivatingProperty,
+    openDeactivateProperty,
+    setOpenDeactivateProperty,
+  } = useDeactivateProperty();
   const {
     isLoading,
     error,
@@ -41,7 +65,11 @@ export const PropertyDetails = () => {
     handlers,
     isError,
     refetch,
-  } = usePropertyDetails();
+  } = usePropertyDetails(
+    setOpenComplex,
+    setOpenAddAgent,
+    setOpenDeactivateProperty
+  );
 
   const { isModalOpen, listingData, handleShareListing, handleModalClose } =
     useListingLiveModal({
@@ -176,7 +204,31 @@ export const PropertyDetails = () => {
         </Tabs>
       </div>
 
-      {/* Listing Live Modal */}
+      <CreateComplex
+        form={form}
+        isDisabled={isButtonDisabled}
+        isLoading={isLoading}
+        isOpen={openComplex}
+        onSubmit={onSubmit}
+        setIsOpen={setOpenComplex}
+      />
+
+      <AddAgent
+        form={addAgentForm}
+        onSubmit={addAgentSubmit}
+        isLoading={isAddingAgent}
+        isDisabled={isAddAgentBtnDisabled}
+        isOpen={openAddAgent}
+        setIsOpen={setOpenAddAgent}
+      />
+
+      <DeactivateProperty
+        handleDeactivateProperty={handleDeactivateProperty}
+        isLoading={isDeactivatingProperty}
+        isOpen={openDeactivateProperty}
+        setIsOpen={setOpenDeactivateProperty}
+      />
+
       {listingId && (
         <ListingLiveModal
           listing={listingData}

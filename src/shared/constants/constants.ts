@@ -14,7 +14,7 @@ export const STATUS = {
   AVAILABLE: 'available',
   DRAFT: 'draft',
   UNAVAILABLE: 'unavailable',
-  SUBMITTED: 'submitted'
+  SUBMITTED: 'submitted',
 } as const
 export type Status = (typeof STATUS)[keyof typeof STATUS];
 

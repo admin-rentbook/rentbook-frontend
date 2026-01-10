@@ -3,6 +3,8 @@ import type { PropertyStatusType } from '../constants';
 
 export const url = {
   createProperty: env.API_BASE_URL + '/properties/create/',
+  updateProperty: (propertyId: number) =>
+    env.API_BASE_URL + `/properties/${propertyId}/`,
   getProperties: env.API_BASE_URL + '/properties/my-properties/',
   getPropertyDetails: env.API_BASE_URL + '/',
   getPropertyDetailsById: (propertyId: number) =>

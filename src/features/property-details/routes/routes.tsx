@@ -3,6 +3,7 @@ import { sidebarItems } from '@/features/property-owners/constants';
 import { LayoutWithoutHeader } from '@/shared/components/Layout';
 import { createRoute } from '@tanstack/react-router';
 import z from 'zod';
+import { AgentListings } from '../components/AgentListings';
 import { Complex, PropertyDetails } from '../components';
 import { PropertyDetailsLinks } from '../constants';
 
@@ -36,6 +37,22 @@ export const complexRoute = createRoute({
   component: () => (
     <LayoutWithoutHeader sidebarItems={sidebarItems}>
       <Complex />
+    </LayoutWithoutHeader>
+  ),
+});
+
+const agentListingsSearchSchema = z.object({
+  propertyId: z.number().int().min(1).optional(),
+  agentId: z.number().int().min(1).optional(),
+});
+
+export const agentListingsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: PropertyDetailsLinks.AGENT_LISTINGS,
+  validateSearch: agentListingsSearchSchema,
+  component: () => (
+    <LayoutWithoutHeader sidebarItems={sidebarItems}>
+      <AgentListings />
     </LayoutWithoutHeader>
   ),
 });

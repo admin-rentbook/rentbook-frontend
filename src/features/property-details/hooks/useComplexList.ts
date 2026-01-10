@@ -22,7 +22,7 @@ export type UseComplex = {
   error: Error | null;
 };
 
-export const useComplex = () => {
+export const useComplexList = () => {
   const { complexId } = useSearch({
     from: PropertyDetailsLinks.COMPLEX_VIEW,
   });

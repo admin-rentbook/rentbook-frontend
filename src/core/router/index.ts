@@ -2,9 +2,10 @@ import { landingPageRoute } from '@/features/landing-page';
 import { listingDetailsRoute } from '@/features/listing-details';
 import { listingGetStartedRoute, listingsRoute, listingsEditRoute } from '@/features/listings';
 import { viewListingRoute } from '@/features/owner-listing-details';
-import { complexRoute, propertyDetailsRoute } from '@/features/property-details';
+import { agentListingsRoute, complexRoute, propertyDetailsRoute } from '@/features/property-details';
 import {
   createPropertyRoute,
+  editPropertyRoute,
   getStartedRoute,
   kycRoute,
   leasesRoute,
@@ -31,6 +32,7 @@ const routeTree = rootRoute.addChildren([
   notificationRoute,
   settingsRoute,
   createPropertyRoute,
+  editPropertyRoute,
   getStartedRoute,
   listingGetStartedRoute,
   listingsRoute,
@@ -39,6 +41,7 @@ const routeTree = rootRoute.addChildren([
   myInterestRoute,
   propertyDetailsRoute,
   complexRoute,
+  agentListingsRoute,
   viewingRoute,
   viewListingRoute,
   kycRoute,

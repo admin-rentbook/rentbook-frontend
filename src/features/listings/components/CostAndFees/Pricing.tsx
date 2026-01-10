@@ -67,7 +67,7 @@ export const Pricing = ({ isOpen, setIsOpen }: PricingProps) => {
     <DialogComponent
       open={isOpen}
       onOpenChange={setIsOpen}
-      className="rounded-[2em] border-0 lg:w-3/6 xl:w-1/4"
+      className="rounded-[2em] border-0 lg:w-3/6 xl:w-1/3"
       children={<PricingDetails />}
     />
   );

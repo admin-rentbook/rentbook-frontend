@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { useForm, type UseFormReturn } from 'react-hook-form';
 import type z from 'zod';
-import { useCreateComplex, useGetComplexes } from '../apis';
+import { useCreateComplexMutation, useGetComplexes } from '../apis';
 import { createComplexSchema } from '../constants';
 
 export type ComplexState = 'ADD_TO_COMPLEX' | 'CREATE_COMPLEX';
@@ -24,7 +24,7 @@ export const useComplex = (
     useGetComplexes();
 
   const complexes = complexesData?.data;
-  const createComplexMutation = useCreateComplex();
+  const createComplexMutation = useCreateComplexMutation();
 
   const form = useForm<{ complexName: string }>({
     resolver: zodResolver(createComplexSchema),
@@ -62,7 +62,8 @@ export const useComplex = (
     );
   }
 
-  const isButtonDisabled = !form.formState.isValid;
+  const isButtonDisabled =
+    !form.formState.isValid || createComplexMutation.isPending;
 
   return {
     formComplex: form,

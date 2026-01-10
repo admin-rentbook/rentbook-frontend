@@ -91,9 +91,11 @@
   --color-success-500: var(--success-500);
   --color-success-600: var(--success-600);
 
+  --color-warning-200: var(--warning-200);
   --color-warning-300: var(--warning-300);
   --color-warning-500: var(--warning-500);
   --color-warning-600: var(--warning-600);
+  --color-warning-700: var(--warning-700);
 
   --color-custom-blue-100: var(--custom-blue-100);
   --color-custom-blue-300: var(--custom-blue-300);
@@ -210,13 +212,15 @@
   --red-400: oklch(0.5803 0.2252 359.96); /*#d91875*/
   --red-500: oklch(0.589 0.2254 30.84); /*#e4240a*/
   --red-600: oklch(0.5758 0.2088 29.48); /*#d92d20*/
-  --red-700: oklch(0.5773 0.2184 20.69);/*#dd1e3d*/
+  --red-700: oklch(0.5773 0.2184 20.69); /*#dd1e3d*/
   --red-800: oklch(27% 0.13 29);
   --red-900: oklch(20% 0.1 29); /* deepest shade */
 
+  --warning-200: oklch(0.9821 0.0141 74.43); /*#fff8ef*/
   --warning-300: oklch(0.9967 0.0054 95.1); /*fffefa*/
   --warning-500: oklch(0.7474 0.1801 57.36); /*#ff8a00*/
   --warning-600: oklch(0.7269 0.1617 65.48); /*#ea8e04*/
+  --warning-700: oklch(0.7081 0.162 62.65); /*#e68600*/
   --icons-black: oklch(0.2237 0.0024 325.66); /*1c1b1c*/
 
   --orange-500: oklch(0.6483 0.1937 42.52); /*#EA5A00*/
@@ -348,7 +352,7 @@
   .text-heading-xl-semibold {
     @apply text-xl font-semibold font-sans;
   }
-   .text-heading-lg {
+  .text-heading-lg {
     @apply text-lg font-medium font-sans;
   }
   .text-body-large {

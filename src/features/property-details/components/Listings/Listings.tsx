@@ -8,7 +8,11 @@ export const Listings = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <ListingsHeader {...listing} isFetching={listing.isFetching} isLoading={listing.isLoading} />
+      <ListingsHeader
+        {...listing}
+        isFetching={listing.isFetching}
+        isLoading={listing.isLoading}
+      />
 
       {listing.displayOptions.grouping === 'complex' ? (
         <ComplexView

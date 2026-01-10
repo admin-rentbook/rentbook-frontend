@@ -15,7 +15,7 @@ export const ListingsHeader = (props: ListingHeaderProps) => {
       {props.isLoading || props.isFetching ? (
         <FilterHeaderSkeleton />
       ) : (
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center flex-wrap gap-2">
           <div className="w-auto">
             <SearchBox
               inputValue={props.searchTerm}
